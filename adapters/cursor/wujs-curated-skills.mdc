@@ -1,0 +1,21 @@
+---
+description: wujs-curated-skills bridge
+globs:
+  - "**/*"
+alwaysApply: false
+---
+
+# wujs-curated-skills
+
+Use this project-local rule as a bridge to the curated skills in this
+repository.
+
+- The canonical skill source is `skills/<bucket>/<skill>/SKILL.md`.
+- Use `karpathy-guidelines` for non-trivial code writing, review, or refactoring
+  where hidden assumptions, overengineering, broad diffs, or weak verification
+  could cause mistakes.
+- Use `bcecmd` when working with Baidu BCE BOS through the `bcecmd` CLI.
+- Use `obsidian-vault` only when operating on the configured Obsidian vault and
+  preserving wikilinks, backlinks, and index notes matters.
+- Do not copy full skill bodies into Cursor rules; open the relevant `SKILL.md`
+  from the repository when needed.

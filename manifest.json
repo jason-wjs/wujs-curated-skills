@@ -1,0 +1,10 @@
+{
+  "name": "wujs-curated-skills",
+  "skills": [
+    "./skills/engineering/karpathy-guidelines",
+    "./skills/tools/bcecmd"
+  ],
+  "personal": [
+    "./skills/personal/obsidian-vault"
+  ]
+}

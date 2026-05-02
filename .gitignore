@@ -1,0 +1,45 @@
+# OS/editor noise
+.DS_Store
+Thumbs.db
+*~
+*.swp
+*.swo
+.idea/
+.vscode/
+
+# Build/package output
+dist/
+build/
+tmp/
+temp/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.crt
+credentials
+credentials.*
+secrets.*
+
+# Python/cache noise
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+
+# Node/cache noise
+node_modules/
+.npm/
+
+# Agent scratch output
+.scratch/
+.codex

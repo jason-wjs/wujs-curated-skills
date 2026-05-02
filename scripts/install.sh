@@ -1,0 +1,174 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+MANIFEST="$REPO_DIR/manifest.json"
+
+TOOL=""
+METHOD="copy"
+PROJECT_DIR="$PWD"
+INCLUDE_PERSONAL=false
+
+usage() {
+  cat <<'USAGE'
+Usage:
+  bash scripts/install.sh --tool <codex|claude|cursor|all> [options]
+
+Options:
+  --method <copy|symlink>    Install method (default: copy)
+  --project <path>           Project path for Cursor rules (default: cwd)
+  --include-personal         Include skills under skills/personal
+  -h, --help                 Show help
+
+Examples:
+  bash scripts/install.sh --tool codex
+  bash scripts/install.sh --tool claude --method symlink
+  bash scripts/install.sh --tool cursor --project /path/to/project
+  bash scripts/install.sh --tool all --include-personal
+USAGE
+}
+
+parse_args() {
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --tool)
+        [[ $# -lt 2 ]] && { echo "error: --tool requires a value" >&2; exit 1; }
+        TOOL="$2"; shift 2 ;;
+      --method)
+        [[ $# -lt 2 ]] && { echo "error: --method requires a value" >&2; exit 1; }
+        METHOD="$2"; shift 2 ;;
+      --project)
+        [[ $# -lt 2 ]] && { echo "error: --project requires a value" >&2; exit 1; }
+        PROJECT_DIR="$2"; shift 2 ;;
+      --include-personal)
+        INCLUDE_PERSONAL=true; shift ;;
+      -h|--help)
+        usage; exit 0 ;;
+      *)
+        echo "error: unknown argument: $1" >&2
+        usage
+        exit 1 ;;
+    esac
+  done
+
+  [[ -z "$TOOL" ]] && { echo "error: --tool is required" >&2; usage; exit 1; }
+  case "$TOOL" in codex|claude|cursor|all) ;; *) echo "error: unknown tool: $TOOL" >&2; exit 1 ;; esac
+  case "$METHOD" in copy|symlink) ;; *) echo "error: --method must be copy or symlink" >&2; exit 1 ;; esac
+}
+
+manifest_skill_dirs() {
+  [[ -f "$MANIFEST" ]] || { echo "error: missing manifest: $MANIFEST" >&2; exit 1; }
+
+  python3 - "$MANIFEST" "$INCLUDE_PERSONAL" <<'PY'
+import json
+import sys
+from pathlib import Path
+
+manifest = Path(sys.argv[1])
+include_personal = sys.argv[2] == "true"
+repo = manifest.parent
+data = json.loads(manifest.read_text())
+
+paths = list(data.get("skills", []))
+if include_personal:
+    paths.extend(data.get("personal", []))
+
+for rel in paths:
+    path = (repo / rel).resolve()
+    if not (path / "SKILL.md").is_file():
+        raise SystemExit(f"manifest entry missing SKILL.md: {rel}")
+    print(path)
+PY
+}
+
+ensure_not_repo_parent_symlink() {
+  local dest="$1"
+  if [[ -L "$dest" ]]; then
+    local resolved
+    resolved="$(readlink -f "$dest")"
+    case "$resolved" in
+      "$REPO_DIR"|"$REPO_DIR"/*)
+        echo "error: $dest is a symlink into this repo ($resolved)" >&2
+        echo "Remove it first, then rerun the installer." >&2
+        exit 1 ;;
+    esac
+  fi
+}
+
+install_dir() {
+  local src="$1" dest="$2"
+  mkdir -p "$(dirname "$dest")"
+  ensure_not_repo_parent_symlink "$dest"
+
+  if [[ -e "$dest" && ! -L "$dest" && "$METHOD" == "symlink" ]]; then
+    echo "error: refusing to replace non-symlink directory with symlink: $dest" >&2
+    exit 1
+  fi
+
+  if [[ "$METHOD" == "symlink" ]]; then
+    ln -sfn "$src" "$dest"
+  else
+    rm -rf "$dest"
+    mkdir -p "$dest"
+    cp -a "$src/." "$dest/"
+  fi
+}
+
+install_agent_skills() {
+  local root="$1" label="$2"
+  mkdir -p "$root"
+
+  local count=0
+  while IFS= read -r src; do
+    local name dest
+    name="$(basename "$src")"
+    dest="$root/$name"
+    install_dir "$src" "$dest"
+    echo "[$label] $METHOD $name -> $dest"
+    count=$((count + 1))
+  done < <(manifest_skill_dirs)
+
+  echo "[$label] installed $count skill(s)"
+}
+
+install_codex() {
+  install_agent_skills "${CODEX_HOME:-$HOME/.codex}/skills" "codex"
+}
+
+install_claude() {
+  install_agent_skills "$HOME/.claude/skills" "claude"
+}
+
+install_cursor() {
+  local dir="$PROJECT_DIR/.cursor/rules"
+  local src="$REPO_DIR/adapters/cursor/wujs-curated-skills.mdc"
+  local dest="$dir/wujs-curated-skills.mdc"
+
+  [[ -f "$src" ]] || { echo "error: missing cursor adapter: $src" >&2; exit 1; }
+  mkdir -p "$dir"
+
+  if [[ "$METHOD" == "symlink" ]]; then
+    ln -sfn "$src" "$dest"
+  else
+    cp "$src" "$dest"
+  fi
+
+  echo "[cursor] $METHOD adapter -> $dest"
+}
+
+main() {
+  parse_args "$@"
+
+  if [[ "$TOOL" == "codex" || "$TOOL" == "all" ]]; then
+    install_codex
+  fi
+  if [[ "$TOOL" == "claude" || "$TOOL" == "all" ]]; then
+    install_claude
+  fi
+  if [[ "$TOOL" == "cursor" || "$TOOL" == "all" ]]; then
+    install_cursor
+  fi
+}
+
+main "$@"
