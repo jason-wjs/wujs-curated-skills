@@ -39,6 +39,9 @@ metadata and be maintained intentionally.
 - **[grill-with-docs](./skills/productivity/grill-with-docs/SKILL.md)** —
   Stress-test a plan against project domain language and ADRs, updating
   documentation as decisions crystallize.
+- **[write-a-skill](./skills/productivity/write-a-skill/SKILL.md)** — Create
+  new agent skills with proper structure, progressive disclosure, and bundled
+  resources.
 
 ### Tools
 

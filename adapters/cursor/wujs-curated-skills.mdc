@@ -18,6 +18,7 @@ repository.
   interrogation.
 - Use `grill-with-docs` to stress-test a plan against `CONTEXT.md`, ADRs, and
   the project's existing domain language.
+- Use `write-a-skill` when creating or adapting agent skills.
 - Use `bcecmd` when working with Baidu BCE BOS through the `bcecmd` CLI.
 - Use `obsidian-vault` only when operating on the configured Obsidian vault and
   preserving wikilinks, backlinks, and index notes matters.

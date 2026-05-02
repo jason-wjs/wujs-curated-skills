@@ -26,6 +26,7 @@ CODEX_HOME="$TMP_DIR/codex-default" bash "$REPO_DIR/scripts/install.sh" --tool c
 assert_file "$TMP_DIR/codex-default/skills/karpathy-guidelines/SKILL.md"
 assert_file "$TMP_DIR/codex-default/skills/grill-me/SKILL.md"
 assert_file "$TMP_DIR/codex-default/skills/grill-with-docs/SKILL.md"
+assert_file "$TMP_DIR/codex-default/skills/write-a-skill/SKILL.md"
 assert_file "$TMP_DIR/codex-default/skills/bcecmd/SKILL.md"
 assert_no_path "$TMP_DIR/codex-default/skills/obsidian-vault"
 
@@ -34,6 +35,7 @@ CODEX_HOME="$TMP_DIR/codex-personal" bash "$REPO_DIR/scripts/install.sh" --tool 
 assert_file "$TMP_DIR/codex-personal/skills/karpathy-guidelines/SKILL.md"
 assert_file "$TMP_DIR/codex-personal/skills/grill-me/SKILL.md"
 assert_file "$TMP_DIR/codex-personal/skills/grill-with-docs/SKILL.md"
+assert_file "$TMP_DIR/codex-personal/skills/write-a-skill/SKILL.md"
 assert_file "$TMP_DIR/codex-personal/skills/bcecmd/SKILL.md"
 assert_file "$TMP_DIR/codex-personal/skills/edit-article/SKILL.md"
 assert_file "$TMP_DIR/codex-personal/skills/obsidian-vault/SKILL.md"
@@ -43,6 +45,7 @@ HOME="$TMP_DIR/home" bash "$REPO_DIR/scripts/install.sh" --tool claude --include
 assert_file "$TMP_DIR/home/.claude/skills/karpathy-guidelines/SKILL.md"
 assert_file "$TMP_DIR/home/.claude/skills/grill-me/SKILL.md"
 assert_file "$TMP_DIR/home/.claude/skills/grill-with-docs/SKILL.md"
+assert_file "$TMP_DIR/home/.claude/skills/write-a-skill/SKILL.md"
 assert_file "$TMP_DIR/home/.claude/skills/bcecmd/SKILL.md"
 assert_file "$TMP_DIR/home/.claude/skills/edit-article/SKILL.md"
 assert_file "$TMP_DIR/home/.claude/skills/obsidian-vault/SKILL.md"

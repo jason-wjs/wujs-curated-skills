@@ -28,6 +28,13 @@ from or compared against.
 - Local policy: maintained as an adapted skill from the upstream collection,
   including its adjacent format reference files.
 
+### `skills/productivity/write-a-skill`
+
+- Upstream: <https://github.com/mattpocock/skills>
+- Local source: `skills/productivity/write-a-skill/SKILL.md`
+- License: MIT, preserved by repository license and this source record.
+- Local policy: maintained as an adapted skill from the upstream collection.
+
 ## Reference Sources
 
 ### `skills/personal/obsidian-vault`
