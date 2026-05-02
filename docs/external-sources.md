@@ -20,13 +20,43 @@ from or compared against.
 - License: MIT, preserved by repository license and this source record.
 - Local policy: maintained as an adapted skill from the upstream collection.
 
-### `skills/productivity/grill-with-docs`
+### `skills/engineering/grill-with-docs`
 
 - Upstream: <https://github.com/mattpocock/skills>
-- Local source: `skills/productivity/grill-with-docs/SKILL.md`
+- Local source: `skills/engineering/grill-with-docs/SKILL.md`
 - License: MIT, preserved by repository license and this source record.
 - Local policy: maintained as an adapted skill from the upstream collection,
   including its adjacent format reference files.
+
+### `skills/engineering/diagnose`
+
+- Upstream: <https://github.com/mattpocock/skills>
+- Local source: `skills/engineering/diagnose/SKILL.md`
+- License: MIT, preserved by repository license and this source record.
+- Local policy: maintained as an adapted skill from the upstream collection.
+
+### `skills/engineering/improve-codebase-architecture`
+
+- Upstream: <https://github.com/mattpocock/skills>
+- Local source: `skills/engineering/improve-codebase-architecture/SKILL.md`
+- License: MIT, preserved by repository license and this source record.
+- Local policy: maintained as an adapted skill from the upstream collection,
+  including its adjacent reference files.
+
+### `skills/engineering/tdd`
+
+- Upstream: <https://github.com/mattpocock/skills>
+- Local source: `skills/engineering/tdd/SKILL.md`
+- License: MIT, preserved by repository license and this source record.
+- Local policy: maintained as an adapted skill from the upstream collection,
+  including its adjacent reference files.
+
+### `skills/engineering/zoom-out`
+
+- Upstream: <https://github.com/mattpocock/skills>
+- Local source: `skills/engineering/zoom-out/SKILL.md`
+- License: MIT, preserved by repository license and this source record.
+- Local policy: maintained as an adapted skill from the upstream collection.
 
 ### `skills/productivity/write-a-skill`
 

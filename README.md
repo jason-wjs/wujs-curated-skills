@@ -26,19 +26,27 @@ metadata and be maintained intentionally.
 
 ### Engineering
 
+- **[diagnose](./skills/engineering/diagnose/SKILL.md)** — Disciplined
+  diagnosis loop for hard bugs and performance regressions.
+- **[grill-with-docs](./skills/engineering/grill-with-docs/SKILL.md)** —
+  Stress-test a plan against project domain language and ADRs, updating
+  documentation as decisions crystallize.
+- **[improve-codebase-architecture](./skills/engineering/improve-codebase-architecture/SKILL.md)** —
+  Find deepening opportunities that make code more testable and AI-navigable.
 - **[karpathy-guidelines](./skills/engineering/karpathy-guidelines/SKILL.md)** —
   Lightweight guardrails for non-trivial coding, review, and refactoring where
   hidden assumptions, overengineering, broad diffs, or weak verification could
   cause mistakes.
+- **[tdd](./skills/engineering/tdd/SKILL.md)** — Test-driven development with a
+  red-green-refactor loop and behavior-focused tests.
+- **[zoom-out](./skills/engineering/zoom-out/SKILL.md)** — Ask for a higher-level
+  map of unfamiliar code and its relevant modules and callers.
 
 ### Productivity
 
 - **[grill-me](./skills/productivity/grill-me/SKILL.md)** — Interview the user
   relentlessly about a plan or design until each branch of the decision tree is
   resolved.
-- **[grill-with-docs](./skills/productivity/grill-with-docs/SKILL.md)** —
-  Stress-test a plan against project domain language and ADRs, updating
-  documentation as decisions crystallize.
 - **[write-a-skill](./skills/productivity/write-a-skill/SKILL.md)** — Create
   new agent skills with proper structure, progressive disclosure, and bundled
   resources.

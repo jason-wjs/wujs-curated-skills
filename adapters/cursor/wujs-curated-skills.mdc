@@ -11,9 +11,15 @@ Use this project-local rule as a bridge to the curated skills in this
 repository.
 
 - The canonical skill source is `skills/<bucket>/<skill>/SKILL.md`.
+- Use `diagnose` for hard bugs, broken behavior, exceptions, failing tests, or
+  performance regressions.
 - Use `karpathy-guidelines` for non-trivial code writing, review, or refactoring
   where hidden assumptions, overengineering, broad diffs, or weak verification
   could cause mistakes.
+- Use `tdd` when the user asks for test-first development or red-green-refactor.
+- Use `zoom-out` when unfamiliar code needs a higher-level map.
+- Use `improve-codebase-architecture` for architecture review, refactoring
+  opportunities, and deepening shallow modules.
 - Use `grill-me` to stress-test a plan or design through one-question-at-a-time
   interrogation.
 - Use `grill-with-docs` to stress-test a plan against `CONTEXT.md`, ADRs, and
