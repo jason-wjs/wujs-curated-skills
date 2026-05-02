@@ -2,6 +2,8 @@
   "name": "wujs-curated-skills",
   "skills": [
     "./skills/engineering/karpathy-guidelines",
+    "./skills/productivity/grill-me",
+    "./skills/productivity/grill-with-docs",
     "./skills/tools/bcecmd"
   ],
   "personal": [

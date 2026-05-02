@@ -6,6 +6,7 @@ canonical skill source under `skills/<bucket>/<skill>/SKILL.md`.
 ## Buckets
 
 - `skills/engineering/` — general engineering behavior and code-work skills.
+- `skills/productivity/` — general planning, writing, and collaboration workflows.
 - `skills/tools/` — concrete external tools, CLIs, services, and platforms.
 - `skills/personal/` — Wu Junsong-specific workflows, paths, and preferences.
 

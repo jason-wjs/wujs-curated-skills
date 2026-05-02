@@ -31,6 +31,15 @@ metadata and be maintained intentionally.
   hidden assumptions, overengineering, broad diffs, or weak verification could
   cause mistakes.
 
+### Productivity
+
+- **[grill-me](./skills/productivity/grill-me/SKILL.md)** — Interview the user
+  relentlessly about a plan or design until each branch of the decision tree is
+  resolved.
+- **[grill-with-docs](./skills/productivity/grill-with-docs/SKILL.md)** —
+  Stress-test a plan against project domain language and ADRs, updating
+  documentation as decisions crystallize.
+
 ### Tools
 
 - **[bcecmd](./skills/tools/bcecmd/SKILL.md)** — Use Baidu BCE BOS through the
@@ -51,6 +60,7 @@ metadata and be maintained intentionally.
 ```text
 skills/
   engineering/   General engineering behavior and code-work skills
+  productivity/  Planning, writing, and collaboration workflows
   tools/         External tools, CLIs, services, and platforms
   personal/      Local setup, paths, notes, and preferences
 adapters/        Tool-specific notes for Codex, Cursor, and Claude Code

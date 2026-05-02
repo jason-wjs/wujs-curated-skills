@@ -14,6 +14,10 @@ repository.
 - Use `karpathy-guidelines` for non-trivial code writing, review, or refactoring
   where hidden assumptions, overengineering, broad diffs, or weak verification
   could cause mistakes.
+- Use `grill-me` to stress-test a plan or design through one-question-at-a-time
+  interrogation.
+- Use `grill-with-docs` to stress-test a plan against `CONTEXT.md`, ADRs, and
+  the project's existing domain language.
 - Use `bcecmd` when working with Baidu BCE BOS through the `bcecmd` CLI.
 - Use `obsidian-vault` only when operating on the configured Obsidian vault and
   preserving wikilinks, backlinks, and index notes matters.
