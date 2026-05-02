@@ -5,6 +5,7 @@
     "./skills/tools/bcecmd"
   ],
   "personal": [
+    "./skills/personal/edit-article",
     "./skills/personal/obsidian-vault"
   ]
 }

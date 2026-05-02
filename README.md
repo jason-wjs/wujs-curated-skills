@@ -39,6 +39,9 @@ metadata and be maintained intentionally.
 
 ### Personal
 
+- **[edit-article](./skills/personal/edit-article/SKILL.md)** — Edit and
+  improve articles by restructuring sections, improving clarity, and tightening
+  prose. Environment-specific.
 - **[obsidian-vault](./skills/personal/obsidian-vault/SKILL.md)** — Search,
   create, edit, link, and organize Obsidian notes while preserving wikilinks,
   backlinks, index notes, and existing vault conventions. Environment-specific.
