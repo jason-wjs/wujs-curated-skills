@@ -39,6 +39,7 @@ assert_file "$TMP_DIR/codex-user-home/.agents/skills/grill-with-docs/agents/open
 assert_file "$TMP_DIR/codex-user-home/.agents/skills/write-a-skill/SKILL.md"
 assert_file "$TMP_DIR/codex-user-home/.agents/skills/bcecmd/SKILL.md"
 assert_no_path "$TMP_DIR/codex-user-home/.agents/skills/obsidian-vault"
+assert_no_path "$TMP_DIR/codex-user-home/.agents/skills/research-paper-writing"
 
 echo "[test] codex repo copy includes personal when requested"
 bash "$REPO_DIR/scripts/install.sh" --tool codex --scope repo --project "$TMP_DIR/codex-project" --include-personal >/dev/null
@@ -53,6 +54,8 @@ assert_file "$TMP_DIR/codex-project/.agents/skills/write-a-skill/SKILL.md"
 assert_file "$TMP_DIR/codex-project/.agents/skills/bcecmd/SKILL.md"
 assert_file "$TMP_DIR/codex-project/.agents/skills/edit-article/SKILL.md"
 assert_file "$TMP_DIR/codex-project/.agents/skills/obsidian-vault/SKILL.md"
+assert_file "$TMP_DIR/codex-project/.agents/skills/research-paper-writing/SKILL.md"
+assert_file "$TMP_DIR/codex-project/.agents/skills/research-paper-writing/agents/openai.yaml"
 
 echo "[test] codex legacy copy"
 CODEX_HOME="$TMP_DIR/codex-legacy" bash "$REPO_DIR/scripts/install.sh" --tool codex --scope legacy >/dev/null
@@ -72,6 +75,7 @@ assert_file "$TMP_DIR/home/.claude/skills/write-a-skill/SKILL.md"
 assert_file "$TMP_DIR/home/.claude/skills/bcecmd/SKILL.md"
 assert_file "$TMP_DIR/home/.claude/skills/edit-article/SKILL.md"
 assert_file "$TMP_DIR/home/.claude/skills/obsidian-vault/SKILL.md"
+assert_file "$TMP_DIR/home/.claude/skills/research-paper-writing/SKILL.md"
 
 echo "[test] cursor adapter"
 bash "$REPO_DIR/scripts/install.sh" --tool cursor --project "$TMP_DIR/project" >/dev/null

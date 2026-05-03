@@ -65,6 +65,10 @@ metadata and be maintained intentionally.
 - **[obsidian-vault](./skills/personal/obsidian-vault/SKILL.md)** — Search,
   create, edit, link, and organize Obsidian notes while preserving wikilinks,
   backlinks, index notes, and existing vault conventions. Environment-specific.
+- **[research-paper-writing](./skills/personal/research-paper-writing/SKILL.md)** —
+  Improve ML/CV/NLP-style academic paper writing with section guides, paragraph
+  flow checks, claim-evidence alignment, and reviewer-facing self-review.
+  Environment-specific.
 
 ## Repository Layout
 

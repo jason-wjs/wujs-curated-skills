@@ -65,6 +65,18 @@ from or compared against.
 - License: MIT, preserved by repository license and this source record.
 - Local policy: maintained as an adapted skill from the upstream collection.
 
+### `skills/personal/research-paper-writing`
+
+- Upstream: <https://github.com/Master-cai/Research-Paper-Writing-Skills>
+- Upstream commit: `9ee5eddc10068cc52590b3a68a827d3a387f5af9`
+- Local source: `skills/personal/research-paper-writing/SKILL.md`
+- License: MIT, preserved by repository license, skill attribution, and this
+  source record.
+- Upstream attribution: most methodology comes from Prof. Peng Sida's public
+  study notes and <https://github.com/pengsida/learning_research>.
+- Local policy: maintained as an adapted personal skill. It is installed only
+  when `--include-personal` is used.
+
 ## Reference Sources
 
 ### `skills/personal/obsidian-vault`

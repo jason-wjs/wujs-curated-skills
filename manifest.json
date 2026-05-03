@@ -13,6 +13,7 @@
   ],
   "personal": [
     "./skills/personal/edit-article",
-    "./skills/personal/obsidian-vault"
+    "./skills/personal/obsidian-vault",
+    "./skills/personal/research-paper-writing"
   ]
 }
