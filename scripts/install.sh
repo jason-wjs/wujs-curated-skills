@@ -9,6 +9,7 @@ TOOL=""
 METHOD="copy"
 PROJECT_DIR="$PWD"
 INCLUDE_PERSONAL=false
+SCOPE="user"
 
 usage() {
   cat <<'USAGE'
@@ -17,12 +18,15 @@ Usage:
 
 Options:
   --method <copy|symlink>    Install method (default: copy)
-  --project <path>           Project path for Cursor rules (default: cwd)
+  --scope <user|repo|legacy> Codex install scope (default: user)
+  --project <path>           Project path for Codex repo scope or Cursor rules (default: cwd)
   --include-personal         Include skills under skills/personal
   -h, --help                 Show help
 
 Examples:
   bash scripts/install.sh --tool codex
+  bash scripts/install.sh --tool codex --scope repo --project /path/to/project
+  bash scripts/install.sh --tool codex --scope legacy
   bash scripts/install.sh --tool claude --method symlink
   bash scripts/install.sh --tool cursor --project /path/to/project
   bash scripts/install.sh --tool all --include-personal
@@ -38,6 +42,9 @@ parse_args() {
       --method)
         [[ $# -lt 2 ]] && { echo "error: --method requires a value" >&2; exit 1; }
         METHOD="$2"; shift 2 ;;
+      --scope)
+        [[ $# -lt 2 ]] && { echo "error: --scope requires a value" >&2; exit 1; }
+        SCOPE="$2"; shift 2 ;;
       --project)
         [[ $# -lt 2 ]] && { echo "error: --project requires a value" >&2; exit 1; }
         PROJECT_DIR="$2"; shift 2 ;;
@@ -55,6 +62,7 @@ parse_args() {
   [[ -z "$TOOL" ]] && { echo "error: --tool is required" >&2; usage; exit 1; }
   case "$TOOL" in codex|claude|cursor|all) ;; *) echo "error: unknown tool: $TOOL" >&2; exit 1 ;; esac
   case "$METHOD" in copy|symlink) ;; *) echo "error: --method must be copy or symlink" >&2; exit 1 ;; esac
+  case "$SCOPE" in user|repo|legacy) ;; *) echo "error: --scope must be user, repo, or legacy" >&2; exit 1 ;; esac
 }
 
 manifest_skill_dirs() {
@@ -133,7 +141,14 @@ install_agent_skills() {
 }
 
 install_codex() {
-  install_agent_skills "${CODEX_HOME:-$HOME/.codex}/skills" "codex"
+  case "$SCOPE" in
+    user)
+      install_agent_skills "$HOME/.agents/skills" "codex:user" ;;
+    repo)
+      install_agent_skills "$PROJECT_DIR/.agents/skills" "codex:repo" ;;
+    legacy)
+      install_agent_skills "${CODEX_HOME:-$HOME/.codex}/skills" "codex:legacy" ;;
+  esac
 }
 
 install_claude() {

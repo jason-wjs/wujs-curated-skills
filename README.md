@@ -65,6 +65,10 @@ metadata and be maintained intentionally.
 - **[obsidian-vault](./skills/personal/obsidian-vault/SKILL.md)** — Search,
   create, edit, link, and organize Obsidian notes while preserving wikilinks,
   backlinks, index notes, and existing vault conventions. Environment-specific.
+- **[research-paper-writing](./skills/personal/research-paper-writing/SKILL.md)** —
+  Improve ML/CV/NLP-style academic paper writing with section guides, paragraph
+  flow checks, claim-evidence alignment, and reviewer-facing self-review.
+  Environment-specific.
 
 ## Repository Layout
 
@@ -82,12 +86,19 @@ scripts/         Installer and maintenance scripts
 Promoted and personal install sets are declared in
 [manifest.json](./manifest.json).
 
+`skills/` is the canonical source layout. Installers and adapters map those
+skills to each target tool: Codex uses OpenAI's `.agents/skills` discovery
+layout, Claude Code receives skill directories under `~/.claude/skills`, and
+Cursor receives a bridge rule because it does not directly consume Agent Skills
+directories.
+
 ## Install
 
 Use the installer:
 
 ```bash
 bash scripts/install.sh --tool codex
+bash scripts/install.sh --tool codex --scope repo --project /path/to/project
 bash scripts/install.sh --tool claude
 bash scripts/install.sh --tool cursor --project /path/to/project
 ```

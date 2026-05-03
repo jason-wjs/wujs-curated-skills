@@ -39,9 +39,27 @@ should be marked as environment-specific.
 An agent tool that can consume skills, currently Codex, Cursor, and Claude
 Code.
 
+**Codex user skill**:
+A curated skill installed for all local Codex sessions under
+`$HOME/.agents/skills/<skill-name>/`.
+
+**Codex repo skill**:
+A curated skill installed for one repository or project under
+`.agents/skills/<skill-name>/`.
+
+**OpenAI skill metadata**:
+Optional Codex-specific metadata stored inside a skill at `agents/openai.yaml`.
+It can control Codex UI metadata, implicit invocation policy, and declared tool
+dependencies. It is scoped to one skill, not the whole repository.
+
 **Adapter**:
 Tool-specific documentation, manifest data, or templates that bridge this
 repository's canonical skill layout to an install target.
+
+**Adapter-generated output**:
+A file or directory produced from canonical skills for a target tool, such as a
+Cursor `.mdc` rule or installed Codex skill directory. Generated output is not a
+canonical skill source.
 
 **Canonical source**:
 The source file for a skill inside this repository:
@@ -62,6 +80,7 @@ directory. This is safer for stable use but requires explicit updates.
 - A **curated skill** may be an **original skill** or an **adapted skill**.
 - An **adapted skill** cites one or more **external sources**.
 - An **adapter** describes how curated skills map to one **install target**.
+- **OpenAI skill metadata** may refine Codex behavior for one **curated skill**.
 - The top-level README lists promoted skills; bucket READMEs list every skill
   in that bucket.
 
