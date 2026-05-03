@@ -13,6 +13,9 @@ are installed by default; skills under `personal` are installed only with
 # Codex
 bash scripts/install.sh --tool codex
 
+# Codex, repository-scoped
+bash scripts/install.sh --tool codex --scope repo --project /path/to/project
+
 # Claude Code
 bash scripts/install.sh --tool claude
 
@@ -32,20 +35,28 @@ bash scripts/install.sh --tool <codex|claude|cursor|all> [options]
 ```
 
 - `--method copy|symlink` — install by copying files or creating symlinks.
-- `--project <path>` — Cursor project path. Defaults to the current directory.
+- `--scope user|repo|legacy` — Codex install scope. Defaults to `user`.
+- `--project <path>` — project path for Codex repo scope or Cursor rules.
+  Defaults to the current directory.
 - `--include-personal` — include skills under `skills/personal/`.
 
 ## Install Paths
 
 | Tool | Installed Path |
 |------|----------------|
-| Codex | `${CODEX_HOME:-~/.codex}/skills/<skill-name>` |
+| Codex user scope | `$HOME/.agents/skills/<skill-name>` |
+| Codex repo scope | `<project>/.agents/skills/<skill-name>` |
+| Codex legacy scope | `${CODEX_HOME:-$HOME/.codex}/skills/<skill-name>` |
 | Claude Code | `~/.claude/skills/<skill-name>` |
 | Cursor | `<project>/.cursor/rules/wujs-curated-skills.mdc` |
 
-Codex and Claude Code receive one directory per installed skill. Cursor receives
-a `.mdc` bridge rule because it does not directly consume Agent Skills
+Codex and Claude Code receive one directory per installed skill. Codex user and
+repo scopes follow OpenAI's current Agent Skills discovery layout. Cursor
+receives a `.mdc` bridge rule because it does not directly consume Agent Skills
 directories.
+
+Use Codex legacy scope only for older local setups that still read
+`~/.codex/skills`.
 
 ## Personal Skills
 

@@ -26,7 +26,5 @@ repository.
   the project's existing domain language.
 - Use `write-a-skill` when creating or adapting agent skills.
 - Use `bcecmd` when working with Baidu BCE BOS through the `bcecmd` CLI.
-- Use `obsidian-vault` only when operating on the configured Obsidian vault and
-  preserving wikilinks, backlinks, and index notes matters.
 - Do not copy full skill bodies into Cursor rules; open the relevant `SKILL.md`
   from the repository when needed.

@@ -10,6 +10,9 @@ provides a project-local rule bridge:
 The bridge points Cursor at the canonical skill sources in this repository
 without duplicating full skill bodies.
 
+The bridge tracks promoted skills from `manifest.json`. Personal skills are not
+included in the default Cursor bridge because they are environment-specific.
+
 ## Install
 
 ```bash
@@ -33,3 +36,5 @@ bash scripts/install.sh --tool cursor
 - Default install mode is `copy`.
 - Cursor installs only the `.mdc` bridge, not every skill directory.
 - The canonical skill sources remain under `skills/<bucket>/<skill>/SKILL.md`.
+- Run `bash scripts/lint-skills.sh` after changing promoted skills so the
+  bridge stays aligned with `manifest.json`.

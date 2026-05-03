@@ -21,32 +21,43 @@ assert_no_path() {
 echo "[test] installer help"
 bash "$REPO_DIR/scripts/install.sh" --help >/dev/null
 
-echo "[test] codex copy skips personal by default"
-CODEX_HOME="$TMP_DIR/codex-default" bash "$REPO_DIR/scripts/install.sh" --tool codex >/dev/null
-assert_file "$TMP_DIR/codex-default/skills/diagnose/SKILL.md"
-assert_file "$TMP_DIR/codex-default/skills/karpathy-guidelines/SKILL.md"
-assert_file "$TMP_DIR/codex-default/skills/improve-codebase-architecture/SKILL.md"
-assert_file "$TMP_DIR/codex-default/skills/tdd/SKILL.md"
-assert_file "$TMP_DIR/codex-default/skills/zoom-out/SKILL.md"
-assert_file "$TMP_DIR/codex-default/skills/grill-me/SKILL.md"
-assert_file "$TMP_DIR/codex-default/skills/grill-with-docs/SKILL.md"
-assert_file "$TMP_DIR/codex-default/skills/write-a-skill/SKILL.md"
-assert_file "$TMP_DIR/codex-default/skills/bcecmd/SKILL.md"
-assert_no_path "$TMP_DIR/codex-default/skills/obsidian-vault"
+echo "[test] skill lint"
+bash "$REPO_DIR/scripts/lint-skills.sh" >/dev/null
 
-echo "[test] codex copy includes personal when requested"
-CODEX_HOME="$TMP_DIR/codex-personal" bash "$REPO_DIR/scripts/install.sh" --tool codex --include-personal >/dev/null
-assert_file "$TMP_DIR/codex-personal/skills/diagnose/SKILL.md"
-assert_file "$TMP_DIR/codex-personal/skills/karpathy-guidelines/SKILL.md"
-assert_file "$TMP_DIR/codex-personal/skills/improve-codebase-architecture/SKILL.md"
-assert_file "$TMP_DIR/codex-personal/skills/tdd/SKILL.md"
-assert_file "$TMP_DIR/codex-personal/skills/zoom-out/SKILL.md"
-assert_file "$TMP_DIR/codex-personal/skills/grill-me/SKILL.md"
-assert_file "$TMP_DIR/codex-personal/skills/grill-with-docs/SKILL.md"
-assert_file "$TMP_DIR/codex-personal/skills/write-a-skill/SKILL.md"
-assert_file "$TMP_DIR/codex-personal/skills/bcecmd/SKILL.md"
-assert_file "$TMP_DIR/codex-personal/skills/edit-article/SKILL.md"
-assert_file "$TMP_DIR/codex-personal/skills/obsidian-vault/SKILL.md"
+echo "[test] codex user copy skips personal by default"
+HOME="$TMP_DIR/codex-user-home" bash "$REPO_DIR/scripts/install.sh" --tool codex >/dev/null
+assert_file "$TMP_DIR/codex-user-home/.agents/skills/diagnose/SKILL.md"
+assert_file "$TMP_DIR/codex-user-home/.agents/skills/karpathy-guidelines/SKILL.md"
+assert_file "$TMP_DIR/codex-user-home/.agents/skills/improve-codebase-architecture/SKILL.md"
+assert_file "$TMP_DIR/codex-user-home/.agents/skills/tdd/SKILL.md"
+assert_file "$TMP_DIR/codex-user-home/.agents/skills/zoom-out/SKILL.md"
+assert_file "$TMP_DIR/codex-user-home/.agents/skills/zoom-out/agents/openai.yaml"
+assert_file "$TMP_DIR/codex-user-home/.agents/skills/grill-me/SKILL.md"
+assert_file "$TMP_DIR/codex-user-home/.agents/skills/grill-me/agents/openai.yaml"
+assert_file "$TMP_DIR/codex-user-home/.agents/skills/grill-with-docs/SKILL.md"
+assert_file "$TMP_DIR/codex-user-home/.agents/skills/grill-with-docs/agents/openai.yaml"
+assert_file "$TMP_DIR/codex-user-home/.agents/skills/write-a-skill/SKILL.md"
+assert_file "$TMP_DIR/codex-user-home/.agents/skills/bcecmd/SKILL.md"
+assert_no_path "$TMP_DIR/codex-user-home/.agents/skills/obsidian-vault"
+
+echo "[test] codex repo copy includes personal when requested"
+bash "$REPO_DIR/scripts/install.sh" --tool codex --scope repo --project "$TMP_DIR/codex-project" --include-personal >/dev/null
+assert_file "$TMP_DIR/codex-project/.agents/skills/diagnose/SKILL.md"
+assert_file "$TMP_DIR/codex-project/.agents/skills/karpathy-guidelines/SKILL.md"
+assert_file "$TMP_DIR/codex-project/.agents/skills/improve-codebase-architecture/SKILL.md"
+assert_file "$TMP_DIR/codex-project/.agents/skills/tdd/SKILL.md"
+assert_file "$TMP_DIR/codex-project/.agents/skills/zoom-out/SKILL.md"
+assert_file "$TMP_DIR/codex-project/.agents/skills/grill-me/SKILL.md"
+assert_file "$TMP_DIR/codex-project/.agents/skills/grill-with-docs/SKILL.md"
+assert_file "$TMP_DIR/codex-project/.agents/skills/write-a-skill/SKILL.md"
+assert_file "$TMP_DIR/codex-project/.agents/skills/bcecmd/SKILL.md"
+assert_file "$TMP_DIR/codex-project/.agents/skills/edit-article/SKILL.md"
+assert_file "$TMP_DIR/codex-project/.agents/skills/obsidian-vault/SKILL.md"
+
+echo "[test] codex legacy copy"
+CODEX_HOME="$TMP_DIR/codex-legacy" bash "$REPO_DIR/scripts/install.sh" --tool codex --scope legacy >/dev/null
+assert_file "$TMP_DIR/codex-legacy/skills/diagnose/SKILL.md"
+assert_no_path "$TMP_DIR/codex-legacy/skills/obsidian-vault"
 
 echo "[test] claude copy uses temporary HOME"
 HOME="$TMP_DIR/home" bash "$REPO_DIR/scripts/install.sh" --tool claude --include-personal >/dev/null
@@ -67,8 +78,8 @@ bash "$REPO_DIR/scripts/install.sh" --tool cursor --project "$TMP_DIR/project" >
 assert_file "$TMP_DIR/project/.cursor/rules/wujs-curated-skills.mdc"
 
 echo "[test] codex symlink"
-CODEX_HOME="$TMP_DIR/codex-symlink" bash "$REPO_DIR/scripts/install.sh" --tool codex --method symlink >/dev/null
-[[ -L "$TMP_DIR/codex-symlink/skills/karpathy-guidelines" ]] || {
+HOME="$TMP_DIR/codex-symlink-home" bash "$REPO_DIR/scripts/install.sh" --tool codex --method symlink >/dev/null
+[[ -L "$TMP_DIR/codex-symlink-home/.agents/skills/karpathy-guidelines" ]] || {
   echo "expected symlink install for karpathy-guidelines" >&2
   exit 1
 }
