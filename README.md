@@ -89,9 +89,9 @@ Promoted and personal install sets are declared in
 `skills/` is the canonical source layout. Installers and adapters map those
 skills to each target tool: Codex uses OpenAI's `.agents/skills` discovery
 layout, Claude Code receives skill directories under `~/.claude/skills`, and
-Cursor receives skill directories under `<project>/.cursor/skills/` plus a
-project-local `.mdc` bridge rule that points at this repository without
-duplicating full skill bodies.
+Cursor receives skill directories under `<project>/.cursor/skills/` (default)
+or `$HOME/.cursor/skills/` when using `--cursor-scope user`, plus a matching
+`.mdc` bridge under `.cursor/rules/` in the same scope.
 
 ## Install
 
@@ -102,6 +102,7 @@ bash scripts/install.sh --tool codex
 bash scripts/install.sh --tool codex --scope repo --project /path/to/project
 bash scripts/install.sh --tool claude
 bash scripts/install.sh --tool cursor --project /path/to/project
+bash scripts/install.sh --tool cursor --cursor-scope user
 ```
 
 Use `--method symlink` while developing skills, and `--include-personal` when

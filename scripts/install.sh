@@ -10,6 +10,7 @@ METHOD="copy"
 PROJECT_DIR="$PWD"
 INCLUDE_PERSONAL=false
 SCOPE="user"
+CURSOR_SCOPE="project"
 
 usage() {
   cat <<'USAGE'
@@ -19,7 +20,8 @@ Usage:
 Options:
   --method <copy|symlink>    Install method (default: copy)
   --scope <user|repo|legacy> Codex install scope (default: user)
-  --project <path>           Project path for Codex repo scope or Cursor install (default: cwd)
+  --cursor-scope <project|user>  Cursor skills + bridge: project .cursor/ or user ~/.cursor/ (default: project)
+  --project <path>           Project path for Codex repo scope or Cursor project scope (default: cwd)
   --include-personal         Include skills under skills/personal
   -h, --help                 Show help
 
@@ -29,6 +31,7 @@ Examples:
   bash scripts/install.sh --tool codex --scope legacy
   bash scripts/install.sh --tool claude --method symlink
   bash scripts/install.sh --tool cursor --project /path/to/project
+  bash scripts/install.sh --tool cursor --cursor-scope user
   bash scripts/install.sh --tool all --include-personal
 USAGE
 }
@@ -48,6 +51,9 @@ parse_args() {
       --project)
         [[ $# -lt 2 ]] && { echo "error: --project requires a value" >&2; exit 1; }
         PROJECT_DIR="$2"; shift 2 ;;
+      --cursor-scope)
+        [[ $# -lt 2 ]] && { echo "error: --cursor-scope requires a value" >&2; exit 1; }
+        CURSOR_SCOPE="$2"; shift 2 ;;
       --include-personal)
         INCLUDE_PERSONAL=true; shift ;;
       -h|--help)
@@ -63,6 +69,7 @@ parse_args() {
   case "$TOOL" in codex|claude|cursor|all) ;; *) echo "error: unknown tool: $TOOL" >&2; exit 1 ;; esac
   case "$METHOD" in copy|symlink) ;; *) echo "error: --method must be copy or symlink" >&2; exit 1 ;; esac
   case "$SCOPE" in user|repo|legacy) ;; *) echo "error: --scope must be user, repo, or legacy" >&2; exit 1 ;; esac
+  case "$CURSOR_SCOPE" in project|user) ;; *) echo "error: --cursor-scope must be project or user" >&2; exit 1 ;; esac
 }
 
 manifest_skill_dirs() {
@@ -156,7 +163,20 @@ install_claude() {
 }
 
 install_cursor() {
-  local rules_dir="$PROJECT_DIR/.cursor/rules"
+  local skills_root rules_dir label
+  case "$CURSOR_SCOPE" in
+    project)
+      skills_root="$PROJECT_DIR/.cursor/skills"
+      rules_dir="$PROJECT_DIR/.cursor/rules"
+      label="cursor:project"
+      ;;
+    user)
+      skills_root="$HOME/.cursor/skills"
+      rules_dir="$HOME/.cursor/rules"
+      label="cursor:user"
+      ;;
+  esac
+
   local src="$REPO_DIR/adapters/cursor/wujs-curated-skills.mdc"
   local dest="$rules_dir/wujs-curated-skills.mdc"
 
@@ -169,9 +189,9 @@ install_cursor() {
     cp "$src" "$dest"
   fi
 
-  echo "[cursor] $METHOD adapter -> $dest"
+  echo "[$label] $METHOD adapter -> $dest"
 
-  install_agent_skills "$PROJECT_DIR/.cursor/skills" "cursor"
+  install_agent_skills "$skills_root" "$label"
 }
 
 main() {

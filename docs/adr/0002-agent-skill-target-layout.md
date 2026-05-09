@@ -14,8 +14,9 @@ way:
   `.agents/skills`, `$HOME/.agents/skills`, admin locations, and bundled system
   skills.
 - Claude Code consumes skill directories under `~/.claude/skills`.
-- Cursor discovers Agent Skills from `<project>/.cursor/skills/<skill-name>/` and
-  can use project rules under `<project>/.cursor/rules/`.
+- Cursor discovers Agent Skills from `<project>/.cursor/skills/<skill-name>/` or
+  `$HOME/.cursor/skills/<skill-name>/` (installer `--cursor-scope`), and uses
+  `.cursor/rules/` alongside that scope for project rules.
 
 The repository already keeps canonical skill sources under
 `skills/<bucket>/<skill>/SKILL.md` and installs from `manifest.json`.
@@ -30,8 +31,10 @@ each target tool:
 - Codex repository scope: `<project>/.agents/skills/<skill-name>/`
 - Codex legacy scope: `${CODEX_HOME:-$HOME/.codex}/skills/<skill-name>/`
 - Claude Code: `$HOME/.claude/skills/<skill-name>/`
-- Cursor Agent Skills: `<project>/.cursor/skills/<skill-name>/`
-- Cursor bridge rule: `<project>/.cursor/rules/wujs-curated-skills.mdc`
+- Cursor Agent Skills (project scope): `<project>/.cursor/skills/<skill-name>/`
+- Cursor bridge rule (project scope): `<project>/.cursor/rules/wujs-curated-skills.mdc`
+- Cursor Agent Skills (user scope): `$HOME/.cursor/skills/<skill-name>/`
+- Cursor bridge rule (user scope): `$HOME/.cursor/rules/wujs-curated-skills.mdc`
 
 Codex-specific per-skill metadata belongs inside the skill directory at
 `agents/openai.yaml`. It is not a repository-level adapter and is not consumed

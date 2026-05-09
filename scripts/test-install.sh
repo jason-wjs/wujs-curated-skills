@@ -112,6 +112,27 @@ bash "$REPO_DIR/scripts/install.sh" --tool cursor --project "$TMP_DIR/cursor-sym
   exit 1
 }
 
+echo "[test] cursor user scope installs skills and bridge under HOME/.cursor"
+fake_project="$TMP_DIR/cursor-user-ignored-project"
+mkdir -p "$fake_project"
+HOME="$TMP_DIR/cursor-user-home" bash "$REPO_DIR/scripts/install.sh" --tool cursor --cursor-scope user --project "$fake_project" >/dev/null
+assert_file "$TMP_DIR/cursor-user-home/.cursor/skills/diagnose/SKILL.md"
+assert_file "$TMP_DIR/cursor-user-home/.cursor/rules/wujs-curated-skills.mdc"
+assert_no_path "$fake_project/.cursor"
+
+echo "[test] cursor user scope rejects invalid --cursor-scope"
+if HOME="$TMP_DIR/cursor-user-home2" bash "$REPO_DIR/scripts/install.sh" --tool cursor --cursor-scope bogus --project "$TMP_DIR/x" 2>/dev/null; then
+  echo "expected failure for bogus --cursor-scope" >&2
+  exit 1
+fi
+
+echo "[test] tool all respects cursor user scope for HOME/.cursor"
+HOME="$TMP_DIR/all-user-home" bash "$REPO_DIR/scripts/install.sh" --tool all --cursor-scope user >/dev/null
+assert_file "$TMP_DIR/all-user-home/.agents/skills/diagnose/SKILL.md"
+assert_file "$TMP_DIR/all-user-home/.claude/skills/diagnose/SKILL.md"
+assert_file "$TMP_DIR/all-user-home/.cursor/skills/diagnose/SKILL.md"
+assert_file "$TMP_DIR/all-user-home/.cursor/rules/wujs-curated-skills.mdc"
+
 echo "[test] codex symlink"
 HOME="$TMP_DIR/codex-symlink-home" bash "$REPO_DIR/scripts/install.sh" --tool codex --method symlink >/dev/null
 [[ -L "$TMP_DIR/codex-symlink-home/.agents/skills/karpathy-guidelines" ]] || {
