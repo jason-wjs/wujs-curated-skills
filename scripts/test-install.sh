@@ -77,9 +77,40 @@ assert_file "$TMP_DIR/home/.claude/skills/edit-article/SKILL.md"
 assert_file "$TMP_DIR/home/.claude/skills/obsidian-vault/SKILL.md"
 assert_file "$TMP_DIR/home/.claude/skills/research-paper-writing/SKILL.md"
 
-echo "[test] cursor adapter"
+echo "[test] cursor install copies bridge rule and Cursor skill directories"
 bash "$REPO_DIR/scripts/install.sh" --tool cursor --project "$TMP_DIR/project" >/dev/null
 assert_file "$TMP_DIR/project/.cursor/rules/wujs-curated-skills.mdc"
+assert_file "$TMP_DIR/project/.cursor/skills/diagnose/SKILL.md"
+assert_file "$TMP_DIR/project/.cursor/skills/karpathy-guidelines/SKILL.md"
+assert_file "$TMP_DIR/project/.cursor/skills/improve-codebase-architecture/SKILL.md"
+assert_file "$TMP_DIR/project/.cursor/skills/tdd/SKILL.md"
+assert_file "$TMP_DIR/project/.cursor/skills/zoom-out/SKILL.md"
+assert_file "$TMP_DIR/project/.cursor/skills/zoom-out/agents/openai.yaml"
+assert_file "$TMP_DIR/project/.cursor/skills/grill-me/SKILL.md"
+assert_file "$TMP_DIR/project/.cursor/skills/grill-me/agents/openai.yaml"
+assert_file "$TMP_DIR/project/.cursor/skills/grill-with-docs/SKILL.md"
+assert_file "$TMP_DIR/project/.cursor/skills/grill-with-docs/agents/openai.yaml"
+assert_file "$TMP_DIR/project/.cursor/skills/write-a-skill/SKILL.md"
+assert_file "$TMP_DIR/project/.cursor/skills/bcecmd/SKILL.md"
+assert_no_path "$TMP_DIR/project/.cursor/skills/obsidian-vault"
+assert_no_path "$TMP_DIR/project/.cursor/skills/research-paper-writing"
+
+echo "[test] cursor install includes personal skills when requested"
+bash "$REPO_DIR/scripts/install.sh" --tool cursor --project "$TMP_DIR/cursor-personal" --include-personal >/dev/null
+assert_file "$TMP_DIR/cursor-personal/.cursor/skills/edit-article/SKILL.md"
+assert_file "$TMP_DIR/cursor-personal/.cursor/skills/obsidian-vault/SKILL.md"
+assert_file "$TMP_DIR/cursor-personal/.cursor/skills/research-paper-writing/SKILL.md"
+
+echo "[test] cursor symlink skill install"
+bash "$REPO_DIR/scripts/install.sh" --tool cursor --project "$TMP_DIR/cursor-symlink" --method symlink >/dev/null
+[[ -L "$TMP_DIR/cursor-symlink/.cursor/rules/wujs-curated-skills.mdc" ]] || {
+  echo "expected symlink install for cursor bridge" >&2
+  exit 1
+}
+[[ -L "$TMP_DIR/cursor-symlink/.cursor/skills/karpathy-guidelines" ]] || {
+  echo "expected symlink install for karpathy-guidelines" >&2
+  exit 1
+}
 
 echo "[test] codex symlink"
 HOME="$TMP_DIR/codex-symlink-home" bash "$REPO_DIR/scripts/install.sh" --tool codex --method symlink >/dev/null

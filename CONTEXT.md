@@ -58,8 +58,8 @@ repository's canonical skill layout to an install target.
 
 **Adapter-generated output**:
 A file or directory produced from canonical skills for a target tool, such as a
-Cursor `.mdc` rule or installed Codex skill directory. Generated output is not a
-canonical skill source.
+Cursor skill directory under `.cursor/skills/`, a Cursor `.mdc` rule, or an
+installed Codex skill directory. Generated output is not a canonical skill source.
 
 **Canonical source**:
 The source file for a skill inside this repository:

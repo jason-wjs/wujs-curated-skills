@@ -19,7 +19,7 @@ Usage:
 Options:
   --method <copy|symlink>    Install method (default: copy)
   --scope <user|repo|legacy> Codex install scope (default: user)
-  --project <path>           Project path for Codex repo scope or Cursor rules (default: cwd)
+  --project <path>           Project path for Codex repo scope or Cursor install (default: cwd)
   --include-personal         Include skills under skills/personal
   -h, --help                 Show help
 
@@ -156,12 +156,12 @@ install_claude() {
 }
 
 install_cursor() {
-  local dir="$PROJECT_DIR/.cursor/rules"
+  local rules_dir="$PROJECT_DIR/.cursor/rules"
   local src="$REPO_DIR/adapters/cursor/wujs-curated-skills.mdc"
-  local dest="$dir/wujs-curated-skills.mdc"
+  local dest="$rules_dir/wujs-curated-skills.mdc"
 
   [[ -f "$src" ]] || { echo "error: missing cursor adapter: $src" >&2; exit 1; }
-  mkdir -p "$dir"
+  mkdir -p "$rules_dir"
 
   if [[ "$METHOD" == "symlink" ]]; then
     ln -sfn "$src" "$dest"
@@ -170,6 +170,8 @@ install_cursor() {
   fi
 
   echo "[cursor] $METHOD adapter -> $dest"
+
+  install_agent_skills "$PROJECT_DIR/.cursor/skills" "cursor"
 }
 
 main() {

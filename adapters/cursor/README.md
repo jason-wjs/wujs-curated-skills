@@ -1,17 +1,19 @@
 # Cursor Adapter
 
-Cursor does not directly consume Agent Skills directories. This repository
-provides a project-local rule bridge:
+Cursor discovers Agent Skills from `<project>/.cursor/skills/<skill-name>/` (the
+same skill directory layout as other Cursor skills). This repository also
+installs a project-local rule bridge for discoverability and routing:
 
 ```text
 <project>/.cursor/rules/wujs-curated-skills.mdc
 ```
 
-The bridge points Cursor at the canonical skill sources in this repository
-without duplicating full skill bodies.
+The bridge lists when to open which `SKILL.md` under this repository's canonical
+layout (`skills/<bucket>/<skill>/SKILL.md`) without duplicating full skill bodies
+in the rule file.
 
-The bridge tracks promoted skills from `manifest.json`. Personal skills are not
-included in the default Cursor bridge because they are environment-specific.
+Promoted skills from `manifest.json` are installed into `.cursor/skills/` by
+default. Personal skills are omitted unless you pass `--include-personal`.
 
 ## Install
 
@@ -34,7 +36,8 @@ bash scripts/install.sh --tool cursor
 ## Behavior
 
 - Default install mode is `copy`.
-- Cursor installs only the `.mdc` bridge, not every skill directory.
+- Cursor installs one directory per skill under `.cursor/skills/`, mirroring the
+  Codex and Claude layouts, and installs the `.mdc` bridge under `.cursor/rules/`.
 - The canonical skill sources remain under `skills/<bucket>/<skill>/SKILL.md`.
 - Run `bash scripts/lint-skills.sh` after changing promoted skills so the
   bridge stays aligned with `manifest.json`.

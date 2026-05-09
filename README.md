@@ -89,8 +89,9 @@ Promoted and personal install sets are declared in
 `skills/` is the canonical source layout. Installers and adapters map those
 skills to each target tool: Codex uses OpenAI's `.agents/skills` discovery
 layout, Claude Code receives skill directories under `~/.claude/skills`, and
-Cursor receives a bridge rule because it does not directly consume Agent Skills
-directories.
+Cursor receives skill directories under `<project>/.cursor/skills/` plus a
+project-local `.mdc` bridge rule that points at this repository without
+duplicating full skill bodies.
 
 ## Install
 
