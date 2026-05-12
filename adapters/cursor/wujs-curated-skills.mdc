@@ -26,5 +26,7 @@ repository.
   the project's existing domain language.
 - Use `write-a-skill` when creating or adapting agent skills.
 - Use `bcecmd` when working with Baidu BCE BOS through the `bcecmd` CLI.
+- Use `pueue` when managing local single-user long-running shell command queues
+  through Pueue/`pueued`.
 - Do not copy full skill bodies into Cursor rules; open the relevant `SKILL.md`
   from the repository when needed.

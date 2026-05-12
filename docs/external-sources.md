@@ -79,6 +79,13 @@ from or compared against.
 
 ## Reference Sources
 
+### `skills/tools/pueue`
+
+- Reference: <https://github.com/Nukesor/pueue>
+- Local source: `skills/tools/pueue/SKILL.md`
+- Local policy: not a vendored copy. The local skill summarizes Pueue's public
+  tool behavior and repository documentation for agent usage.
+
 ### `skills/personal/obsidian-vault`
 
 - Reference: <https://github.com/kepano/obsidian-skills>

@@ -56,6 +56,9 @@ metadata and be maintained intentionally.
 - **[bcecmd](./skills/tools/bcecmd/SKILL.md)** — Use Baidu BCE BOS through the
   `bcecmd` CLI for bucket operations, uploads, downloads, syncs, validation,
   and troubleshooting.
+- **[pueue](./skills/tools/pueue/SKILL.md)** — Use Pueue/`pueued` for local
+  single-user long-running shell command queues, including status, logs,
+  groups, parallelism, dependencies, pause/resume, and restarts.
 
 ### Personal
 

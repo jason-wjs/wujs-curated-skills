@@ -9,7 +9,8 @@
     "./skills/engineering/zoom-out",
     "./skills/productivity/grill-me",
     "./skills/productivity/write-a-skill",
-    "./skills/tools/bcecmd"
+    "./skills/tools/bcecmd",
+    "./skills/tools/pueue"
   ],
   "personal": [
     "./skills/personal/edit-article",
