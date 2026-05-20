@@ -104,6 +104,27 @@ this repository.
 - `obra/superpowers` — reference for workflow skills used by local agents; keep
   installed from upstream rather than bulk-copying into this repository.
 
+## Repository-Native Skills
+
+### `skills/productivity/shared-server-git-private`
+
+- Local source: `skills/productivity/shared-server-git-private/SKILL.md`
+- Adjacent references:
+  `skills/productivity/shared-server-git-private/references/setup-git-local-helper.md`,
+  `skills/productivity/shared-server-git-private/references/pat-and-credentials.md`
+- Codex policy: `agents/openai.yaml` with `allow_implicit_invocation: false`
+- Local policy: personal, explicit-only workflow for jason-wjs on shared hosts.
+  Installed only when `--include-personal` is used.
+
+### `skills/productivity/shared-server-codex-isolation`
+
+- Local source: `skills/productivity/shared-server-codex-isolation/SKILL.md`
+- Adjacent references: `skills/productivity/shared-server-codex-isolation/references/placement-rules.md`
+- Codex policy: `agents/openai.yaml` with `allow_implicit_invocation: false`
+- Local policy: explicit-only workflow for shared-host Codex isolation. Authored
+  in this repository from deployment practice. No upstream vendored copy.
+  Installed with promoted skills via `manifest.json`.
+
 ## Local Installed Skills
 
 Some initial skill baselines were copied from the local Codex installation

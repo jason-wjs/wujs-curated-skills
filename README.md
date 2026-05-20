@@ -47,6 +47,10 @@ metadata and be maintained intentionally.
 - **[grill-me](./skills/productivity/grill-me/SKILL.md)** — Interview the user
   relentlessly about a plan or design until each branch of the decision tree is
   resolved.
+- **[shared-server-codex-isolation](./skills/productivity/shared-server-codex-isolation/SKILL.md)** —
+  **Explicit-only.** Bootstrap personal Codex isolation on a shared host:
+  separate identity from global defaults, discover current CLI behavior, place
+  personal home and workspace roots.
 - **[write-a-skill](./skills/productivity/write-a-skill/SKILL.md)** — Create
   new agent skills with proper structure, progressive disclosure, and bundled
   resources.
@@ -72,6 +76,9 @@ metadata and be maintained intentionally.
   Improve ML/CV/NLP-style academic paper writing with section guides, paragraph
   flow checks, claim-evidence alignment, and reviewer-facing self-review.
   Environment-specific.
+- **[shared-server-git-private](./skills/productivity/shared-server-git-private/SKILL.md)** —
+  **Explicit-only.** jason-wjs shared-host private Git: per-repo local identity,
+  ask/discover proxy per host, user-supplied Fine-grained PAT. Environment-specific.
 
 ## Repository Layout
 
