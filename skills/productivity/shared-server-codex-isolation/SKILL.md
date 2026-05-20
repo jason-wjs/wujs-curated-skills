@@ -1,6 +1,6 @@
 ---
 name: shared-server-codex-isolation
-description: Explicit-only ($shared-server-codex-isolation). Bootstrap personal Codex isolation on a shared multi-user host so subscription, threads, and skills stay separate from global ~/.codex/. Use when invoked for new-cluster Codex setup, personal Codex home placement, host migration, or avoiding shell credential leakage. Not implicit. Not for Cursor-only setup or single-user machines.
+description: Explicit-only ($shared-server-codex-isolation). Bootstrap personal Codex isolation on a shared multi-user host so subscription, threads, and skills stay separate from global ~/.codex/. Use when invoked for new-cluster Codex setup, personal Codex home placement, codex-wjs, host migration, or avoiding shell credential leakage. Not implicit. Not for Cursor-only setup or single-user machines.
 disable-model-invocation: true
 ---
 
@@ -8,9 +8,9 @@ disable-model-invocation: true
 
 **Invoke:** `$shared-server-codex-isolation` only.
 
-Help the user run Codex on a **shared host** with a **personal identity**
-(subscription, threads, skills) that does not collide with global defaults or
-another user's state.
+Personal skill for **wjs**. Help run Codex on a **shared host** with a personal
+identity (subscription, threads, skills) that does not collide with global
+defaults or another user's state.
 
 Do **not** assume paths, env vars, or config schema from another cluster or
 Codex version. Discover how **this** Codex CLI works first, then apply the
@@ -26,8 +26,9 @@ The setup must achieve:
    URLs that could hijack auth before Codex starts.
 3. **Workspace boundary** — Codex runs only under user-approved code/data roots;
    default workspace is the current directory (`$PWD`).
-4. **Launcher-only entry** — daily use and login go through the launcher; bare
-   `codex` must not be the normal path.
+4. **`codex-wjs` entry** — daily use and login go through `codex-wjs`; the
+   launcher script path is an implementation detail, and bare `codex` must not
+   be the normal path.
 5. **Persistence and privacy** — personal home survives restarts, stays private,
    and is never committed to git.
 
@@ -68,7 +69,8 @@ Ask the user when needed:
 ### 2. Plan layout
 
 - Place **personal home** under the user's private, persistent root.
-- Place **launcher** at a stable path the user can run from any project.
+- Place **launcher** at a stable path, then expose **`codex-wjs`** on PATH
+  (symlink to launcher under `bin/` is the default pattern).
 - List **workspace roots** for the allowlist.
 - Keep personal home **outside** git repos that get pushed.
 
@@ -79,8 +81,10 @@ Create only what this Codex version needs to meet the goals:
 - Personal home directory with restrictive permissions
 - Launcher that sets personal home, sanitizes shell env, validates cwd against
   an allowlist, optionally applies proxy for this process only, then execs Codex
+- **`codex-wjs`** — thin entry (symlink, wrapper, or shell function) that
+  delegates to the launcher; put it on PATH via personal rc or terminal profile
 - Personal and project config using **current** Codex schema (read help/docs)
-- Login through the launcher so credentials land in personal home
+- Login through `codex-wjs` so credentials land in personal home
 
 Prefer the smallest working setup. Add project config or proxy only when the
 user or environment requires them.
@@ -89,20 +93,30 @@ user or environment requires them.
 
 Confirm all of:
 
-- Login status succeeds through the launcher
+- `command -v codex-wjs` resolves in a fresh intended terminal
+- `codex-wjs login status` succeeds
 - Credentials and sessions are under personal home, not global default
-- Launch from an allowed project directory works
+- Launch from an allowed project directory works (`cd` there, then `codex-wjs`)
 - Launch from a disallowed directory (e.g. `/tmp`) is refused
 - Bare `codex` is documented as unsupported for daily use
 
-Leave a short note beside the launcher with paths and daily commands for
-**this** cluster.
+Leave a short note beside the launcher documenting `codex-wjs`, paths, and
+daily commands for **this** cluster.
+
+## Daily Use
+
+```bash
+cd /path/to/project
+codex-wjs
+codex-wjs resume
+codex-wjs login status
+```
 
 ## Design Notes
 
-When implementing the launcher, prefer these patterns from prior deployments.
-Verify env-var names and Codex flags against current CLI help — do not copy
-verbatim from another cluster.
+When implementing the launcher and `codex-wjs`, prefer these patterns from prior
+deployments. Verify env-var names and Codex flags against current CLI help — do
+not copy verbatim from another cluster.
 
 - Sanitize **all** shell vars that can redirect auth or endpoint, not just API
   keys (base URL, org/project IDs, and similar overrides).
@@ -113,6 +127,8 @@ verbatim from another cluster.
   with `/`, `.`, or `..`) so `resume`, `login`, and `exec` reach Codex.
 - Apply proxy via `source` in the launcher process only; do not write proxy
   exports to `.bashrc` unless the user explicitly wants global proxy.
+- Keep isolation logic in one launcher; make `codex-wjs` a thin symlink or
+  wrapper that delegates to it.
 - Use `exec codex "$@"` so signals and exit codes pass through cleanly.
 - Fail fast with a clear stderr message for each precondition (missing home,
   unreadable config, disallowed workspace).
@@ -142,6 +158,6 @@ verbatim from another cluster.
 ## Trigger Tests
 
 - Should trigger (explicit only): user invokes `$shared-server-codex-isolation`
-  or names the skill while asking to set up Codex isolation on a shared cluster.
+  or asks to set up `codex-wjs` isolation on a shared cluster.
 - Should not trigger: "Install wujs-curated-skills"; "Configure Cursor MCP";
   ambient mentions of Codex without invoking this skill.

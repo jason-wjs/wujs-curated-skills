@@ -48,9 +48,8 @@ metadata and be maintained intentionally.
   relentlessly about a plan or design until each branch of the decision tree is
   resolved.
 - **[shared-server-codex-isolation](./skills/productivity/shared-server-codex-isolation/SKILL.md)** —
-  **Explicit-only.** Bootstrap personal Codex isolation on a shared host:
-  separate identity from global defaults, discover current CLI behavior, place
-  personal home and workspace roots.
+  **Explicit-only.** Bootstrap personal Codex isolation on a shared host via
+  `codex-wjs`; separate identity from global defaults.
 - **[shared-server-git-private](./skills/productivity/shared-server-git-private/SKILL.md)** —
   **Explicit-only.** jason-wjs shared-host private Git: per-repo local identity,
   ask/discover proxy per host, user-supplied Fine-grained PAT.
