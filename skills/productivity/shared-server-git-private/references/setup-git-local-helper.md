@@ -21,16 +21,11 @@ Expected behavior (verify after run):
 
 The helper must not use `git config --global` or store a PAT.
 
-## If the user has no helper
-
-Use inline commands from SKILL.md workflow step 3. Proxy lines are optional;
-use the URL from workflow step 2 (ask user or discover on this host).
-
 ## New host
 
 1. Ask workspace root and whether a helper exists.
 2. If copying from another machine: user supplies source path or file content;
-   update **proxy** for this host before use.
+  update **proxy** for this host before use.
 3. `chmod +x` if needed.
 4. One run per new clone (config is per `.git/config`).
 
