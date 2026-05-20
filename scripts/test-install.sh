@@ -41,9 +41,12 @@ assert_file "$TMP_DIR/codex-user-home/.agents/skills/shared-server-codex-isolati
 assert_file "$TMP_DIR/codex-user-home/.agents/skills/shared-server-codex-isolation/references/placement-rules.md"
 assert_file "$TMP_DIR/codex-user-home/.agents/skills/shared-server-codex-isolation/agents/openai.yaml"
 assert_file "$TMP_DIR/codex-user-home/.agents/skills/bcecmd/SKILL.md"
+assert_file "$TMP_DIR/codex-user-home/.agents/skills/shared-server-git-private/SKILL.md"
+assert_file "$TMP_DIR/codex-user-home/.agents/skills/shared-server-git-private/references/setup-git-local-helper.md"
+assert_file "$TMP_DIR/codex-user-home/.agents/skills/shared-server-git-private/references/pat-and-credentials.md"
+assert_file "$TMP_DIR/codex-user-home/.agents/skills/shared-server-git-private/agents/openai.yaml"
 assert_no_path "$TMP_DIR/codex-user-home/.agents/skills/obsidian-vault"
 assert_no_path "$TMP_DIR/codex-user-home/.agents/skills/research-paper-writing"
-assert_no_path "$TMP_DIR/codex-user-home/.agents/skills/shared-server-git-private"
 
 echo "[test] codex repo copy includes personal when requested"
 bash "$REPO_DIR/scripts/install.sh" --tool codex --scope repo --project "$TMP_DIR/codex-project" --include-personal >/dev/null
@@ -116,19 +119,18 @@ assert_file "$TMP_DIR/project/.cursor/skills/shared-server-codex-isolation/SKILL
 assert_file "$TMP_DIR/project/.cursor/skills/shared-server-codex-isolation/references/placement-rules.md"
 assert_file "$TMP_DIR/project/.cursor/skills/shared-server-codex-isolation/agents/openai.yaml"
 assert_file "$TMP_DIR/project/.cursor/skills/bcecmd/SKILL.md"
+assert_file "$TMP_DIR/project/.cursor/skills/shared-server-git-private/SKILL.md"
+assert_file "$TMP_DIR/project/.cursor/skills/shared-server-git-private/references/setup-git-local-helper.md"
+assert_file "$TMP_DIR/project/.cursor/skills/shared-server-git-private/references/pat-and-credentials.md"
+assert_file "$TMP_DIR/project/.cursor/skills/shared-server-git-private/agents/openai.yaml"
 assert_no_path "$TMP_DIR/project/.cursor/skills/obsidian-vault"
 assert_no_path "$TMP_DIR/project/.cursor/skills/research-paper-writing"
-assert_no_path "$TMP_DIR/project/.cursor/skills/shared-server-git-private"
 
 echo "[test] cursor install includes personal skills when requested"
 bash "$REPO_DIR/scripts/install.sh" --tool cursor --project "$TMP_DIR/cursor-personal" --include-personal >/dev/null
 assert_file "$TMP_DIR/cursor-personal/.cursor/skills/edit-article/SKILL.md"
 assert_file "$TMP_DIR/cursor-personal/.cursor/skills/obsidian-vault/SKILL.md"
 assert_file "$TMP_DIR/cursor-personal/.cursor/skills/research-paper-writing/SKILL.md"
-assert_file "$TMP_DIR/cursor-personal/.cursor/skills/shared-server-git-private/SKILL.md"
-assert_file "$TMP_DIR/cursor-personal/.cursor/skills/shared-server-git-private/references/setup-git-local-helper.md"
-assert_file "$TMP_DIR/cursor-personal/.cursor/skills/shared-server-git-private/references/pat-and-credentials.md"
-assert_file "$TMP_DIR/cursor-personal/.cursor/skills/shared-server-git-private/agents/openai.yaml"
 
 echo "[test] cursor symlink skill install"
 bash "$REPO_DIR/scripts/install.sh" --tool cursor --project "$TMP_DIR/cursor-symlink" --method symlink >/dev/null
@@ -149,6 +151,7 @@ assert_file "$TMP_DIR/cursor-user-home/.cursor/skills/diagnose/SKILL.md"
 assert_file "$TMP_DIR/cursor-user-home/.cursor/skills/shared-server-codex-isolation/SKILL.md"
 assert_file "$TMP_DIR/cursor-user-home/.cursor/skills/shared-server-codex-isolation/references/placement-rules.md"
 assert_file "$TMP_DIR/cursor-user-home/.cursor/skills/shared-server-codex-isolation/agents/openai.yaml"
+assert_file "$TMP_DIR/cursor-user-home/.cursor/skills/shared-server-git-private/SKILL.md"
 assert_file "$TMP_DIR/cursor-user-home/.cursor/rules/wujs-curated-skills.mdc"
 assert_no_path "$fake_project/.cursor"
 
@@ -172,6 +175,7 @@ assert_file "$TMP_DIR/all-user-home/.cursor/skills/diagnose/SKILL.md"
 assert_file "$TMP_DIR/all-user-home/.cursor/skills/shared-server-codex-isolation/SKILL.md"
 assert_file "$TMP_DIR/all-user-home/.cursor/skills/shared-server-codex-isolation/references/placement-rules.md"
 assert_file "$TMP_DIR/all-user-home/.cursor/skills/shared-server-codex-isolation/agents/openai.yaml"
+assert_file "$TMP_DIR/all-user-home/.cursor/skills/shared-server-git-private/SKILL.md"
 assert_file "$TMP_DIR/all-user-home/.cursor/rules/wujs-curated-skills.mdc"
 
 echo "[test] codex symlink"

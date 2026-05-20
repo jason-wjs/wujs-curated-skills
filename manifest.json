@@ -9,6 +9,7 @@
     "./skills/engineering/zoom-out",
     "./skills/productivity/grill-me",
     "./skills/productivity/shared-server-codex-isolation",
+    "./skills/productivity/shared-server-git-private",
     "./skills/productivity/write-a-skill",
     "./skills/tools/bcecmd",
     "./skills/tools/pueue"
@@ -16,7 +17,6 @@
   "personal": [
     "./skills/personal/edit-article",
     "./skills/personal/obsidian-vault",
-    "./skills/personal/research-paper-writing",
-    "./skills/productivity/shared-server-git-private"
+    "./skills/personal/research-paper-writing"
   ]
 }

@@ -25,6 +25,9 @@ repository.
 - Use `shared-server-codex-isolation` (**explicit-only**) when the user invokes
   it for Codex isolation on a shared multi-user host, personal Codex home
   placement, or avoiding global default home and shell credential leakage.
+- Use `shared-server-git-private` (**explicit-only**) when the user invokes it
+  for jason-wjs private Git on shared hosts: per-repo local identity, proxy
+  discovery per host, or Fine-grained PAT bootstrap and refresh.
 - Use `grill-with-docs` to stress-test a plan against `CONTEXT.md`, ADRs, and
   the project's existing domain language.
 - Use `write-a-skill` when creating or adapting agent skills.

@@ -113,8 +113,8 @@ this repository.
   `skills/productivity/shared-server-git-private/references/setup-git-local-helper.md`,
   `skills/productivity/shared-server-git-private/references/pat-and-credentials.md`
 - Codex policy: `agents/openai.yaml` with `allow_implicit_invocation: false`
-- Local policy: personal, explicit-only workflow for jason-wjs on shared hosts.
-  Installed only when `--include-personal` is used.
+- Local policy: explicit-only workflow for jason-wjs private Git on shared hosts.
+  Installed with promoted skills via `manifest.json`.
 
 ### `skills/productivity/shared-server-codex-isolation`
 
