@@ -8,11 +8,15 @@ Use this when a server has never been configured for `bcecmd`.
 
 ### Install On Linux
 
+Use the current approved `bcecmd` binary source for the environment. If the
+example version below is unavailable, ask the user for the approved download
+location instead of guessing a replacement.
+
 ```bash
 wget https://doc.bce.baidu.com/bos-optimization/linux-bcecmd-0.5.8.zip
 unzip linux-bcecmd-0.5.8.zip
 cd linux-bcecmd-0.5.8
-sudo ln -s "$(pwd)/bcecmd" /usr/local/bin/bcecmd
+sudo ln -s "$(pwd)/bcecmd" <bin-dir>/bcecmd
 ```
 
 If `sudo` is unavailable, add the extracted directory to `PATH` for the current
@@ -99,16 +103,15 @@ Use the console path:
 pfs -> gpu-pfs -> data flow -> create task
 ```
 
-Set the destination carefully. The destination root is already
-`/mnt/pfs/scalelab`. For example, to place data under
-`/mnt/pfs/scalelab/dataset`, enter:
+Set the destination carefully. The destination root is already selected by the console. For example, to place
+data under `<pfs-destination-root>/dataset`, enter the relative destination:
 
 ```text
-/dataset
+dataset
 ```
 
-Do not enter `/mnt/pfs/scalelab/dataset` unless the console explicitly asks for
-an absolute filesystem path.
+Do not enter a full filesystem path unless the console explicitly asks for
+one.
 
 ## Common Errors
 
@@ -123,3 +126,6 @@ an absolute filesystem path.
   `linux-bcecmd-*` directory to `PATH`.
 - `bcecmd bos ls` fails after `bcecmd -c`: credentials may be wrong, expired,
   or missing BOS permissions; reconfigure from the approved credential source.
+- `bcecmd bos ls` OK but `bos ls bos:/bucket/...` Access Denied: try
+  `UsePathStyle = no` in `~/.go-bcecli/config`; also check blank `Region`/
+  `Domain` from a bad non-interactive `bcecmd -c`.

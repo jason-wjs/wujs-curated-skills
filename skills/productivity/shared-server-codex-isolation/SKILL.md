@@ -97,7 +97,7 @@ Confirm all of:
 - `codex-wjs login status` succeeds
 - Credentials and sessions are under personal home, not global default
 - Launch from an allowed project directory works (`cd` there, then `codex-wjs`)
-- Launch from a disallowed directory (e.g. `/tmp`) is refused
+- Launch from a disallowed temporary/system directory is refused
 - Bare `codex` is documented as unsupported for daily use
 
 Leave a short note beside the launcher documenting `codex-wjs`, paths, and
@@ -106,7 +106,7 @@ daily commands for **this** cluster.
 ## Daily Use
 
 ```bash
-cd /path/to/project
+cd <project-dir>
 codex-wjs
 codex-wjs resume
 codex-wjs login status

@@ -6,7 +6,7 @@ Apply on the **current** cluster. Do not copy paths from elsewhere.
 
 | Rule | Why |
 |------|-----|
-| User-private directory | Not `/root`, `/tmp`, shared homes, or other users' trees |
+| User-private directory | Not root-owned homes, temporary directories, shared homes, or other users' trees |
 | Persistent storage | Auth and sessions must survive restarts |
 | Personal home ≠ workspace | Identity directory can sit outside code/data trees |
 | Secrets outside git | Personal home must not live in a pushed repository |
@@ -51,7 +51,7 @@ gives the user only one private tree.
 ## Avoid
 
 - Default global Codex home (the isolation target)
-- Ephemeral directories (`/tmp`)
+- Ephemeral temporary directories
 - Directories inside git repos that get pushed
 - Other users' paths on shared hosts
 - Modifying shared global shell init for PATH (use personal rc or terminal profile)
