@@ -47,12 +47,17 @@ metadata and be maintained intentionally.
 - **[grill-me](./skills/productivity/grill-me/SKILL.md)** — Interview the user
   relentlessly about a plan or design until each branch of the decision tree is
   resolved.
+- **[handoff](./skills/productivity/handoff/SKILL.md)** — Compact the current
+  conversation into a redacted handoff document for a fresh agent.
 - **[shared-server-codex-isolation](./skills/productivity/shared-server-codex-isolation/SKILL.md)** —
   **Explicit-only.** Bootstrap personal Codex isolation on a shared host via
   `codex-wjs`; separate identity from global defaults.
 - **[shared-server-git-private](./skills/productivity/shared-server-git-private/SKILL.md)** —
   **Explicit-only.** jason-wjs shared-host private Git: per-repo local identity,
   ask/discover proxy per host, user-supplied Fine-grained PAT.
+- **[teach](./skills/productivity/teach/SKILL.md)** — Create and maintain a
+  stateful teaching workspace with missions, lessons, resources, references,
+  assets, and learning records.
 - **[write-a-skill](./skills/productivity/write-a-skill/SKILL.md)** — Create
   new agent skills with proper structure, progressive disclosure, and bundled
   resources.

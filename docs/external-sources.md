@@ -20,6 +20,23 @@ from or compared against.
 - License: MIT, preserved by repository license and this source record.
 - Local policy: maintained as an adapted skill from the upstream collection.
 
+### `skills/productivity/handoff`
+
+- Upstream: <https://github.com/mattpocock/skills>
+- Upstream commit: `8370e760d0251a3738e006aeacec6d1cb31dd208`
+- Local source: `skills/productivity/handoff/SKILL.md`
+- License: MIT, preserved by repository license and this source record.
+- Local policy: maintained as an adapted skill from the upstream collection.
+
+### `skills/productivity/teach`
+
+- Upstream: <https://github.com/mattpocock/skills>
+- Upstream commit: `8370e760d0251a3738e006aeacec6d1cb31dd208`
+- Local source: `skills/productivity/teach/SKILL.md`
+- License: MIT, preserved by repository license and this source record.
+- Local policy: maintained as an adapted skill from the upstream collection,
+  including its adjacent format reference files.
+
 ### `skills/engineering/grill-with-docs`
 
 - Upstream: <https://github.com/mattpocock/skills>

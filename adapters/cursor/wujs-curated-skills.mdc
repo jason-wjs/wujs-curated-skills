@@ -22,6 +22,8 @@ repository.
   opportunities, and deepening shallow modules.
 - Use `grill-me` to stress-test a plan or design through one-question-at-a-time
   interrogation.
+- Use `handoff` when compacting the current conversation into a redacted
+  handoff document for another agent or session.
 - Use `shared-server-codex-isolation` (**explicit-only**) when the user invokes
   it for Codex isolation on a shared multi-user host, `codex-wjs` setup, personal
   Codex home placement, or avoiding global default home and shell credential
@@ -31,6 +33,8 @@ repository.
   discovery per host, or Fine-grained PAT bootstrap and refresh.
 - Use `grill-with-docs` to stress-test a plan against `CONTEXT.md`, ADRs, and
   the project's existing domain language.
+- Use `teach` when creating or continuing a stateful teaching workspace with
+  missions, lessons, resources, references, assets, and learning records.
 - Use `write-a-skill` when creating or adapting agent skills.
 - Use `bcecmd` when working with Baidu BCE BOS through the `bcecmd` CLI.
 - Use `pueue` when managing local single-user long-running shell command queues
