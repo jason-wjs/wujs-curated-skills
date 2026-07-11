@@ -9,6 +9,7 @@ TOOL=""
 METHOD="copy"
 PROJECT_DIR="$PWD"
 INCLUDE_PERSONAL=false
+PRUNE=false
 SCOPE="user"
 CURSOR_SCOPE="project"
 
@@ -23,6 +24,7 @@ Options:
   --cursor-scope <project|user>  Cursor skills + bridge: project .cursor/ or user ~/.cursor/ (default: project)
   --project <path>           Project path for Codex repo scope or Cursor project scope (default: cwd)
   --include-personal         Include skills under skills/personal
+  --prune                    Remove deprecated skill dirs listed in manifest.json
   -h, --help                 Show help
 
 Examples:
@@ -33,6 +35,7 @@ Examples:
   bash scripts/install.sh --tool cursor --project /path/to/project
   bash scripts/install.sh --tool cursor --cursor-scope user
   bash scripts/install.sh --tool all --include-personal
+  bash scripts/install.sh --tool codex --prune
 USAGE
 }
 
@@ -56,6 +59,8 @@ parse_args() {
         CURSOR_SCOPE="$2"; shift 2 ;;
       --include-personal)
         INCLUDE_PERSONAL=true; shift ;;
+      --prune)
+        PRUNE=true; shift ;;
       -h|--help)
         usage; exit 0 ;;
       *)
@@ -130,6 +135,48 @@ install_dir() {
   fi
 }
 
+manifest_deprecated_names() {
+  python3 - "$MANIFEST" <<'PY'
+import json
+import sys
+from pathlib import Path
+
+data = json.loads(Path(sys.argv[1]).read_text())
+active = {
+    Path(entry).name
+    for section in ("skills", "personal")
+    for entry in data.get(section, [])
+}
+for name in data.get("deprecated_skill_names", []):
+    if not isinstance(name, str) or not name or "/" in name or name in (".", ".."):
+        raise SystemExit(f"invalid deprecated_skill_names entry: {name!r}")
+    if name in active:
+        raise SystemExit(
+            f"deprecated_skill_names entry {name!r} is still listed under skills/personal"
+        )
+    print(name)
+PY
+}
+
+prune_deprecated_skills() {
+  local root="$1" label="$2"
+  [[ "$PRUNE" == true ]] || return 0
+  mkdir -p "$root"
+
+  local name dest count=0
+  while IFS= read -r name; do
+    [[ -n "$name" ]] || continue
+    dest="$root/$name"
+    if [[ -e "$dest" || -L "$dest" ]]; then
+      rm -rf "$dest"
+      echo "[$label] pruned $name -> $dest"
+      count=$((count + 1))
+    fi
+  done < <(manifest_deprecated_names)
+
+  echo "[$label] pruned $count deprecated skill(s)"
+}
+
 install_agent_skills() {
   local root="$1" label="$2"
   mkdir -p "$root"
@@ -145,6 +192,7 @@ install_agent_skills() {
   done < <(manifest_skill_dirs)
 
   echo "[$label] installed $count skill(s)"
+  prune_deprecated_skills "$root" "$label"
 }
 
 install_codex() {

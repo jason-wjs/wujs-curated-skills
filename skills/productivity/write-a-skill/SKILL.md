@@ -1,17 +1,18 @@
 ---
 name: write-a-skill
-description: Create new agent skills with proper structure, progressive disclosure, and bundled resources. Use when user wants to create, write, or build a new skill.
+description: Create or improve agent skills with predictable structure, progressive disclosure, and bundled resources. Use when the user wants to create, write, edit, or refine a skill.
 ---
 
 # Writing Skills
+
+A skill exists to wrangle determinism out of a stochastic system. **Predictability** — the agent taking the same *process* every run, not producing the same output — is the root virtue. Bold terms below are defined in [GLOSSARY.md](./GLOSSARY.md).
 
 ## Process
 
 1. **Gather requirements** - ask user about:
    - What task/domain does the skill cover?
    - What specific use cases should it handle?
-   - Should users invoke it explicitly with `$skill-name`, or should Codex
-     invoke it implicitly from the prompt?
+   - Should it be **user-invoked** (explicit only) or **model-invoked** (discoverable from the prompt)?
    - Does it need executable scripts, or should it stay instruction-only?
    - Any reference materials to include?
 
@@ -32,6 +33,36 @@ description: Create new agent skills with proper structure, progressive disclosu
    - Does this cover your use cases?
    - Anything missing or unclear?
    - Should any section be more/less detailed?
+
+## Principles
+
+Apply these while drafting and when editing an existing skill:
+
+### Invocation
+
+- **Model-invoked**: keep a trigger-rich `description`; pays **context load** every turn; other skills can reach it.
+- **User-invoked**: set `disable-model-invocation: true` (and Codex `allow_implicit_invocation: false`); zero context load; only the human can fire it.
+- Prefer user-invoked for orchestrators; model-invoked for reusable discipline other skills must call.
+
+### Description
+
+- Front-load the **leading word** and distinct trigger **branches**.
+- One trigger per branch — synonym restatements are **duplication**.
+- Cut identity already present in the body.
+
+### Information hierarchy
+
+1. **In-skill step** — ordered actions with checkable **completion criteria**.
+2. **In-skill reference** — rules consulted on demand.
+3. **External reference** — linked files loaded only when a **context pointer** fires.
+
+Push rarely needed material down the ladder (**progressive disclosure**). Keep a concept's definition, rules, and caveats **co-located**.
+
+### Split and prune
+
+- Split by invocation when a distinct leading word deserves its own discoverability.
+- Split by sequence when later steps cause **premature completion** of the current one.
+- Keep a **single source of truth**; delete **no-ops** and **sediment**; prefer positive steering over **negation**.
 
 ## Skill Structure
 
@@ -143,8 +174,9 @@ After drafting, verify:
 - [ ] Three should-trigger prompts tested
 - [ ] Two should-not-trigger prompts tested
 - [ ] Explicit-only skills use `agents/openai.yaml`
-- [ ] SKILL.md under 100 lines
+- [ ] SKILL.md under 100 lines or discloses heavy reference
 - [ ] No time-sensitive info
-- [ ] Consistent terminology
+- [ ] Consistent terminology / leading words
 - [ ] Concrete examples included
 - [ ] References one level deep
+- [ ] No-ops and duplication pruned

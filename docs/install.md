@@ -45,6 +45,10 @@ bash scripts/install.sh --tool <codex|claude|cursor|all> [options]
   `--cursor-scope project` (skills and bridge under that project's `.cursor/`).
   Defaults to the current directory.
 - `--include-personal` — include skills under `skills/personal/`.
+- `--prune` — after installing, remove skill directories whose basenames are
+  listed in `manifest.json` → `deprecated_skill_names` (and are not still
+  active under `skills` / `personal`). Safe for renamed upstream leftovers such
+  as `writing-great-skills` or `diagnose`.
 
 ## Install Paths
 

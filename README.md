@@ -26,41 +26,55 @@ metadata and be maintained intentionally.
 
 ### Engineering
 
-- **[diagnose](./skills/engineering/diagnose/SKILL.md)** — Disciplined
-  diagnosis loop for hard bugs and performance regressions.
+- **[code-review](./skills/engineering/code-review/SKILL.md)** — Two-axis
+  review (Standards + Spec) of the diff since a fixed point.
+- **[codebase-design](./skills/engineering/codebase-design/SKILL.md)** — Shared
+  vocabulary for designing deep modules, seams, and adapters.
+- **[diagnosing-bugs](./skills/engineering/diagnosing-bugs/SKILL.md)** —
+  Disciplined diagnosis loop for hard bugs and performance regressions.
+- **[domain-modeling](./skills/engineering/domain-modeling/SKILL.md)** —
+  Actively sharpen domain language and record ADRs / `CONTEXT.md`.
 - **[grill-with-docs](./skills/engineering/grill-with-docs/SKILL.md)** —
-  Stress-test a plan against project domain language and ADRs, updating
-  documentation as decisions crystallize.
+  Grilling session that also runs domain-modeling.
+- **[implement](./skills/engineering/implement/SKILL.md)** — Build a spec or
+  ticket with tdd and code-review.
 - **[improve-codebase-architecture](./skills/engineering/improve-codebase-architecture/SKILL.md)** —
   Find deepening opportunities that make code more testable and AI-navigable.
 - **[karpathy-guidelines](./skills/engineering/karpathy-guidelines/SKILL.md)** —
   Lightweight guardrails for non-trivial coding, review, and refactoring where
   hidden assumptions, overengineering, broad diffs, or weak verification could
   cause mistakes.
+- **[research](./skills/engineering/research/SKILL.md)** — Investigate a
+  question against primary sources and save cited findings.
 - **[tdd](./skills/engineering/tdd/SKILL.md)** — Test-driven development with a
   red-green-refactor loop and behavior-focused tests.
+- **[to-spec](./skills/engineering/to-spec/SKILL.md)** — Synthesize the current
+  conversation into a published spec.
+- **[to-tickets](./skills/engineering/to-tickets/SKILL.md)** — Break a plan or
+  spec into tracer-bullet tickets with blocking edges.
 - **[zoom-out](./skills/engineering/zoom-out/SKILL.md)** — Ask for a higher-level
   map of unfamiliar code and its relevant modules and callers.
 
 ### Productivity
 
-- **[grill-me](./skills/productivity/grill-me/SKILL.md)** — Interview the user
-  relentlessly about a plan or design until each branch of the decision tree is
-  resolved.
+- **[grill-me](./skills/productivity/grill-me/SKILL.md)** — User entry for a
+  grilling session without writing project docs.
+- **[grilling](./skills/productivity/grilling/SKILL.md)** — Relentless
+  one-question-at-a-time interview loop shared by grill entry points.
 - **[handoff](./skills/productivity/handoff/SKILL.md)** — Compact the current
   conversation into a redacted handoff document for a fresh agent.
 - **[shared-server-codex-isolation](./skills/productivity/shared-server-codex-isolation/SKILL.md)** —
-  **Explicit-only.** Bootstrap personal Codex isolation on a shared host via
-  `codex-wjs`; separate identity from global defaults.
+  **Explicit-only.** Configure personal `codex-wjs` isolation on shared servers
+  while preserving bare `codex` as the global default.
 - **[shared-server-git-private](./skills/productivity/shared-server-git-private/SKILL.md)** —
   **Explicit-only.** jason-wjs shared-host private Git: per-repo local identity,
   ask/discover proxy per host, user-supplied Fine-grained PAT.
 - **[teach](./skills/productivity/teach/SKILL.md)** — Create and maintain a
   stateful teaching workspace with missions, lessons, resources, references,
   assets, and learning records.
-- **[write-a-skill](./skills/productivity/write-a-skill/SKILL.md)** — Create
-  new agent skills with proper structure, progressive disclosure, and bundled
-  resources.
+- **[write-a-skill](./skills/productivity/write-a-skill/SKILL.md)** — Create or
+  improve agent skills with predictable structure, progressive disclosure, and
+  bundled resources.
 
 ### Tools
 

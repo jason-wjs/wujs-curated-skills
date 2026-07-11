@@ -11,8 +11,8 @@ Use this project-local rule as a bridge to the curated skills in this
 repository.
 
 - The canonical skill source is `skills/<bucket>/<skill>/SKILL.md`.
-- Use `diagnose` for hard bugs, broken behavior, exceptions, failing tests, or
-  performance regressions.
+- Use `diagnosing-bugs` for hard bugs, broken behavior, exceptions, failing
+  tests, or performance regressions.
 - Use `karpathy-guidelines` for non-trivial code writing, review, or refactoring
   where hidden assumptions, overengineering, broad diffs, or weak verification
   could cause mistakes.
@@ -20,8 +20,19 @@ repository.
 - Use `zoom-out` when unfamiliar code needs a higher-level map.
 - Use `improve-codebase-architecture` for architecture review, refactoring
   opportunities, and deepening shallow modules.
-- Use `grill-me` to stress-test a plan or design through one-question-at-a-time
-  interrogation.
+- Use `codebase-design` for deep-module vocabulary (module, interface, seam,
+  adapter, depth).
+- Use `domain-modeling` when sharpening glossary terms or writing ADRs /
+  `CONTEXT.md`.
+- Use `grilling` for the shared relentless interview loop; prefer `grill-me`
+  (no docs) or `grill-with-docs` (with domain-modeling) as user entry points.
+- Use `to-spec` to synthesize an aligned conversation into a published spec.
+- Use `to-tickets` to split a plan or spec into tracer-bullet tickets with
+  blocking edges.
+- Use `implement` to build an approved ticket or spec with tdd and code-review.
+- Use `code-review` for a two-axis Standards + Spec review since a fixed point.
+- Use `research` to investigate a question against primary sources and save
+  cited findings.
 - Use `handoff` when compacting the current conversation into a redacted
   handoff document for another agent or session.
 - Use `shared-server-codex-isolation` (**explicit-only**) when the user invokes
@@ -31,8 +42,6 @@ repository.
 - Use `shared-server-git-private` (**explicit-only**) when the user invokes it
   for jason-wjs private Git on shared hosts: per-repo local identity, proxy
   discovery per host, or Fine-grained PAT bootstrap and refresh.
-- Use `grill-with-docs` to stress-test a plan against `CONTEXT.md`, ADRs, and
-  the project's existing domain language.
 - Use `teach` when creating or continuing a stateful teaching workspace with
   missions, lessons, resources, references, assets, and learning records.
 - Use `write-a-skill` when creating or adapting agent skills.

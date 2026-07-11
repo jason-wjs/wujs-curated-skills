@@ -1,6 +1,6 @@
 ---
 name: shared-server-codex-isolation
-description: Explicit-only ($shared-server-codex-isolation). Bootstrap personal Codex isolation on a shared multi-user host so subscription, threads, and skills stay separate from global ~/.codex/. Use when invoked for new-cluster Codex setup, personal Codex home placement, codex-wjs, host migration, or avoiding shell credential leakage. Not implicit. Not for Cursor-only setup or single-user machines.
+description: Explicit-only ($shared-server-codex-isolation). Use when setting up or repairing personal Codex isolation on a shared Linux/SSH server, especially codex-wjs, separate CODEX_HOME, allowlisted workspaces, personal shell rc, proxy-scoped launchers, Codex App command constraints, or preserving the global bare codex command for other users. Not implicit.
 disable-model-invocation: true
 ---
 
@@ -8,148 +8,150 @@ disable-model-invocation: true
 
 **Invoke:** `$shared-server-codex-isolation` only.
 
-Personal skill for **wjs**. Help run Codex on a **shared host** with a personal
-identity (subscription, threads, skills) that does not collide with global
-defaults or another user's state.
+Set up Wu Junsong's personal Codex identity on a shared Linux account without
+changing the shared default `codex` command.
 
-Do **not** assume paths, env vars, or config schema from another cluster or
-Codex version. Discover how **this** Codex CLI works first, then apply the
-principles below.
+Core policy:
+
+- `codex` means the host's global/shared Codex, always.
+- `codex-wjs` is the only personal entrypoint.
+- `codex-wjs` sets the personal Codex home, cleans inherited endpoint/auth env,
+  applies process-local proxy when configured, and refuses non-allowlisted
+  workspaces.
+- SSH aliases may expose a personal shell profile, but they must not make bare
+  `codex` use WJS credentials.
+
+This is not a Linux security boundary. It is command-level hygiene for shared
+accounts: subscription, auth state, threads, skills, proxy, and workspace scope.
 
 ## Goals
 
-The setup must achieve:
+1. **Preserve global Codex** — other users keep using `codex` exactly as the
+   server provides it.
+2. **Explicit personal entry** — daily use and login go through `codex-wjs`.
+3. **Personal home** — auth, sessions, skills, and config live under a private,
+   persistent user root, not global `~/.codex`.
+4. **Clean process env** — launcher removes shell API keys/base URLs/org/project
+   vars that could hijack the intended subscription.
+5. **Workspace allowlist** — `codex-wjs` runs only under approved roots.
+6. **Codex App honesty** — if Codex App cannot be configured to call
+   `codex-wjs app-server`, do not fake separation by hijacking `codex`.
 
-1. **Personal home** — auth, sessions, skills, and personal config live in a
-   user-owned directory, not the default global Codex home.
-2. **Clean shell** — launcher clears or overrides shell credentials and base
-   URLs that could hijack auth before Codex starts.
-3. **Workspace boundary** — Codex runs only under user-approved code/data roots;
-   default workspace is the current directory (`$PWD`).
-4. **`codex-wjs` entry** — daily use and login go through `codex-wjs`; the
-   launcher script path is an implementation detail, and bare `codex` must not
-   be the normal path.
-5. **Persistence and privacy** — personal home survives restarts, stays private,
-   and is never committed to git.
+## Two Directories
 
-## Two Concepts
+- **Personal root**: stable private directory for `start_codex.sh`,
+  `bin/codex-wjs`, `.codex-home`, and optional `.bashrc-wjs`.
+- **Workspace roots**: repos/data directories where `codex-wjs` may run.
 
-1. **Personal Codex home** — fixed for the user on this cluster (identity).
-2. **Workspace roots** — code/data trees where Codex may run (context).
+They may be the same tree, but do not put auth state inside a pushed repo.
+See [references/placement-rules.md](./references/placement-rules.md).
 
-These may live in **different directories**. The launcher binds identity to
-workspace; nesting personal home inside a repo is not required.
+## Workflow
 
-See [references/placement-rules.md](./references/placement-rules.md) for where
-to put each artifact and what to avoid.
+### 1. Discover
 
-## Agent Workflow
-
-### 1. Discover current Codex behavior
-
-Inspect on **this** host before writing files:
+Inspect this host before writing files:
 
 ```bash
 command -v codex
+type -a codex
+codex --version
 codex --help
-codex login --help
 ```
 
-Read current docs or help output for: custom home directory mechanism, login
-flow, config file locations, project-level config discovery, and relevant
-environment variables. **Do not hardcode** names or schema from memory or
-another cluster.
+Also discover the user's private persistent root, workspace allowlist, proxy
+need, and whether the target is terminal-only or also Codex App.
 
-Ask the user when needed:
+Do not read or print auth tokens, API keys, cookies, or full auth files.
 
-- Private persistent root on this cluster
-- Workspace roots (repos, datasets)
-- Whether proxy is required for OpenAI
+### 2. Generate candidates
 
-### 2. Plan layout
-
-- Place **personal home** under the user's private, persistent root.
-- Place **launcher** at a stable path, then expose **`codex-wjs`** on PATH
-  (symlink to launcher under `bin/` is the default pattern).
-- List **workspace roots** for the allowlist.
-- Keep personal home **outside** git repos that get pushed.
-
-### 3. Implement minimally
-
-Create only what this Codex version needs to meet the goals:
-
-- Personal home directory with restrictive permissions
-- Launcher that sets personal home, sanitizes shell env, validates cwd against
-  an allowlist, optionally applies proxy for this process only, then execs Codex
-- **`codex-wjs`** — thin entry (symlink, wrapper, or shell function) that
-  delegates to the launcher; put it on PATH via personal rc or terminal profile
-- Personal and project config using **current** Codex schema (read help/docs)
-- Login through `codex-wjs` so credentials land in personal home
-
-Prefer the smallest working setup. Add project config or proxy only when the
-user or environment requires them.
-
-### 4. Verify
-
-Confirm all of:
-
-- `command -v codex-wjs` resolves in a fresh intended terminal
-- `codex-wjs login status` succeeds
-- Credentials and sessions are under personal home, not global default
-- Launch from an allowed project directory works (`cd` there, then `codex-wjs`)
-- Launch from a disallowed temporary/system directory is refused
-- Bare `codex` is documented as unsupported for daily use
-
-Leave a short note beside the launcher documenting `codex-wjs`, paths, and
-daily commands for **this** cluster.
-
-## Daily Use
+Use the bundled renderer when starting from scratch:
 
 ```bash
-cd <project-dir>
-codex-wjs
-codex-wjs resume
-codex-wjs login status
+python3 scripts/render_profile_templates.py \
+  --output-dir /tmp/codex-wjs-candidate \
+  --host-alias server \
+  --hostname 10.0.0.1 \
+  --user root \
+  --personal-root /data_team/junsong \
+  --allowed-root /data_team/junsong/projects \
+  --codex-bin /usr/bin/codex \
+  --proxy-url http://127.0.0.1:7897/
 ```
 
-## Design Notes
+Review generated files before installing. The renderer writes only candidate
+files; it does not connect to servers.
 
-When implementing the launcher and `codex-wjs`, prefer these patterns from prior
-deployments. Verify env-var names and Codex flags against current CLI help — do
-not copy verbatim from another cluster.
+### 3. Install explicit-only layout
 
-- Sanitize **all** shell vars that can redirect auth or endpoint, not just API
-  keys (base URL, org/project IDs, and similar overrides).
-- Refuse a symlinked personal home before exporting it as the Codex home.
-- Normalize cwd with `cd -P` before allowlist checks; string prefix match on
-  raw paths can be bypassed by symlinks.
-- Distinguish a path argument from a Codex subcommand by shape (e.g. starts
-  with `/`, `.`, or `..`) so `resume`, `login`, and `exec` reach Codex.
-- Apply proxy via `source` in the launcher process only; do not write proxy
-  exports to `.bashrc` unless the user explicitly wants global proxy.
-- Keep isolation logic in one launcher; make `codex-wjs` a thin symlink or
-  wrapper that delegates to it.
-- Use `exec codex "$@"` so signals and exit codes pass through cleanly.
-- Fail fast with a clear stderr message for each precondition (missing home,
-  unreadable config, disallowed workspace).
+Install only these personal artifacts unless the user requests otherwise:
 
-## Isolated vs Context-Dependent
+```text
+PERSONAL_ROOT/
+├── start_codex.sh
+├── bin/codex-wjs          # wrapper or symlink to start_codex.sh
+├── .codex-home/           # CODEX_HOME, mode 700; config/auth private
+├── .bashrc-wjs            # optional personal interactive shell
+├── .bashrc-wjs-extras.sh  # PATH and proxy helpers
+└── .bashrc-wjs-autoload.sh
+```
 
-| Stays personal (fixed home) | Depends on cwd / host |
-|-----------------------------|------------------------|
-| Subscription / auth | Codex CLI binary (often global) |
-| Threads / sessions pool | Files Codex reads and writes |
-| Personal skills / plugins | Project config (if Codex supports it) |
-| Personal preferences | Session records its starting directory |
+Keep `codex-wjs` on PATH via a personal rc file, terminal profile, or explicit
+path. On shared accounts, prefer not to edit global `.bashrc`. If an SSH
+`*_wjs` alias is useful, make it a terminal convenience that loads
+`.bashrc-wjs`; it must not wrap or alias `codex`.
 
-## Do Not
+### 4. Login and daily use
 
-- Invoke without explicit user request.
-- Copy paths or config from another cluster without re-validating here.
-- Commit auth tokens, sqlite state, or personal home to git.
-- Modify other users' directories, environments, or processes.
-- Bake version-specific env var names or TOML keys into this skill — read current
-  Codex behavior at setup time.
+```bash
+cd <allowlisted-workspace>
+codex-wjs login
+codex-wjs login status
+codex-wjs
+codex-wjs resume
+```
+
+Bare `codex` remains the global/shared route.
+
+### 5. Verify
+
+Run checks that prove both sides of the split:
+
+```bash
+ssh <host> 'command -v codex; codex --version'
+ssh <host_wjs> 'command -v codex; command -v codex-wjs'
+ssh <host_wjs> 'cd /tmp; codex-wjs exec --help'
+ssh <host_wjs> 'cd <allowed-root>; codex-wjs --version'
+ssh <host_wjs> 'codex --version'
+```
+
+Expected results:
+
+- `codex` resolves to the server's global/shared command and version.
+- `codex-wjs` exists in the intended personal terminal/profile.
+- `codex-wjs` refuses `/tmp` or other non-allowlisted paths.
+- `codex-wjs` works from an allowlisted workspace.
+- `codex --version` still works globally and does not depend on WJS state.
+
+For Codex App, verify the exact command it starts. If it hardcodes `codex
+app-server`, explicit-only isolation means it will use global Codex. Use WJS
+isolation only when the app can invoke `codex-wjs app-server` or another
+non-`codex` personal command.
+
+## Hard Rules
+
+Do not install any of these as part of explicit-only isolation:
+
+- `/usr/local/bin/codex` wrapper for WJS
+- `/root/.local/bin/codex` wrapper for WJS
+- `alias codex=codex-wjs`
+- shell function named `codex`
+- SSH config that changes bare `codex` into WJS behavior
+
+If a previous host used preserve-global routing wrappers, remove or bypass them
+when switching to explicit-only mode, after backing up and confirming the true
+global Codex path.
 
 ## References
 
@@ -157,7 +159,8 @@ not copy verbatim from another cluster.
 
 ## Trigger Tests
 
-- Should trigger (explicit only): user invokes `$shared-server-codex-isolation`
-  or asks to set up `codex-wjs` isolation on a shared cluster.
-- Should not trigger: "Install wujs-curated-skills"; "Configure Cursor MCP";
-  ambient mentions of Codex without invoking this skill.
+- Should trigger only when the user explicitly invokes
+  `$shared-server-codex-isolation` or asks to configure/repair `codex-wjs`
+  personal isolation on a shared server.
+- Should not trigger for ordinary Codex usage, Cursor-only setup, single-user
+  machines, or ambient mentions of Codex.
