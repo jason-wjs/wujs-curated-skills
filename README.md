@@ -63,12 +63,6 @@ metadata and be maintained intentionally.
   one-question-at-a-time interview loop shared by grill entry points.
 - **[handoff](./skills/productivity/handoff/SKILL.md)** — Compact the current
   conversation into a redacted handoff document for a fresh agent.
-- **[shared-server-codex-isolation](./skills/productivity/shared-server-codex-isolation/SKILL.md)** —
-  **Explicit-only.** Configure personal `codex-wjs` isolation on shared servers
-  while preserving bare `codex` as the global default.
-- **[shared-server-git-private](./skills/productivity/shared-server-git-private/SKILL.md)** —
-  **Explicit-only.** jason-wjs shared-host private Git: per-repo local identity,
-  ask/discover proxy per host, user-supplied Fine-grained PAT.
 - **[teach](./skills/productivity/teach/SKILL.md)** — Create and maintain a
   stateful teaching workspace with missions, lessons, resources, references,
   assets, and learning records.
@@ -87,6 +81,10 @@ metadata and be maintained intentionally.
 
 ### Personal
 
+- **[bootstrap-shared-server](./skills/personal/bootstrap-shared-server/SKILL.md)** —
+  **Explicit-only.** From a local controller, prepare an already SSH-accessible
+  shared cluster with a personal shell, network route, private Git,
+  `codex-wjs`, and optional Codex App routing. Environment-specific.
 - **[edit-article](./skills/personal/edit-article/SKILL.md)** — Edit and
   improve articles by restructuring sections, improving clarity, and tightening
   prose. Environment-specific.

@@ -209,24 +209,15 @@ this repository.
 
 ## Repository-Native Skills
 
-### `skills/productivity/shared-server-git-private`
+### `skills/personal/bootstrap-shared-server`
 
-- Local source: `skills/productivity/shared-server-git-private/SKILL.md`
-- Adjacent references:
-  `skills/productivity/shared-server-git-private/references/setup-git-local-helper.md`,
-  `skills/productivity/shared-server-git-private/references/pat-and-credentials.md`
+- Local source: `skills/personal/bootstrap-shared-server/SKILL.md`
+- Adjacent references cover local-controller audit, personal shell, networking,
+  private Git, Codex CLI/App routing, verification, and rollback.
 - Codex policy: `agents/openai.yaml` with `allow_implicit_invocation: false`
-- Local policy: explicit-only workflow for jason-wjs private Git on shared hosts.
-  Installed with promoted skills via `manifest.json`.
-
-### `skills/productivity/shared-server-codex-isolation`
-
-- Local source: `skills/productivity/shared-server-codex-isolation/SKILL.md`
-- Adjacent references: `skills/productivity/shared-server-codex-isolation/references/placement-rules.md`
-- Codex policy: `agents/openai.yaml` with `allow_implicit_invocation: false`
-- Local policy: explicit-only workflow for shared-host Codex isolation. Authored
-  in this repository from deployment practice. No upstream vendored copy.
-  Installed with promoted skills via `manifest.json`.
+- Local policy: explicit-only personal workflow for preparing an already
+  SSH-accessible shared cluster. Authored from deployment practice; no upstream
+  vendored copy. Installed only with `--include-personal`.
 
 ## Local Installed Skills
 

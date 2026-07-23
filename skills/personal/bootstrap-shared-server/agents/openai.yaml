@@ -1,0 +1,7 @@
+interface:
+  display_name: "Bootstrap Shared Server"
+  short_description: "Prepare a shared SSH cluster for personal development"
+  default_prompt: "Use $bootstrap-shared-server from this local controller to audit and prepare a new shared SSH cluster without changing shared defaults."
+
+policy:
+  allow_implicit_invocation: false

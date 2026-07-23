@@ -35,13 +35,6 @@ repository.
   cited findings.
 - Use `handoff` when compacting the current conversation into a redacted
   handoff document for another agent or session.
-- Use `shared-server-codex-isolation` (**explicit-only**) when the user invokes
-  it for Codex isolation on a shared multi-user host, `codex-wjs` setup, personal
-  Codex home placement, or avoiding global default home and shell credential
-  leakage.
-- Use `shared-server-git-private` (**explicit-only**) when the user invokes it
-  for jason-wjs private Git on shared hosts: per-repo local identity, proxy
-  discovery per host, or Fine-grained PAT bootstrap and refresh.
 - Use `teach` when creating or continuing a stateful teaching workspace with
   missions, lessons, resources, references, assets, and learning records.
 - Use `write-a-skill` when creating or adapting agent skills.

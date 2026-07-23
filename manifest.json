@@ -17,14 +17,13 @@
     "./skills/productivity/grill-me",
     "./skills/productivity/grilling",
     "./skills/productivity/handoff",
-    "./skills/productivity/shared-server-codex-isolation",
-    "./skills/productivity/shared-server-git-private",
     "./skills/productivity/teach",
     "./skills/productivity/write-a-skill",
     "./skills/tools/bcecmd",
     "./skills/tools/pueue"
   ],
   "personal": [
+    "./skills/personal/bootstrap-shared-server",
     "./skills/personal/edit-article",
     "./skills/personal/obsidian-vault",
     "./skills/personal/research-paper-writing"
@@ -32,6 +31,8 @@
   "deprecated_skill_names": [
     "ask-matt",
     "diagnose",
+    "shared-server-codex-isolation",
+    "shared-server-git-private",
     "setup-matt-pocock-skills",
     "writing-great-skills"
   ]
