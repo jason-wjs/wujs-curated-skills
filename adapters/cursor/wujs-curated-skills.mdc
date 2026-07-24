@@ -17,7 +17,6 @@ repository.
   where hidden assumptions, overengineering, broad diffs, or weak verification
   could cause mistakes.
 - Use `tdd` when the user asks for test-first development or red-green-refactor.
-- Use `zoom-out` when unfamiliar code needs a higher-level map.
 - Use `improve-codebase-architecture` for architecture review, refactoring
   opportunities, and deepening shallow modules.
 - Use `codebase-design` for deep-module vocabulary (module, interface, seam,

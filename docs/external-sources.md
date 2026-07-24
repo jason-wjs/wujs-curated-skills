@@ -136,25 +136,27 @@ from or compared against.
 ### `skills/engineering/improve-codebase-architecture`
 
 - Upstream: <https://github.com/mattpocock/skills>
+- Upstream path: `skills/engineering/improve-codebase-architecture`
+- Upstream commit: `ed37663cc5fbef691ddfecd080dff42f7e7e350d`
 - Local source: `skills/engineering/improve-codebase-architecture/SKILL.md`
 - License: MIT, preserved by repository license and this source record.
-- Local policy: maintained as an adapted skill from the upstream collection,
-  including its adjacent reference files.
+- Local policy: synced with upstream HTML-report flow; vocabulary and interface
+  design delegated to local `codebase-design`, grilling to `grilling` /
+  `domain-modeling`. Adjacent `HTML-REPORT.md` and `agents/openai.yaml`
+  preserved. Description keeps upstream wording plus a local "Use when…"
+  trigger clause required by `scripts/lint-skills.sh`.
 
 ### `skills/engineering/tdd`
 
 - Upstream: <https://github.com/mattpocock/skills>
+- Upstream path: `skills/engineering/tdd`
+- Upstream commit: `ed37663cc5fbef691ddfecd080dff42f7e7e350d`
 - Local source: `skills/engineering/tdd/SKILL.md`
 - License: MIT, preserved by repository license and this source record.
-- Local policy: maintained as an adapted skill from the upstream collection,
-  including its adjacent reference files.
-
-### `skills/engineering/zoom-out`
-
-- Upstream: <https://github.com/mattpocock/skills>
-- Local source: `skills/engineering/zoom-out/SKILL.md`
-- License: MIT, preserved by repository license and this source record.
-- Local policy: maintained as an adapted skill from the upstream collection.
+- Local policy: synced with upstream reference-only red → green form, including
+  `tests.md`, `mocking.md`, and `agents/openai.yaml`. Former local
+  `deep-modules.md` / `interface-design.md` / `refactoring.md` removed in favor
+  of `codebase-design`.
 
 ### `skills/productivity/write-a-skill`
 

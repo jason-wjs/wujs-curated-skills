@@ -39,7 +39,8 @@ metadata and be maintained intentionally.
 - **[implement](./skills/engineering/implement/SKILL.md)** — Build a spec or
   ticket with tdd and code-review.
 - **[improve-codebase-architecture](./skills/engineering/improve-codebase-architecture/SKILL.md)** —
-  Find deepening opportunities that make code more testable and AI-navigable.
+  Scan for deepening opportunities, present them as a visual HTML report, then
+  grill through the pick.
 - **[karpathy-guidelines](./skills/engineering/karpathy-guidelines/SKILL.md)** —
   Lightweight guardrails for non-trivial coding, review, and refactoring where
   hidden assumptions, overengineering, broad diffs, or weak verification could
@@ -47,13 +48,11 @@ metadata and be maintained intentionally.
 - **[research](./skills/engineering/research/SKILL.md)** — Investigate a
   question against primary sources and save cited findings.
 - **[tdd](./skills/engineering/tdd/SKILL.md)** — Test-driven development with a
-  red-green-refactor loop and behavior-focused tests.
+  red → green loop and behavior-focused tests at pre-agreed seams.
 - **[to-spec](./skills/engineering/to-spec/SKILL.md)** — Synthesize the current
   conversation into a published spec.
 - **[to-tickets](./skills/engineering/to-tickets/SKILL.md)** — Break a plan or
   spec into tracer-bullet tickets with blocking edges.
-- **[zoom-out](./skills/engineering/zoom-out/SKILL.md)** — Ask for a higher-level
-  map of unfamiliar code and its relevant modules and callers.
 
 ### Productivity
 

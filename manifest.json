@@ -13,7 +13,6 @@
     "./skills/engineering/tdd",
     "./skills/engineering/to-spec",
     "./skills/engineering/to-tickets",
-    "./skills/engineering/zoom-out",
     "./skills/productivity/grill-me",
     "./skills/productivity/grilling",
     "./skills/productivity/handoff",
@@ -34,6 +33,7 @@
     "shared-server-codex-isolation",
     "shared-server-git-private",
     "setup-matt-pocock-skills",
-    "writing-great-skills"
+    "writing-great-skills",
+    "zoom-out"
   ]
 }
