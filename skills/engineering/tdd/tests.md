@@ -20,9 +20,9 @@ Characteristics:
 - Uses public API only
 - Survives internal refactors
 - Describes WHAT, not HOW
-- One logical assertion per test
+- Assertions describe one coherent behavior
 
-## Bad Tests
+## Tests to Reconsider
 
 **Implementation-detail tests**: Coupled to internal structure.
 
@@ -35,7 +35,10 @@ test("checkout calls paymentService.process", async () => {
 });
 ```
 
-Red flags:
+These patterns merit investigation; they are not blanket prohibitions.
+Persistence checks, cleanup order, and retry counts may be the actual contract.
+
+Warning signs:
 
 - Mocking internal collaborators
 - Testing private methods

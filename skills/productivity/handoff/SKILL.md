@@ -1,14 +1,21 @@
 ---
 name: handoff
-description: Compact the current conversation into a redacted handoff document for a fresh agent. Use when the user asks to hand off, summarize for the next session, compact context, or prepare another agent to continue.
+description: "Use when preparing another session or agent to continue work in progress."
 ---
 
-Write a handoff document summarising the current conversation so a fresh agent can continue the work. Save to the temporary directory of the user's OS - not the current workspace.
+# Handoff
 
-Include a "suggested skills" section in the document, which suggests skills that the agent should invoke.
+Write a concise, redacted continuation note. Use the requested destination or
+an OS temporary directory, and return the absolute path. Temporary files may
+not be available on another host; state that when handing off across machines.
 
-Do not duplicate content already captured in other artifacts (PRDs, plans, ADRs, issues, commits, diffs). Reference them by path or URL instead.
+Capture the goal, current state, decisions and authorization already given,
+remaining work, blockers, relevant verification, and the next useful action.
+Include failed attempts only when they prevent repeated work. Distinguish
+observed facts from assumptions.
 
-Redact any sensitive information, such as API keys, passwords, or personally identifiable information.
+Reference existing specs, plans, ADRs, commits, and diffs rather than copying
+them. Include relevant branch/worktree information. Suggest skills only when
+they offer a concrete benefit. Exclude credentials and sensitive transcripts.
 
-If the user passed arguments, treat them as a description of what the next session will focus on and tailor the doc accordingly.
+This note records execution state; it does not replace the requirements spec.

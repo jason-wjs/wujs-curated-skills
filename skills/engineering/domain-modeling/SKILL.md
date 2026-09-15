@@ -1,6 +1,6 @@
 ---
 name: domain-modeling
-description: Build and sharpen a project's domain model. Use when the user wants to pin down domain terminology or a ubiquitous language, record an architectural decision, or when another skill needs to maintain the domain model.
+description: Use when resolving domain terminology or documenting a consequential architecture decision.
 ---
 
 # Domain Modeling
@@ -59,9 +59,12 @@ When the user states how something works, check whether the code agrees. If you 
 
 ### Update CONTEXT.md inline
 
-When a term is resolved, update `CONTEXT.md` right there. Don't batch these up — capture them as they happen. Use the format in [CONTEXT-FORMAT.md](./CONTEXT-FORMAT.md).
+When maintaining project docs is in scope, capture resolved terms in `CONTEXT.md`
+at a useful checkpoint. Otherwise summarize them in the conversation. Use
+[CONTEXT-FORMAT.md](./CONTEXT-FORMAT.md), adapting to an existing project format.
 
-`CONTEXT.md` should be totally devoid of implementation details. Do not treat `CONTEXT.md` as a spec, a scratch pad, or a repository for implementation decisions. It is a glossary and nothing else.
+`CONTEXT.md` should be totally devoid of implementation details. Do not treat `CONTEXT.md` as a spec, a scratch pad, or a repository for implementation decisions. Keep it focused on domain terminology and relationships; preserve an existing
+project context format rather than replacing it.
 
 ### Offer ADRs sparingly
 

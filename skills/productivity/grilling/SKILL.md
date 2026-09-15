@@ -1,12 +1,20 @@
 ---
 name: grilling
-description: Grill the user relentlessly about a plan or design. Use when the user wants to stress-test a plan before building, or uses any grill trigger phrases.
+description: "Use when the user wants their plan or assumptions challenged through an interview."
 ---
 
-Interview me relentlessly about every aspect of this plan until we reach a shared understanding. Walk down each branch of the design tree, resolving dependencies between decisions one-by-one. For each question, provide your recommended answer.
+# Grilling
 
-Ask the questions one at a time, waiting for feedback on each question before continuing. Asking multiple questions at once is bewildering.
+Find decisions that could change the plan: goals, constraints, assumptions,
+trade-offs, and failure scenarios. Investigate facts in available sources
+instead of asking the user to retrieve them.
 
-If a *fact* can be found by exploring the codebase, look it up rather than asking me. The *decisions*, though, are mine — put each one to me and wait for my answer.
+Ask the highest-value unresolved question, with a recommendation and its reason.
+Prefer one consequential question at a time; group closely related factual
+questions when that reduces interruption. Do not ask the user to decide routine
+implementation details supported by existing context.
 
-Do not enact the plan until I confirm we have reached a shared understanding.
+Stop interviewing when remaining uncertainty would not materially change the
+next step. Summarize the resulting decisions and open risks. An interview-only
+request ends there; if the user already authorized implementation, continue
+within that scope without requiring another ceremonial confirmation.

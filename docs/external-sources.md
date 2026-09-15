@@ -3,15 +3,21 @@
 This document records upstream sources that local curated skills are derived
 from or compared against.
 
+## Curation revision — 2026-09-15
+
+The adapted sources below retain their recorded upstream baselines, including
+the concurrent TDD/architecture update at `ed37663cc5fbef691ddfecd080dff42f7e7e350d`. Local
+bodies now favor narrow triggers, outcome-based guidance, conditional resources,
+and existing authorization. This revision is not a synchronization to upstream
+HEAD. In particular, research no longer requires a background agent, review
+supports working-tree changes and ranks findings, and writing-skills guidance
+no longer treats a fixed process or line count as a quality goal.
+
+The design reference is [OpenAI's skill-curation article](https://developers.openai.com/blog/rethinking-skills-and-prompts-for-gpt-6-astra).
+The superseded karpathy-guidelines source was
+https://github.com/forrestchang/andrej-karpathy-skills (MIT); its files were removed.
+
 ## Adapted Skills
-
-### `skills/engineering/karpathy-guidelines`
-
-- Upstream: <https://github.com/forrestchang/andrej-karpathy-skills>
-- Local source: `skills/engineering/karpathy-guidelines/SKILL.md`
-- License: MIT, preserved in skill frontmatter.
-- Local policy: maintained as an adapted skill, not a bulk vendored copy of the
-  upstream collection.
 
 ### `skills/productivity/grill-me`
 
@@ -29,7 +35,7 @@ from or compared against.
 - Upstream commit: `391a2701dd94`
 - Local source: `skills/productivity/grilling/SKILL.md`
 - License: MIT, preserved by repository license and this source record.
-- Local policy: adapted model-invoked interview kernel.
+- Local policy: adapted interview guidance focused on consequential unresolved decisions.
 
 ### `skills/productivity/handoff`
 
@@ -103,7 +109,7 @@ from or compared against.
 - Upstream commit: `391a2701dd94`
 - Local source: `skills/engineering/implement/SKILL.md`
 - License: MIT, preserved by repository license and this source record.
-- Local policy: adapted; commits only when the user asks.
+- Local policy: adapted; implementation follows existing authorization; TDD and separate review are conditional.
 
 ### `skills/engineering/code-review`
 
@@ -122,7 +128,7 @@ from or compared against.
 - Upstream commit: `391a2701dd94`
 - Local source: `skills/engineering/research/SKILL.md`
 - License: MIT, preserved by repository license and this source record.
-- Local policy: adapted model-invoked research skill.
+- Local policy: adapted research-note workflow with optional delegation.
 
 ### `skills/engineering/codebase-design`
 
@@ -140,11 +146,9 @@ from or compared against.
 - Upstream commit: `ed37663cc5fbef691ddfecd080dff42f7e7e350d`
 - Local source: `skills/engineering/improve-codebase-architecture/SKILL.md`
 - License: MIT, preserved by repository license and this source record.
-- Local policy: synced with upstream HTML-report flow; vocabulary and interface
-  design delegated to local `codebase-design`, grilling to `grilling` /
-  `domain-modeling`. Adjacent `HTML-REPORT.md` and `agents/openai.yaml`
-  preserved. Description keeps upstream wording plus a local "Use when…"
-  trigger clause required by `scripts/lint-skills.sh`.
+- Local policy: retains upstream HTML reports, scope selection, and explicit-only
+  invocation; uses curated outcome-based assessment with optional follow-up.
+  Shared vocabulary/interface references live in `codebase-design`.
 
 ### `skills/engineering/tdd`
 
@@ -153,10 +157,9 @@ from or compared against.
 - Upstream commit: `ed37663cc5fbef691ddfecd080dff42f7e7e350d`
 - Local source: `skills/engineering/tdd/SKILL.md`
 - License: MIT, preserved by repository license and this source record.
-- Local policy: synced with upstream reference-only red → green form, including
-  `tests.md`, `mocking.md`, and `agents/openai.yaml`. Former local
-  `deep-modules.md` / `interface-design.md` / `refactoring.md` removed in favor
-  of `codebase-design`.
+- Local policy: retains upstream test examples, independent expected values,
+  metadata, and shared `codebase-design` references. Curated loop avoids repeated
+  approval and speculative requirements; refactoring stays tied to concrete benefit.
 
 ### `skills/productivity/write-a-skill`
 
@@ -166,9 +169,8 @@ from or compared against.
 - Upstream commit: `391a2701dd94`
 - Local source: `skills/productivity/write-a-skill/SKILL.md`
 - License: MIT, preserved by repository license and this source record.
-- Local policy: keeps local creation process; merges upstream
-  `writing-great-skills` principles and `GLOSSARY.md`. Local name stays
-  `write-a-skill`.
+- Local policy: keeps the `write-a-skill` name; rewrites the creation guidance and glossary
+  around useful task-specific constraints and portable packaging.
 
 ### `skills/personal/research-paper-writing`
 
@@ -216,7 +218,8 @@ this repository.
 - Local source: `skills/personal/bootstrap-shared-server/SKILL.md`
 - Adjacent references cover local-controller audit, personal shell, networking,
   private Git, Codex CLI/App routing, verification, and rollback.
-- Codex policy: `agents/openai.yaml` with `allow_implicit_invocation: false`
+- Explicit-only policy: frontmatter `disable-model-invocation: true` and
+  Codex `agents/openai.yaml` with `allow_implicit_invocation: false`
 - Local policy: explicit-only personal workflow for preparing an already
   SSH-accessible shared cluster. Authored from deployment practice; no upstream
   vendored copy. Installed only with `--include-personal`.
@@ -229,3 +232,16 @@ under `/home/humanoid/.codex/skills/`.
 - `bcecmd` is maintained here as a local tool workflow skill.
 - `obsidian-vault` is maintained here as a personal local workflow skill, with
   `kepano/obsidian-skills` as syntax/workflow reference material.
+
+## `deslop` references
+
+Repository-native wording based on the user's failure cases and comparison with:
+- [Cursor deslop](https://github.com/cursor/plugins/blob/main/cursor-team-kit/skills/deslop/SKILL.md)
+- [Kubb deslop](https://github.com/kubb-labs/kubb/blob/main/.agents/skills/deslop/SKILL.md)
+- [Codex defensive-complexity report](https://github.com/openai/codex/issues/39059)
+
+No upstream skill body is vendored. Local scope includes uncommitted work,
+independent justification for defenses, and preserving real trust boundaries.
+
+`zoom-out` was removed by the concurrent upstream-sync commit and remains in
+the deprecated installer list; this curation does not restore it.

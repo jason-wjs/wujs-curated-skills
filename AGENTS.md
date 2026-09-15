@@ -30,6 +30,23 @@ canonical skill source under `skills/<bucket>/<skill>/SKILL.md`.
 - Keep heavy examples, references, scripts, and assets out of `SKILL.md` unless
   they are core to the runtime workflow. Link to them from `SKILL.md` instead.
 
+## Skill Design
+
+- Assume the agent is capable. Add guidance for local knowledge, an explicit
+  preference, or an observed failure; avoid generic exhortations.
+- Describe narrow triggers and outcomes. Read references only for the current
+  task; fixed steps belong where ordering or operational risk requires them.
+- Honor existing authorization. Clarify consequential ambiguity, not routine
+  implementation choices. Do not add repeated approval gates.
+- Tie completion and verification to the requested result. Avoid mandatory
+  review chains, agent counts, and tests for invented requirements.
+- For code changes, validate external inputs at their boundaries and rely on
+  established internal contracts. Fallbacks, retries, and compatibility branches
+  need real requirements or reachable failure scenarios. Preserve security,
+  resource cleanup, and meaningful error handling.
+- Keep canonical skills harness-neutral; optional tools need a usable fallback.
+  Match explicit invocation policy in frontmatter and Codex metadata.
+
 ## Adapter Rules
 
 - `adapters/` files are tool-specific bridges, not the canonical skill source.
@@ -45,6 +62,8 @@ canonical skill source under `skills/<bucket>/<skill>/SKILL.md`.
   record.
 
 ## Verification
+
+- Run `bash scripts/lint-skills.sh` after skill or reference changes.
 
 - Run `bash scripts/test-install.sh` after changing `scripts/install.sh`,
   `manifest.json`, adapter paths, or skill install layout.

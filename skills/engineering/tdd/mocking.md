@@ -1,59 +1,14 @@
-# When to Mock
+# Test Doubles
 
-Mock at **system boundaries** only:
+Prefer real local collaborators when they are fast and controllable. Use focused
+doubles for external services, time/randomness, expensive dependencies, or failure
+injection. Reuse existing dependency boundaries before adding new ones.
 
-- External APIs (payment, email, etc.)
-- Databases (sometimes - prefer test DB)
-- Time/randomness
-- File system (sometimes)
+A double should model behavior relevant to the test, not reproduce an entire
+implementation. If transport, serialization, or persistence is the risk, verify
+that contract against the real boundary where feasible. Avoid asserting internal
+call sequences unless that sequence itself is a required behavior (for example,
+retry limits or resource cleanup).
 
-Don't mock:
-
-- Your own classes/modules
-- Internal collaborators
-- Anything you control
-
-## Designing for Mockability
-
-At system boundaries, design interfaces that are easy to mock:
-
-**1. Use dependency injection**
-
-Pass external dependencies in rather than creating them internally:
-
-```typescript
-// Easy to mock
-function processPayment(order, paymentClient) {
-  return paymentClient.charge(order.total);
-}
-
-// Hard to mock
-function processPayment(order) {
-  const client = new StripeClient(process.env.STRIPE_KEY);
-  return client.charge(order.total);
-}
-```
-
-**2. Prefer SDK-style interfaces over generic fetchers**
-
-Create specific functions for each external operation instead of one generic function with conditional logic:
-
-```typescript
-// GOOD: Each function is independently mockable
-const api = {
-  getUser: (id) => fetch(`/users/${id}`),
-  getOrders: (userId) => fetch(`/users/${userId}/orders`),
-  createOrder: (data) => fetch('/orders', { method: 'POST', body: data }),
-};
-
-// BAD: Mocking requires conditional logic inside the mock
-const api = {
-  fetch: (endpoint, options) => fetch(endpoint, options),
-};
-```
-
-The SDK approach means:
-- Each mock returns one specific shape
-- No conditional logic in test setup
-- Easier to see which endpoints a test exercises
-- Type safety per endpoint
+Dependency injection can improve control, but do not redesign unrelated code
+solely to make it mockable. Use the smallest meaningful test seam.

@@ -1,6 +1,6 @@
 ---
 name: pueue
-description: Use Pueue/pueued for local single-user long-running shell command queues. Use when adding, monitoring, pausing, restarting, grouping, waiting for, or troubleshooting queued local tasks; not for distributed schedulers, multi-user queues, or complex workflow orchestration.
+description: "Use when managing or troubleshooting local shell-command queues with Pueue/pueued."
 ---
 
 # Pueue

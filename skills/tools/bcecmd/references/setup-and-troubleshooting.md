@@ -31,15 +31,30 @@ bcecmd --version
 
 ### Configure Credentials
 
-Run the interactive config command:
+First check whether existing credentials work with a read-only operation on
+the requested BOS prefix. Do not request fresh keys when setup already works.
+
+If credentials are needed, explicitly hand credential entry to the user:
+
+- Use a dedicated secret-entry control only when its documented contract
+  writes directly to the credential destination or secret store without
+  returning values to the model, tool results, or logs. A masked display alone
+  is insufficient. Ordinary chat/question tools are not secret-entry controls.
+- If no such control is available, ask the user to run the following command
+  directly in their own terminal on the target host, under the intended account
+  and configuration path. Do not run the credential-entry session through
+  agent-controlled stdin or capture its screen, transcript, or output.
 
 ```bash
 bcecmd -c
 ```
 
-When prompted, paste the access key and secret key from the approved credential
-source, then accept defaults unless the user provides a custom endpoint,
-region, or config path.
+The user enters AK/SK from their credential source directly into that session.
+Do not claim the CLI masks input unless verified for the installed version.
+Use the agreed endpoint, region, and config path; preserve unrelated settings.
+On a shared account, use the agreed personal configuration rather than
+overwriting shared credentials. Ask the user to report only completion or a
+redacted error, never the keys or a configuration transcript.
 
 After configuration, verify with a read-only bucket list:
 
@@ -50,12 +65,11 @@ bcecmd bos ls
 If this lists buckets, the server has usable credentials and network access.
 
 Common local credential locations include `~/.go-bcecli/credentials` and
-tool-specific config paths passed with `--conf-path`. When inspecting them,
-mask values:
-
-```bash
-awk -F= '{ if ($0 ~ /^[[:space:]]*$/ || $0 ~ /^[[:space:]]*#/) print $0; else if (NF >= 2) print $1 " = <set>"; else print $0 }' ~/.go-bcecli/credentials
-```
+tool-specific config paths passed with `--conf-path`. Inspect only existence,
+ownership, and permissions when needed; do not read or print their contents.
+Prefer a read-only request to the intended prefix when bucket listing is not
+permitted. Report only authentication/access status, with sensitive error
+details redacted.
 
 ## Bucket Choice
 

@@ -47,6 +47,16 @@ It does not provide adversarial confidentiality or authorization.
 Use timestamped backups next to personal files. For shared files, record a
 checksum and preserve exact existing content.
 
+## Authorization
+
+Prepare and review the actual candidate files, selected modules, mappings, and
+rollback commands before asking for missing approval. Explicit approval of an
+audited plan covers its named actions, including local SSH entries, dedicated
+keys, append-only authorized_keys changes, personal launchers, managed Codex,
+and user services. Do not ask again for each already-approved step. Ask for
+new authorization if scope, host, shared-state impact, or destructive cleanup
+changes. Audit and candidate rendering are read-only with respect to live state.
+
 ## Preconditions
 
 Require:
@@ -57,7 +67,8 @@ Require:
 4. Permission to create files under the personal root.
 5. A local-controller task when full mode is requested.
 
-Stop and discuss when any precondition is absent.
+Continue read-only discovery and candidate preparation where possible. Ask for
+the missing prerequisite before the dependent live action.
 
 ## Idempotency
 

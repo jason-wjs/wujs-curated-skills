@@ -1,15 +1,20 @@
 ---
 name: implement
-description: Implement work from a spec or tickets with tdd and code-review. Use when the user wants to build an approved ticket or spec.
+description: "Use when the user asks to implement an agreed spec or tickets."
 disable-model-invocation: true
 ---
 
-Implement the work described by the user in the spec or tickets.
+# Implement
 
-Use the `tdd` skill where possible, at pre-agreed seams.
+Read the spec or tickets and relevant repository context. Complete the agreed
+behavior and acceptance criteria, including running or inspecting the result
+when that is part of the task. Continue through failures caused by your change.
 
-Run typechecking regularly, single test files regularly, and the full test suite once at the end.
+Use `tdd` when test-first work is requested or already agreed. Choose relevant
+checks based on the change; do not add speculative defensive behavior to satisfy
+invented test cases. Review the final diff against the requirements and real
+failure scenarios; a separate `code-review` invocation is optional.
 
-Once done, use the `code-review` skill to review the work.
-
-Commit your work to the current branch only when the user asks you to commit.
+Report what changed, what was verified, and unresolved limitations. Commit or
+publish only within the user's authorization. Do not stop merely because the
+first implementation is ready if required work remains.

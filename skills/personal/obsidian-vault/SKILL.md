@@ -1,13 +1,14 @@
 ---
 name: obsidian-vault
-description: Use when finding, creating, editing, linking, or organizing notes in the Obsidian vault, especially when preserving wikilinks, index notes, backlinks, and the vault's existing flat note conventions matters.
+description: "Use when finding or editing notes in the user’s Obsidian vault with its existing naming and linking conventions."
 ---
 
 # Obsidian Vault
 
 ## Vault
 
-Path: `path/to/my/obsidian-vault`
+Resolve the vault path from the user or existing project configuration. If no
+vault is established, ask for its location; example paths are not defaults.
 
 The vault is mostly flat at the root. Prefer links and index notes over folder
 hierarchies.
@@ -47,10 +48,10 @@ hierarchies.
 
 ## Search Workflow
 
-Prefer `rg` for content search and `find` for filenames:
+Use the resolved vault path for searches:
 
 ```bash
-VAULT="/mnt/d/Obsidian Vault/AI Research"
+VAULT="<resolved-vault-path>"
 
 find "$VAULT" -iname "*keyword*.md"
 rg -n "keyword|related phrase" "$VAULT" --glob "*.md"
@@ -88,7 +89,7 @@ Before creating a note:
 Find notes that link to a note:
 
 ```bash
-rg -n "\\[\\[Note Title(\\||\\]|#)" "/mnt/d/Obsidian Vault/AI Research" --glob "*.md"
+rg -n "\\[\\[Note Title(\\||\\]|#)" "$VAULT" --glob "*.md"
 ```
 
 When renaming a note, update backlinks in the same turn unless the user asks not

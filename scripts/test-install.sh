@@ -3,10 +3,8 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
-TMP_DIR="${TMPDIR:-/tmp}/wujs-curated-skills-install-test"
-
-rm -rf "$TMP_DIR"
-mkdir -p "$TMP_DIR"
+TMP_DIR="$(mktemp -d "${TMPDIR:-/tmp}/wujs-curated-skills-install-test.XXXXXX")"
+trap 'rm -rf "$TMP_DIR"' EXIT
 
 assert_file() {
   local path="$1"
@@ -15,7 +13,7 @@ assert_file() {
 
 assert_no_path() {
   local path="$1"
-  [[ ! -e "$path" ]] || { echo "unexpected path exists: $path" >&2; exit 1; }
+  [[ ! -e "$path" && ! -L "$path" ]] || { echo "unexpected path exists: $path" >&2; exit 1; }
 }
 
 echo "[test] installer help"
@@ -27,7 +25,7 @@ bash "$REPO_DIR/scripts/lint-skills.sh" >/dev/null
 echo "[test] codex user copy skips personal by default"
 HOME="$TMP_DIR/codex-user-home" bash "$REPO_DIR/scripts/install.sh" --tool codex >/dev/null
 assert_file "$TMP_DIR/codex-user-home/.agents/skills/diagnosing-bugs/SKILL.md"
-assert_file "$TMP_DIR/codex-user-home/.agents/skills/karpathy-guidelines/SKILL.md"
+assert_no_path "$TMP_DIR/codex-user-home/.agents/skills/karpathy-guidelines"
 assert_file "$TMP_DIR/codex-user-home/.agents/skills/improve-codebase-architecture/SKILL.md"
 assert_file "$TMP_DIR/codex-user-home/.agents/skills/improve-codebase-architecture/HTML-REPORT.md"
 assert_file "$TMP_DIR/codex-user-home/.agents/skills/improve-codebase-architecture/agents/openai.yaml"
@@ -53,7 +51,7 @@ assert_no_path "$TMP_DIR/codex-user-home/.agents/skills/research-paper-writing"
 echo "[test] codex repo copy includes personal when requested"
 bash "$REPO_DIR/scripts/install.sh" --tool codex --scope repo --project "$TMP_DIR/codex-project" --include-personal >/dev/null
 assert_file "$TMP_DIR/codex-project/.agents/skills/diagnosing-bugs/SKILL.md"
-assert_file "$TMP_DIR/codex-project/.agents/skills/karpathy-guidelines/SKILL.md"
+assert_no_path "$TMP_DIR/codex-project/.agents/skills/karpathy-guidelines"
 assert_file "$TMP_DIR/codex-project/.agents/skills/improve-codebase-architecture/SKILL.md"
 assert_file "$TMP_DIR/codex-project/.agents/skills/tdd/SKILL.md"
 assert_no_path "$TMP_DIR/codex-project/.agents/skills/zoom-out"
@@ -91,7 +89,7 @@ assert_no_path "$TMP_DIR/codex-legacy/skills/obsidian-vault"
 echo "[test] claude copy uses temporary HOME"
 HOME="$TMP_DIR/home" bash "$REPO_DIR/scripts/install.sh" --tool claude --include-personal >/dev/null
 assert_file "$TMP_DIR/home/.claude/skills/diagnosing-bugs/SKILL.md"
-assert_file "$TMP_DIR/home/.claude/skills/karpathy-guidelines/SKILL.md"
+assert_no_path "$TMP_DIR/home/.claude/skills/karpathy-guidelines"
 assert_file "$TMP_DIR/home/.claude/skills/improve-codebase-architecture/SKILL.md"
 assert_file "$TMP_DIR/home/.claude/skills/tdd/SKILL.md"
 assert_no_path "$TMP_DIR/home/.claude/skills/zoom-out"
@@ -117,7 +115,7 @@ echo "[test] cursor install copies bridge rule and Cursor skill directories"
 bash "$REPO_DIR/scripts/install.sh" --tool cursor --project "$TMP_DIR/project" >/dev/null
 assert_file "$TMP_DIR/project/.cursor/rules/wujs-curated-skills.mdc"
 assert_file "$TMP_DIR/project/.cursor/skills/diagnosing-bugs/SKILL.md"
-assert_file "$TMP_DIR/project/.cursor/skills/karpathy-guidelines/SKILL.md"
+assert_no_path "$TMP_DIR/project/.cursor/skills/karpathy-guidelines"
 assert_file "$TMP_DIR/project/.cursor/skills/improve-codebase-architecture/SKILL.md"
 assert_file "$TMP_DIR/project/.cursor/skills/improve-codebase-architecture/HTML-REPORT.md"
 assert_file "$TMP_DIR/project/.cursor/skills/improve-codebase-architecture/agents/openai.yaml"
@@ -156,8 +154,8 @@ bash "$REPO_DIR/scripts/install.sh" --tool cursor --project "$TMP_DIR/cursor-sym
   echo "expected symlink install for cursor bridge" >&2
   exit 1
 }
-[[ -L "$TMP_DIR/cursor-symlink/.cursor/skills/karpathy-guidelines" ]] || {
-  echo "expected symlink install for karpathy-guidelines" >&2
+[[ -L "$TMP_DIR/cursor-symlink/.cursor/skills/tdd" ]] || {
+  echo "expected symlink install for tdd" >&2
   exit 1
 }
 
@@ -210,25 +208,29 @@ assert_no_path "$TMP_DIR/all-user-home/.cursor/skills/shared-server-git-private"
 
 echo "[test] codex symlink"
 HOME="$TMP_DIR/codex-symlink-home" bash "$REPO_DIR/scripts/install.sh" --tool codex --method symlink >/dev/null
-[[ -L "$TMP_DIR/codex-symlink-home/.agents/skills/karpathy-guidelines" ]] || {
-  echo "expected symlink install for karpathy-guidelines" >&2
+[[ -L "$TMP_DIR/codex-symlink-home/.agents/skills/tdd" ]] || {
+  echo "expected symlink install for tdd" >&2
   exit 1
 }
 
 echo "[test] codex --prune removes deprecated skill dirs only when requested"
 HOME="$TMP_DIR/codex-prune-home" bash "$REPO_DIR/scripts/install.sh" --tool codex >/dev/null
 mkdir -p \
+  "$TMP_DIR/codex-prune-home/.agents/skills/karpathy-guidelines" \
   "$TMP_DIR/codex-prune-home/.agents/skills/writing-great-skills" \
   "$TMP_DIR/codex-prune-home/.agents/skills/shared-server-codex-isolation" \
   "$TMP_DIR/codex-prune-home/.agents/skills/shared-server-git-private"
+echo "stale" > "$TMP_DIR/codex-prune-home/.agents/skills/karpathy-guidelines/SKILL.md"
 echo "stale" > "$TMP_DIR/codex-prune-home/.agents/skills/writing-great-skills/SKILL.md"
 echo "stale" > "$TMP_DIR/codex-prune-home/.agents/skills/shared-server-codex-isolation/SKILL.md"
 echo "stale" > "$TMP_DIR/codex-prune-home/.agents/skills/shared-server-git-private/SKILL.md"
 HOME="$TMP_DIR/codex-prune-home" bash "$REPO_DIR/scripts/install.sh" --tool codex >/dev/null
+assert_file "$TMP_DIR/codex-prune-home/.agents/skills/karpathy-guidelines/SKILL.md"
 assert_file "$TMP_DIR/codex-prune-home/.agents/skills/writing-great-skills/SKILL.md"
 assert_file "$TMP_DIR/codex-prune-home/.agents/skills/shared-server-codex-isolation/SKILL.md"
 assert_file "$TMP_DIR/codex-prune-home/.agents/skills/shared-server-git-private/SKILL.md"
 HOME="$TMP_DIR/codex-prune-home" bash "$REPO_DIR/scripts/install.sh" --tool codex --include-personal --prune >/dev/null
+assert_no_path "$TMP_DIR/codex-prune-home/.agents/skills/karpathy-guidelines"
 assert_no_path "$TMP_DIR/codex-prune-home/.agents/skills/writing-great-skills"
 assert_no_path "$TMP_DIR/codex-prune-home/.agents/skills/shared-server-codex-isolation"
 assert_no_path "$TMP_DIR/codex-prune-home/.agents/skills/shared-server-git-private"
@@ -241,5 +243,11 @@ assert_file "$TMP_DIR/codex-prune-home/.agents/skills/research/SKILL.md"
 assert_file "$TMP_DIR/codex-prune-home/.agents/skills/codebase-design/SKILL.md"
 assert_file "$TMP_DIR/codex-prune-home/.agents/skills/domain-modeling/CONTEXT-FORMAT.md"
 assert_file "$TMP_DIR/codex-prune-home/.agents/skills/diagnosing-bugs/scripts/hitl-loop.template.sh"
+
+echo "[test] claude symlink includes personal skills"
+HOME="$TMP_DIR/claude-symlink-home" bash "$REPO_DIR/scripts/install.sh" --tool claude --method symlink --include-personal >/dev/null
+
+echo "[test] complete packages across supported install locations"
+python3 "$REPO_DIR/scripts/check-installed-skills.py" "$TMP_DIR"
 
 echo "All install tests passed."

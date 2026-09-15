@@ -1,182 +1,44 @@
 ---
 name: write-a-skill
-description: Create or improve agent skills with predictable structure, progressive disclosure, and bundled resources. Use when the user wants to create, write, edit, or refine a skill.
+description: "Use when creating or revising a reusable agent skill."
 ---
 
-# Writing Skills
+# Write a Skill
 
-A skill exists to wrangle determinism out of a stochastic system. **Predictability** — the agent taking the same *process* every run, not producing the same output — is the root virtue. Bold terms below are defined in [GLOSSARY.md](./GLOSSARY.md).
+Identify the recurring task and what the agent needs beyond its existing
+capabilities: local knowledge, a chosen convention, a fragile operation, or a
+failure observed in practice. Use information already supplied before asking.
 
-## Process
+Write a narrow description that distinguishes this task from adjacent tasks.
+Keep the entrypoint focused on the intended outcome, decision criteria, and
+constraints that actually affect execution. Use ordered steps only when order
+matters. Put conditional detail in linked references and repeated deterministic
+operations in scripts. A short skill needs neither a router nor a line quota.
 
-1. **Gather requirements** - ask user about:
-   - What task/domain does the skill cover?
-   - What specific use cases should it handle?
-   - Should it be **user-invoked** (explicit only) or **model-invoked** (discoverable from the prompt)?
-   - Does it need executable scripts, or should it stay instruction-only?
-   - Any reference materials to include?
+Preserve existing authorization. Ask about unresolved scope or consequential
+choices; do not insert draft approval or per-step confirmation by default.
+Keep completion tied to the user's deliverable, including necessary validation.
 
-2. **Draft the skill** - create:
-   - SKILL.md with concise instructions
-   - references/ files for long or rarely used material
-   - scripts/ files if deterministic operations are needed
-   - assets/ files for templates or reusable resources
-   - agents/openai.yaml only for Codex-specific metadata, invocation policy, or
-     tool dependencies
+## Portability
 
-3. **Test triggers** - write:
-   - Three prompts that should trigger the skill
-   - Two prompts that should not trigger the skill
-   - Whether `allow_implicit_invocation` should stay true
+- Canonical source here is `skills/<bucket>/<name>/SKILL.md`.
+- Include `name` and a concise `description` in YAML frontmatter.
+- Preserve invocation policy. For an explicitly requested user-only skill,
+  set `disable-model-invocation: true` for Claude Code/Cursor and
+  `policy.allow_implicit_invocation: false` in `agents/openai.yaml` for Codex.
+- Resolve references relative to the skill file and scripts relative to the
+  skill directory, not the task's working directory.
+- Use available harness tools; provide a local alternative to optional agents
+  or integrations. Do not assume a particular tool API exists everywhere.
+- Update the manifest, bucket README, top README, and applicable source records.
+  Preserve upstream license and attribution when adapting material.
 
-4. **Review with user** - present draft and ask:
-   - Does this cover your use cases?
-   - Anything missing or unclear?
-   - Should any section be more/less detailed?
+## Check the result
 
-## Principles
+Try representative matching and non-matching requests. Inspect whether the
+skill would load unnecessary material, stop prematurely, or expand the task.
+Check linked resources and run changed scripts with safe fixtures. For install
+layout or manifest changes, run `bash scripts/test-install.sh`.
 
-Apply these while drafting and when editing an existing skill:
-
-### Invocation
-
-- **Model-invoked**: keep a trigger-rich `description`; pays **context load** every turn; other skills can reach it.
-- **User-invoked**: set `disable-model-invocation: true` (and Codex `allow_implicit_invocation: false`); zero context load; only the human can fire it.
-- Prefer user-invoked for orchestrators; model-invoked for reusable discipline other skills must call.
-
-### Description
-
-- Front-load the **leading word** and distinct trigger **branches**.
-- One trigger per branch — synonym restatements are **duplication**.
-- Cut identity already present in the body.
-
-### Information hierarchy
-
-1. **In-skill step** — ordered actions with checkable **completion criteria**.
-2. **In-skill reference** — rules consulted on demand.
-3. **External reference** — linked files loaded only when a **context pointer** fires.
-
-Push rarely needed material down the ladder (**progressive disclosure**). Keep a concept's definition, rules, and caveats **co-located**.
-
-### Split and prune
-
-- Split by invocation when a distinct leading word deserves its own discoverability.
-- Split by sequence when later steps cause **premature completion** of the current one.
-- Keep a **single source of truth**; delete **no-ops** and **sediment**; prefer positive steering over **negation**.
-
-## Skill Structure
-
-```
-skill-name/
-├── SKILL.md           # Main instructions and frontmatter (required)
-├── references/        # Detailed docs (if needed)
-├── scripts/           # Utility scripts (if needed)
-│   └── helper.js
-├── assets/            # Templates or resources (if needed)
-└── agents/
-    └── openai.yaml    # Codex-specific metadata (if needed)
-```
-
-## SKILL.md Template
-
-```md
----
-name: skill-name
-description: Brief description of capability. Use when [specific triggers].
----
-
-# Skill Name
-
-## Workflow
-
-[Imperative steps with explicit inputs and outputs]
-
-## References
-
-[Link to separate files when needed: See references/example.md]
-```
-
-## Description Requirements
-
-The description is the main signal Codex sees when deciding whether to load a
-skill. Codex starts with each skill's name, description, and file path, then
-loads the full SKILL.md only after selecting the skill. Large skill lists have a
-context budget, so descriptions can be shortened.
-
-**Goal**: Give your agent just enough info to know:
-
-1. What capability this skill provides
-2. When to trigger it (specific keywords, contexts, file types)
-3. When not to trigger it, if the boundary is easy to confuse
-
-**Format**:
-
-- Max 1024 chars
-- Front-load the core use case and trigger words
-- Write in third person or imperative trigger language
-- Include "Use when..." when it improves clarity
-
-**Good example**:
-
-```
-Extract text and tables from PDF files, fill forms, merge documents. Use when working with PDF files or when user mentions PDFs, forms, or document extraction.
-```
-
-**Bad example**:
-
-```
-Helps with documents.
-```
-
-The bad example gives your agent no way to distinguish this from other document skills.
-
-## Codex Metadata
-
-Add `agents/openai.yaml` only when Codex needs behavior beyond SKILL.md.
-
-Use this for explicit-only skills:
-
-```yaml
-policy:
-  allow_implicit_invocation: false
-```
-
-Use `interface` for Codex app display metadata, and `dependencies` when the
-skill relies on a specific MCP server or tool.
-
-## When to Add Scripts
-
-Add utility scripts when:
-
-- Operation is deterministic (validation, formatting)
-- Same code would be generated repeatedly
-- Errors need explicit handling
-
-Scripts save tokens and improve reliability vs generated code.
-
-## When to Split Files
-
-Split into separate files when:
-
-- SKILL.md exceeds 100 lines
-- Content has distinct domains (finance vs sales schemas)
-- Advanced features are rarely needed
-
-Prefer `references/` for long prose, `scripts/` for executable helpers, and
-`assets/` for templates or reusable files.
-
-## Review Checklist
-
-After drafting, verify:
-
-- [ ] Description includes triggers ("Use when...")
-- [ ] Description front-loads key trigger words
-- [ ] Three should-trigger prompts tested
-- [ ] Two should-not-trigger prompts tested
-- [ ] Explicit-only skills use `agents/openai.yaml`
-- [ ] SKILL.md under 100 lines or discloses heavy reference
-- [ ] No time-sensitive info
-- [ ] Consistent terminology / leading words
-- [ ] Concrete examples included
-- [ ] References one level deep
-- [ ] No-ops and duplication pruned
+Use actual failures to refine the skill. Do not claim behavioral effectiveness
+from formatting checks alone. See [GLOSSARY.md](GLOSSARY.md) for local terms.

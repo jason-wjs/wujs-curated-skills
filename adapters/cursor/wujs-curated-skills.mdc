@@ -1,44 +1,16 @@
 ---
-description: wujs-curated-skills bridge
+description: Locate the installed wujs-curated-skills collection
 globs:
   - "**/*"
 alwaysApply: false
 ---
 
-# wujs-curated-skills
+# Curated Skills
 
-Use this project-local rule as a bridge to the curated skills in this
-repository.
+Use the installed skills' own descriptions and invocation policies to select
+relevant guidance. Resolve resources from each skill's installed directory.
+This bridge does not add triggers or override explicit-only invocation.
 
-- The canonical skill source is `skills/<bucket>/<skill>/SKILL.md`.
-- Use `diagnosing-bugs` for hard bugs, broken behavior, exceptions, failing
-  tests, or performance regressions.
-- Use `karpathy-guidelines` for non-trivial code writing, review, or refactoring
-  where hidden assumptions, overengineering, broad diffs, or weak verification
-  could cause mistakes.
-- Use `tdd` when the user asks for test-first development or red-green-refactor.
-- Use `improve-codebase-architecture` for architecture review, refactoring
-  opportunities, and deepening shallow modules.
-- Use `codebase-design` for deep-module vocabulary (module, interface, seam,
-  adapter, depth).
-- Use `domain-modeling` when sharpening glossary terms or writing ADRs /
-  `CONTEXT.md`.
-- Use `grilling` for the shared relentless interview loop; prefer `grill-me`
-  (no docs) or `grill-with-docs` (with domain-modeling) as user entry points.
-- Use `to-spec` to synthesize an aligned conversation into a published spec.
-- Use `to-tickets` to split a plan or spec into tracer-bullet tickets with
-  blocking edges.
-- Use `implement` to build an approved ticket or spec with tdd and code-review.
-- Use `code-review` for a two-axis Standards + Spec review since a fixed point.
-- Use `research` to investigate a question against primary sources and save
-  cited findings.
-- Use `handoff` when compacting the current conversation into a redacted
-  handoff document for another agent or session.
-- Use `teach` when creating or continuing a stateful teaching workspace with
-  missions, lessons, resources, references, assets, and learning records.
-- Use `write-a-skill` when creating or adapting agent skills.
-- Use `bcecmd` when working with Baidu BCE BOS through the `bcecmd` CLI.
-- Use `pueue` when managing local single-user long-running shell command queues
-  through Pueue/`pueued`.
-- Do not copy full skill bodies into Cursor rules; open the relevant `SKILL.md`
-  from the repository when needed.
+See installed SKILL.md files under `.cursor/skills/` (project) or
+`~/.cursor/skills/` (user). Canonical source is `skills/<bucket>/<name>/SKILL.md`
+in the wujs-curated-skills repository, not necessarily in the current project.

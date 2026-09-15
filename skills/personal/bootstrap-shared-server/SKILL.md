@@ -1,183 +1,61 @@
 ---
 name: bootstrap-shared-server
-description: "Explicit-only ($bootstrap-shared-server). Use when running from a local Codex App/CLI or local Cursor controller to audit, bootstrap, repair, or verify Wu Junsong's personal development environment on an already SSH-accessible shared Linux cluster with an existing personal directory: personal shell, network/proxy selection, private Git, codex-wjs identity isolation, optional Codex App SSH routing, and rollback-safe validation. Not implicit."
+description: "Use when explicitly preparing, auditing, or repairing Wu Junsong’s personal environment on an SSH-accessible shared Linux cluster."
+disable-model-invocation: true
 ---
 
 # Bootstrap Shared Server
 
-**Invoke:** `$bootstrap-shared-server` only.
+Prepare the requested personal development environment while preserving shared
+shell, Git, and bare `codex` behavior. Full bootstrap runs from the local
+controller with an existing working SSH alias and personal persistent root.
+A server-side session may perform a requested server-only repair, but cannot
+claim local SSH or end-to-end verification.
 
-Prepare a shared Linux account for personal development without changing
-defaults seen by other people.
+Read [operating-contract.md](references/operating-contract.md) for ownership,
+authorization, idempotency, and the limits of same-UID isolation before live
+changes. Use [audit-and-profile.md](references/audit-and-profile.md) to discover
+host-specific paths and create a non-secret profile. Never copy another host's
+proxy, port, or storage assumptions.
 
-## Preconditions
+## Select only the needed modules
 
-Full bootstrap must start from the local controller:
-
-- local Codex App;
-- local Codex CLI;
-- a local Cursor window, not a Cursor Remote SSH window.
-
-Stop full mode when `$SSH_CONNECTION` or `$SSH_TTY` indicates that the agent is
-already running on the target. A remote session may perform an explicitly
-requested server-only repair, but it cannot modify local SSH configuration,
-manage a proxy laptop, inspect local Codex App logs, or claim end-to-end
-success.
-
-The base SSH alias must already connect, and the user-approved personal
-persistent directory must already exist. This skill does not create Linux
-users, alter SSH daemon policy, or establish the cluster's base access.
-
-Read [operating-contract.md](./references/operating-contract.md) before any
-live change.
-
-## Modes
-
-| Mode | Scope |
+| Request | Reference |
 | --- | --- |
-| `full` | Audit and prepare all requested modules |
-| `audit` | Read-only host, storage, shell, network, Git, and Codex inventory |
-| `shell` | Personal rc, PATH, helpers, and profile selection |
-| `network` | Direct/proxy classification and optional reverse tunnel |
-| `git` | Per-repository private Git identity and authentication |
-| `codex` | `codex-wjs`, private `CODEX_HOME`, and allowlist |
-| `codex-app` | Dedicated SSH key, forced dispatcher, and managed app-server |
-| `verify` | Acceptance matrix without configuration changes |
-| `repair` | One named module only; preserve all unrelated state |
+| `audit` | [Audit and profile](references/audit-and-profile.md); read-only |
+| `shell` | [Personal shell](references/personal-shell.md) |
+| `network` | [Connectivity and optional proxy](references/network-and-proxy.md) |
+| `git` | [Repository-local private Git](references/private-git.md) |
+| `codex` | [Personal launcher and state](references/codex-isolation.md) |
+| `codex-app` | [SSH dispatcher and app-server](references/codex-app-ssh.md) |
+| `verify` | [Acceptance and rollback](references/verification-and-rollback.md) |
+| `repair` | The named module only |
+| `full` | Audit, then only modules needed for the requested environment |
 
-When the user does not name a mode, use `full`, but enable only modules that
-the audit proves necessary.
+When no mode is named, infer the scope from the request; a single broken module
+does not imply full bootstrap. Apply selected dependencies in shell, network,
+Git, Codex CLI, then optional Codex App order where needed.
 
-## Contract
+## Prepare, apply, verify
 
-- Bare `codex` retains the server's shared/global meaning.
-- `codex-wjs` is the explicit personal Codex CLI.
-- Git identity, proxy, and credential helpers are repository-local.
-- Personal shell and proxy exports never enter shared rc files.
-- A `*_wjs` alias selects a WJS route; it does not create another Linux user.
-- Shared persistent storage uses a distinct profile and `CODEX_HOME` per host.
-- A reverse proxy is optional and host-specific, never a copied default.
-- Same-UID separation prevents accidental cross-use; it is not a security
-  boundary.
+Render candidates outside live paths with [scripts/render_profile.py](scripts/render_profile.py).
+Resolve its path from this skill directory; use `--help` for its current options.
+Review the actual files and mappings, backup/rollback plan, and required user
+login steps before requesting any missing authorization. Existing explicit
+approval of those changes remains valid; ask again only for changed scope or
+new consequential actions.
 
-## Workflow
+Back up changed personal files and preserve existing shared entries. Personal
+launchers, state, Git identity, and proxy settings stay scoped to the agreed
+host/profile/workspace. Keep reverse proxies on loopback. Same-UID separation
+prevents accidental cross-use, not access by another person sharing that UID.
 
-### 1. Confirm the controller
+Credential entry belongs to the user, through a proven secret-entry control
+or their own uncaptured terminal. Ordinary chat/question dialogs are not safe
+credential entry. Never read auth files or place secrets in generated profiles,
+command arguments, service units, or logs.
 
-Record the local hostname, OS, current application context, and whether the
-process is already inside SSH. Resolve the base alias with `ssh -G`.
-
-If running in a remote Cursor/Codex thread, stop full mode and tell the user to
-invoke this skill from a local session.
-
-### 2. Audit without writing
-
-Follow [audit-and-profile.md](./references/audit-and-profile.md). Determine:
-
-1. Base alias, host, port, shared Linux user, shell, and authentication.
-2. Personal persistent root and canonical workspace allowlist.
-3. Whether multiple hosts share that root.
-4. Existing shared shell, Git, proxy, and global Codex behavior.
-5. Direct OpenAI and GitHub connectivity on every host.
-6. Whether Codex App support is required.
-7. Whether an always-on proxy machine is available and actually stays awake.
-
-Do not read or print credentials, complete auth files, cookies, private keys,
-or token-bearing URLs.
-
-### 3. Create a non-secret profile
-
-Assign one stable profile per host. Record only non-secret facts using the
-schema in [audit-and-profile.md](./references/audit-and-profile.md). Never
-reuse a hostname, path, proxy URL, or port from another cluster without
-rediscovery.
-
-### 4. Present the plan
-
-Before live changes, show:
-
-- selected modules and why each is needed;
-- exact local, target, and optional proxy-host files;
-- profile, workspace, and proxy mappings;
-- global/shared files that will remain untouched;
-- timestamped backup and rollback strategy;
-- actions that require the user to log in or enter a credential.
-
-Wait for approval of this audited plan.
-
-### 5. Render and review candidates
-
-Use the renderer as a starting point:
-
-```bash
-python3 scripts/render_profile.py \
-  --output-dir /tmp/<profile>-bootstrap \
-  --profile <profile> \
-  --host-alias <base-alias> \
-  --hostname <ssh-host> \
-  --remote-hostname <remote-hostname> \
-  --port <port> \
-  --user <shared-user> \
-  --personal-root <personal-root> \
-  --allowed-root <workspace-root>
-```
-
-Add proxy, reverse-tunnel, or Codex App flags only after their modules are
-selected. The renderer writes candidates only; it never connects or installs.
-Review every generated path and command.
-
-### 6. Apply modules in dependency order
-
-1. [personal-shell.md](./references/personal-shell.md)
-2. [network-and-proxy.md](./references/network-and-proxy.md)
-3. [private-git.md](./references/private-git.md)
-4. [codex-isolation.md](./references/codex-isolation.md)
-5. [codex-app-ssh.md](./references/codex-app-ssh.md)
-
-Skip unneeded modules. Back up before replacing any personal file. For shared
-files such as `authorized_keys`, append only the reviewed entry and preserve
-all existing lines.
-
-### 7. Hand credentials to the user
-
-The user performs ChatGPT/Codex login and GitHub PAT entry interactively.
-Never ask the user to paste a token into chat. Never place a secret in a
-command argument, generated candidate, deployment profile, shell history,
-service unit, or repository.
-
-### 8. Verify and report
-
-Run [verification-and-rollback.md](./references/verification-and-rollback.md).
-Do not report success until all requested local, server, proxy, Git, Codex CLI,
-and Codex App paths pass with new timestamps.
-
-The final report lists changes, skipped modules, services, non-secret profile
-mappings, user-completed login state, backups, and exact rollback commands.
-
-## Approval Gates
-
-Require explicit approval immediately before:
-
-- editing local `~/.ssh/config`;
-- generating or installing a dedicated SSH key;
-- appending to remote `authorized_keys`;
-- enabling a user systemd/autossh service or linger;
-- installing managed Codex;
-- replacing an existing personal launcher or rc file;
-- removing legacy bootstrap artifacts.
-
-## Hard Rules
-
-- Never modify shared `~/.bashrc`, `~/.profile`, `/etc/profile`, global Git
-  config, SSH daemon config, firewall rules, or global systemd units.
-- Never replace, wrap, alias, or redefine shared bare `codex`.
-- Never put personal `codex` in `/usr/local/bin` or shared `~/.local/bin`.
-- Never configure Git identity, credential helper, or proxy with `--global`.
-- Never enable a proxy for every shell automatically.
-- Never bind a reverse proxy to `0.0.0.0`.
-- Never delete or rewrite existing `authorized_keys` entries.
-- Never install a laptop tunnel merely because a previous Baidu host needed
-  one.
-- Never claim that same-UID files or loopback ports are private from another
-  person using the same UID.
-- Never make live changes before audit, plan review, and approval.
+Verify the selected modules and unchanged shared defaults using
+[verification-and-rollback.md](references/verification-and-rollback.md).
+Report completed changes, skipped/unverified modules, non-secret mappings,
+backups, and rollback commands. Do not claim full success from partial checks.

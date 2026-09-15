@@ -26,74 +26,40 @@ metadata and be maintained intentionally.
 
 ### Engineering
 
-- **[code-review](./skills/engineering/code-review/SKILL.md)** — Two-axis
-  review (Standards + Spec) of the diff since a fixed point.
-- **[codebase-design](./skills/engineering/codebase-design/SKILL.md)** — Shared
-  vocabulary for designing deep modules, seams, and adapters.
-- **[diagnosing-bugs](./skills/engineering/diagnosing-bugs/SKILL.md)** —
-  Disciplined diagnosis loop for hard bugs and performance regressions.
-- **[domain-modeling](./skills/engineering/domain-modeling/SKILL.md)** —
-  Actively sharpen domain language and record ADRs / `CONTEXT.md`.
-- **[grill-with-docs](./skills/engineering/grill-with-docs/SKILL.md)** —
-  Grilling session that also runs domain-modeling.
-- **[implement](./skills/engineering/implement/SKILL.md)** — Build a spec or
-  ticket with tdd and code-review.
-- **[improve-codebase-architecture](./skills/engineering/improve-codebase-architecture/SKILL.md)** —
-  Scan for deepening opportunities, present them as a visual HTML report, then
-  grill through the pick.
-- **[karpathy-guidelines](./skills/engineering/karpathy-guidelines/SKILL.md)** —
-  Lightweight guardrails for non-trivial coding, review, and refactoring where
-  hidden assumptions, overengineering, broad diffs, or weak verification could
-  cause mistakes.
-- **[research](./skills/engineering/research/SKILL.md)** — Investigate a
-  question against primary sources and save cited findings.
-- **[tdd](./skills/engineering/tdd/SKILL.md)** — Test-driven development with a
-  red → green loop and behavior-focused tests at pre-agreed seams.
-- **[to-spec](./skills/engineering/to-spec/SKILL.md)** — Synthesize the current
-  conversation into a published spec.
-- **[to-tickets](./skills/engineering/to-tickets/SKILL.md)** — Break a plan or
-  spec into tracer-bullet tickets with blocking edges.
+- **[code-review](./skills/engineering/code-review/SKILL.md)** — Use when reviewing a PR, branch, commit range, or uncommitted changes for actionable defects and requirement gaps.
+- **[codebase-design](./skills/engineering/codebase-design/SKILL.md)** — Use when choosing a module interface or examining coupling and testability.
+- **[deslop](./skills/engineering/deslop/SKILL.md)** — Use when simplifying a diff with unnecessary defensive branches, fallback behavior, or abstraction.
+- **[diagnosing-bugs](./skills/engineering/diagnosing-bugs/SKILL.md)** — Use when investigating a hard-to-reproduce bug, an unclear root cause, or a performance regression.
+- **[domain-modeling](./skills/engineering/domain-modeling/SKILL.md)** — Use when resolving domain terminology or documenting a consequential architecture decision.
+- **[grill-with-docs](./skills/engineering/grill-with-docs/SKILL.md)** — Use when interviewing about a plan while recording domain terms and consequential decisions.
+- **[implement](./skills/engineering/implement/SKILL.md)** — Use when the user asks to implement an agreed spec or tickets.
+- **[improve-codebase-architecture](./skills/engineering/improve-codebase-architecture/SKILL.md)** — Use when assessing architectural friction or proposing a concrete refactor.
+- **[research](./skills/engineering/research/SKILL.md)** — Use when gathering source-backed technical findings into a reusable research note.
+- **[tdd](./skills/engineering/tdd/SKILL.md)** — Use when the user requests test-first development or a red-green-refactor workflow.
+- **[to-spec](./skills/engineering/to-spec/SKILL.md)** — Use when turning an aligned discussion into requirements and acceptance criteria for implementation.
+- **[to-tickets](./skills/engineering/to-tickets/SKILL.md)** — Use when splitting an agreed plan into independently verifiable implementation tickets.
 
 ### Productivity
 
-- **[grill-me](./skills/productivity/grill-me/SKILL.md)** — User entry for a
-  grilling session without writing project docs.
-- **[grilling](./skills/productivity/grilling/SKILL.md)** — Relentless
-  one-question-at-a-time interview loop shared by grill entry points.
-- **[handoff](./skills/productivity/handoff/SKILL.md)** — Compact the current
-  conversation into a redacted handoff document for a fresh agent.
-- **[teach](./skills/productivity/teach/SKILL.md)** — Create and maintain a
-  stateful teaching workspace with missions, lessons, resources, references,
-  assets, and learning records.
-- **[write-a-skill](./skills/productivity/write-a-skill/SKILL.md)** — Create or
-  improve agent skills with predictable structure, progressive disclosure, and
-  bundled resources.
+- **[grill-me](./skills/productivity/grill-me/SKILL.md)** — Use when the user explicitly asks for an interview to challenge a plan without creating project documents.
+- **[grilling](./skills/productivity/grilling/SKILL.md)** — Use when the user wants their plan or assumptions challenged through an interview.
+- **[handoff](./skills/productivity/handoff/SKILL.md)** — Use when preparing another session or agent to continue work in progress.
+- **[teach](./skills/productivity/teach/SKILL.md)** — Use when creating or continuing a multi-session learning workspace with lessons and learning records.
+- **[write-a-skill](./skills/productivity/write-a-skill/SKILL.md)** — Use when creating or revising a reusable agent skill.
 
 ### Tools
 
-- **[bcecmd](./skills/tools/bcecmd/SKILL.md)** — Use Baidu BCE BOS through the
-  `bcecmd` CLI for bucket operations, uploads, downloads, syncs, validation,
-  and troubleshooting.
-- **[pueue](./skills/tools/pueue/SKILL.md)** — Use Pueue/`pueued` for local
-  single-user long-running shell command queues, including status, logs,
-  groups, parallelism, dependencies, pause/resume, and restarts.
+- **[bcecmd](./skills/tools/bcecmd/SKILL.md)** — Use when transferring data with bcecmd or configuring and troubleshooting Baidu BOS access.
+- **[pueue](./skills/tools/pueue/SKILL.md)** — Use when managing or troubleshooting local shell-command queues with Pueue/pueued.
 
 ### Personal
 
-- **[bootstrap-shared-server](./skills/personal/bootstrap-shared-server/SKILL.md)** —
-  **Explicit-only.** From a local controller, prepare an already SSH-accessible
-  shared cluster with a personal shell, network route, private Git,
-  `codex-wjs`, and optional Codex App routing. Environment-specific.
-- **[edit-article](./skills/personal/edit-article/SKILL.md)** — Edit and
-  improve articles by restructuring sections, improving clarity, and tightening
-  prose. Environment-specific.
-- **[obsidian-vault](./skills/personal/obsidian-vault/SKILL.md)** — Search,
-  create, edit, link, and organize Obsidian notes while preserving wikilinks,
-  backlinks, index notes, and existing vault conventions. Environment-specific.
-- **[research-paper-writing](./skills/personal/research-paper-writing/SKILL.md)** —
-  Improve ML/CV/NLP-style academic paper writing with section guides, paragraph
-  flow checks, claim-evidence alignment, and reviewer-facing self-review.
-  Environment-specific.
+Environment-specific; install with `--include-personal`.
+
+- **[bootstrap-shared-server](./skills/personal/bootstrap-shared-server/SKILL.md)** — Use when explicitly preparing, auditing, or repairing Wu Junsong’s personal environment on an SSH-accessible shared Linux cluster.
+- **[edit-article](./skills/personal/edit-article/SKILL.md)** — Use when revising an article’s structure, paragraph flow, or prose.
+- **[obsidian-vault](./skills/personal/obsidian-vault/SKILL.md)** — Use when finding or editing notes in the user’s Obsidian vault with its existing naming and linking conventions.
+- **[research-paper-writing](./skills/personal/research-paper-writing/SKILL.md)** — Use when drafting or revising ML/CV/NLP paper sections, presentation, or claim-evidence alignment.
 
 ## Repository Layout
 
@@ -147,3 +113,18 @@ See [docs/install.md](./docs/install.md) for details.
 ## License
 
 MIT License. See [LICENSE](./LICENSE).
+
+## Curation and Compatibility
+
+Skills preserve local knowledge and chosen workflows while leaving routine
+execution to the agent. See [the curation decision](docs/adr/0003-capability-first-skills.md)
+and [portable coding preferences](docs/coding-preferences.md).
+
+`to-spec` captures requirements; `handoff` records execution state and links the
+spec. `deslop` is an on-demand cleanup for unnecessary defensive complexity.
+Existing optional commands remain available; installation is not a claim that
+every skill should run on every task.
+
+The installer copies complete skill directories; it does not change your global
+AGENTS.md/CLAUDE.md or install mandatory review hooks. See
+[compatibility checks](docs/harness-compatibility.md) for scope and verification.

@@ -1,81 +1,33 @@
 ---
 name: to-spec
-description: Turn the current conversation into a spec and publish it to the project issue tracker. Use when alignment is done and the user wants a PRD/spec without more interview.
+description: "Use when turning an aligned discussion into requirements and acceptance criteria for implementation."
 disable-model-invocation: true
 ---
 
-This skill takes the current conversation context and codebase understanding and produces a spec (you may know this document as a PRD). Do NOT interview the user — just synthesize what you already know.
+# To Spec
 
-## Issue tracker
+Capture what is to be built and how completion will be judged. Synthesize the
+conversation and relevant repository evidence without restarting an interview.
+Record unresolved consequential choices as open questions; ask only when they
+prevent a useful spec. Do not invent requirements to fill a template.
 
-If the target project has `docs/agents/issue-tracker.md`, follow it.
+Include the sections the task needs:
+- Problem and intended outcome.
+- Supported behavior, scope, and meaningful exclusions.
+- Agreed contracts and implementation decisions, including their reasons.
+- Acceptance criteria and relevant validation strategy.
+- Open questions or missing evidence.
 
-Otherwise ask once: **GitHub** (`gh` CLI) or **local markdown** under `.scratch/<feature-slug>/` (spec at `spec.md`, tickets later at `issues/<NN>-<slug>.md`). Use that choice for this session. Optionally offer to write `docs/agents/issue-tracker.md` in the target project so later sessions skip the question.
+Use user stories when they clarify distinct needs. Scale their number and the
+document's detail to the task. Link current code and prototypes when useful;
+label implementation observations separately from required behavior.
 
-On GitHub, apply a `ready-for-agent` label when that label exists. On local files, set `Status: ready-for-agent`.
+## Destination
 
-## Process
+Use the user's destination or the project's `docs/agents/issue-tracker.md`.
+If no destination is established, save to `.scratch/<feature-slug>/spec.md`
+and report the path. Publish externally only when requested or already
+authorized. Mark ready for implementation only if blocking questions are resolved.
 
-1. Explore the repo to understand the current state of the codebase, if you haven't already. Use the project's domain glossary vocabulary throughout the spec, and respect any ADRs in the area you're touching.
-
-2. Sketch out the seams at which you're going to test the feature. Existing seams should be preferred to new ones. Use the highest seam possible. If new seams are needed, propose them at the highest point you can. The fewer seams across the codebase, the better - the ideal number is one. Prefer the vocabulary in the `codebase-design` skill when talking about modules, interfaces, and seams.
-
-Check with the user that these seams match their expectations.
-
-3. Write the spec using the template below, then publish it to the project issue tracker. Mark it `ready-for-agent` — no need for additional triage.
-
-<spec-template>
-
-## Problem Statement
-
-The problem that the user is facing, from the user's perspective.
-
-## Solution
-
-The solution to the problem, from the user's perspective.
-
-## User Stories
-
-A LONG, numbered list of user stories. Each user story should be in the format of:
-
-1. As an <actor>, I want a <feature>, so that <benefit>
-
-<user-story-example>
-1. As a mobile bank customer, I want to see balance on my accounts, so that I can make better informed decisions about my spending
-</user-story-example>
-
-This list of user stories should be extremely extensive and cover all aspects of the feature.
-
-## Implementation Decisions
-
-A list of implementation decisions that were made. This can include:
-
-- The modules that will be built/modified
-- The interfaces of those modules that will be modified
-- Technical clarifications from the developer
-- Architectural decisions
-- Schema changes
-- API contracts
-- Specific interactions
-
-Do NOT include specific file paths or code snippets. They may end up being outdated very quickly.
-
-Exception: if a prototype produced a snippet that encodes a decision more precisely than prose can (state machine, reducer, schema, type shape), inline it within the relevant decision and note briefly that it came from a prototype. Trim to the decision-rich parts — not a working demo, just the important bits.
-
-## Testing Decisions
-
-A list of testing decisions that were made. Include:
-
-- A description of what makes a good test (only test external behavior, not implementation details)
-- Which modules will be tested
-- Prior art for the tests (i.e. similar types of tests in the codebase)
-
-## Out of Scope
-
-A description of the things that are out of scope for this spec.
-
-## Further Notes
-
-Any further notes about the feature.
-
-</spec-template>
+A spec describes the target. For current execution state, failed attempts, and
+next-session instructions, use `handoff` instead; reference the spec there.

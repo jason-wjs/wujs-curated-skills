@@ -1,7 +1,8 @@
 ---
 name: grill-with-docs
-description: A relentless interview that also creates ADRs and glossary docs. Use when the user wants to stress-test a plan against the project's domain language.
+description: "Use when interviewing about a plan while recording domain terms and consequential decisions."
 disable-model-invocation: true
 ---
 
-Run a grilling session using the `grilling` skill, and apply the `domain-modeling` skill throughout.
+Run a grilling session using the `grilling` skill, and use `domain-modeling` to record resolved terminology or consequential
+decisions when useful. Existing project formats take precedence.

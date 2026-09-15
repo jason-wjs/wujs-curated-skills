@@ -1,7 +1,7 @@
 ---
 name: grill-me
-description: A relentless interview to sharpen a plan or design. Use when the user wants to be grilled without writing project docs.
+description: "Use when the user explicitly asks for an interview to challenge a plan without creating project documents."
 disable-model-invocation: true
 ---
 
-Run a grilling session using the `grilling` skill.
+Use the `grilling` skill to challenge the plan. Summarize decisions in the conversation; create documents only if requested.

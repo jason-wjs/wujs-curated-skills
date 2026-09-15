@@ -9,6 +9,7 @@ import json
 import re
 import sys
 from pathlib import Path
+from urllib.parse import unquote
 
 repo = Path(sys.argv[1])
 errors: list[str] = []
@@ -98,6 +99,10 @@ for directory in skill_dirs:
             errors.append(f"{rel(bucket_readme)}: missing link to {expected}")
 
     openai_yaml = directory / "agents" / "openai.yaml"
+    explicit = data.get("disable-model-invocation") == "true"
+    if data.get("disable-model-invocation", "false") not in {"true", "false"}:
+        errors.append(f"{rel(skill)}: disable-model-invocation must be boolean")
+    codex_explicit = False
     if openai_yaml.exists():
         text = read(openai_yaml)
         if not text.strip():
@@ -106,6 +111,19 @@ for directory in skill_dirs:
             value = text.split("allow_implicit_invocation:", 1)[1].splitlines()[0].strip()
             if value not in {"true", "false"}:
                 errors.append(f"{rel(openai_yaml)}: allow_implicit_invocation must be true or false")
+            codex_explicit = value == "false"
+    if explicit != codex_explicit:
+        errors.append(f"{rel(skill)}: explicit invocation differs between Codex and Claude/Cursor")
+
+    # Validate real relative Markdown resource links, excluding fenced examples.
+    for doc in directory.rglob("*.md"):
+        body = re.sub(r"```.*?```", "", read(doc), flags=re.S)
+        for target in re.findall(r"\]\(([^\s)]+)\)", body):
+            target = unquote(target.split("#", 1)[0])
+            if not target or "://" in target or target.startswith(("/", "mailto:")):
+                continue
+            if not (doc.parent / target).exists():
+                errors.append(f"{rel(doc)}: missing linked resource {target}")
 
 top_readme = repo / "README.md"
 if top_readme.is_file():
@@ -120,10 +138,8 @@ else:
 cursor_bridge = repo / "adapters" / "cursor" / "wujs-curated-skills.mdc"
 if cursor_bridge.is_file():
     cursor_text = read(cursor_bridge)
-    for entry in manifest.get("skills", []):
-        name = Path(entry).name
-        if name not in cursor_text:
-            errors.append(f"{rel(cursor_bridge)}: missing promoted skill {name}")
+    if "alwaysApply: false" not in cursor_text:
+        errors.append(f"{rel(cursor_bridge)}: bridge must remain optional")
     for entry in manifest.get("personal", []):
         name = Path(entry).name
         if name in cursor_text:
