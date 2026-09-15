@@ -7,6 +7,12 @@ The installer reads [manifest.json](../manifest.json). Skills under `skills`
 are installed by default; skills under `personal` are installed only with
 `--include-personal`.
 
+Canonical sources live under `skills/<bucket>/<skill>/`; installation maps each
+complete directory to the target paths below. `adapters/` contains tool-specific
+bridges, not duplicate skill bodies. Codex-specific `agents/openai.yaml` stays
+inside its skill directory. See [harness compatibility](harness-compatibility.md)
+for metadata behavior and validation scope.
+
 ## Quick Start
 
 ```bash

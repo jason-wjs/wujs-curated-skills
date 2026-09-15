@@ -2,6 +2,32 @@
 
 Use these rules when creating or adapting skills in this repository.
 
+## Curation Principles
+
+Keep guidance that changes the agent's decisions: task-specific knowledge,
+personal preferences, real operational constraints, and useful command
+entrypoints. Describe outcomes and decision criteria; reserve fixed sequences
+for operations whose ordering matters. Load references and use optional tools
+only when the task needs them. Honor existing authorization without adding
+repeated approval gates.
+
+Curate individual upstream skills through deliberate review. Preserve their
+attribution and licenses in the skill and record sources in
+[external-sources.md](external-sources.md). Maintain adapted content locally;
+do not bulk-copy collections or automatically synchronize upstream changes.
+Keep one canonical source across harnesses instead of model-specific copies.
+
+Preserve concrete operational safeguards, including shared-server ownership
+and rollback. Credential entry must bypass model context; an ordinary chat
+question dialog does not provide that guarantee.
+
+Evaluate usefulness through real tasks and observed failures. Installation
+checks establish packaging compatibility, not writing or reasoning quality.
+Avoid prescribed review chains and tests for speculative requirements.
+
+These principles follow
+[Rethinking skills and prompts for GPT-6 Astra](https://developers.openai.com/blog/rethinking-skills-and-prompts-for-gpt-6-astra).
+
 ## Frontmatter
 
 - `name` is required and should use lowercase words separated by hyphens.
@@ -52,7 +78,8 @@ When adding, removing, renaming, or materially changing a skill:
 - Update `manifest.json` if the skill should be installed.
 - Update `docs/external-sources.md` if the skill is adapted from an upstream
   source.
-- Add or update an ADR if the change introduces a durable repository policy.
+- Update policies and their rationale in the relevant maintained document;
+  keep historical change narratives in Git history.
 - Run `bash scripts/lint-skills.sh` after changing skill metadata, README
   coverage, or manifest entries.
 - Run `bash scripts/test-install.sh` when install behavior or manifest entries

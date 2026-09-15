@@ -57,7 +57,8 @@ canonical skill source under `skills/<bucket>/<skill>/SKILL.md`.
 ## Documentation Rules
 
 - Use `CONTEXT.md` for repository terminology and project model.
-- Use `docs/adr/` for durable design decisions.
+- Keep current policies and their rationale in the relevant maintained document;
+  use Git history for past changes rather than separate decision records.
 - Use `.out-of-scope/` only if repeated requests need an explicit rejection
   record.
 

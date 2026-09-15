@@ -117,7 +117,7 @@ MIT License. See [LICENSE](./LICENSE).
 ## Curation and Compatibility
 
 Skills preserve local knowledge and chosen workflows while leaving routine
-execution to the agent. See [the curation decision](docs/adr/0003-capability-first-skills.md)
+execution to the agent. See [curation principles](docs/authoring-guidelines.md#curation-principles)
 and [portable coding preferences](docs/coding-preferences.md).
 
 `to-spec` captures requirements; `handoff` records execution state and links the
