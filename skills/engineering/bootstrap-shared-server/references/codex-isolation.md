@@ -3,7 +3,7 @@
 ## Invariants
 
 - Bare `codex` remains the shared/global command.
-- `codex-wjs` is the only personal terminal entrypoint.
+- `codex-dev` is the only personal terminal entrypoint.
 - Personal state never uses shared `~/.codex`.
 - Workspaces are allowlisted before Codex starts.
 - Inherited API keys and endpoint overrides cannot hijack the personal
@@ -16,7 +16,7 @@ This is command hygiene, not protection from another person using the same UID.
 ```text
 PERSONAL_ROOT/
 ├── start_codex.sh
-├── bin/codex-wjs
+├── bin/codex-dev
 ├── codex-home/<profile>/
 ├── app-bin/<profile>/codex       # App-only, when enabled
 └── ssh-codex-dispatch.sh         # App-only, when enabled
@@ -33,7 +33,7 @@ The personal launcher must:
 2. Validate the remote hostname when it is stable.
 3. Reject missing or symlinked `CODEX_HOME`.
 4. Canonicalize the requested workdir.
-5. Enforce all allowed roots and reject `/tmp` or another user's tree.
+5. Enforce the configured allowed roots; reject paths outside them.
 6. Export profile-specific `CODEX_HOME` and `CODEX_SQLITE_HOME`.
 7. Unset inherited `OPENAI_API_KEY`, `CODEX_API_KEY`, `OPENAI_BASE_URL`,
    organization, and project variables.
@@ -55,17 +55,17 @@ A manually copied CLI may work interactively but fail
 `app-server daemon bootstrap`. Review the official installer before running it
 with the personal `CODEX_HOME`; never install the personal binary globally.
 
-The user completes ChatGPT/Codex login through `codex-wjs`. Do not copy,
+The user completes ChatGPT/Codex login through `codex-dev`. Do not copy,
 inspect, print, or synchronize auth files between profiles.
 
 ## Terminal verification
 
 ```bash
 ssh <base-alias> 'command -v codex || true; codex --version 2>/dev/null || true'
-ssh <wjs-alias> 'command -v codex || true; command -v codex-wjs'
-ssh <wjs-alias> 'cd <allowed-root> && codex-wjs --version'
-ssh <wjs-alias> 'cd /tmp && codex-wjs --version'  # must refuse
-ssh <wjs-alias> 'cd <allowed-root> && codex-wjs login status'
+ssh <personal-alias> 'command -v codex || true; command -v codex-dev'
+ssh <personal-alias> 'cd <allowed-root> && codex-dev --version'
+ssh <personal-alias> 'codex-dev -C /tmp exec true'  # must refuse unless /tmp is allowlisted
+ssh <personal-alias> 'cd <allowed-root> && codex-dev login status'
 ```
 
 Read [codex-app-ssh.md](./codex-app-ssh.md) only when App support is requested.

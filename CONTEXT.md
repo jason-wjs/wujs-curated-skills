@@ -1,14 +1,14 @@
 # wujs-curated-skills Context
 
-This repository is a curated skill collection for agentic coding tools. It is
-not a general package manager and not a bulk mirror of upstream skill
-collections.
+This repository is a curated skill collection for engineering, writing, and
+tool workflows. It is not a general package manager or a bulk mirror of
+upstream skill collections.
 
 ## Language
 
 **Curated skill**:
-A skill intentionally kept in this repository because Wu Junsong wants to
-install, adapt, or maintain it as part of a personal agent workflow.
+A skill intentionally kept in this repository for its reusable domain
+knowledge, chosen preferences, or operational constraints.
 
 **Original skill**:
 A curated skill whose content was created primarily for this repository.
@@ -23,17 +23,7 @@ An upstream repository, article, documentation page, or installed local skill
 that a curated skill is derived from or compared against.
 
 **Bucket**:
-A top-level category under `skills/` that describes the skill's purpose and
-promotion level.
-
-**Promoted skill**:
-A curated skill intended to be visible in the top-level README and installed by
-default for the relevant target tools.
-
-**Personal skill**:
-A curated skill tied to Wu Junsong's local paths, note system, credentials,
-hardware, or preferences. Personal skills may be documented in their bucket but
-should be marked as environment-specific.
+A top-level category under `skills/` that describes the skill's purpose.
 
 **Install target**:
 An agent tool that can consume skills, currently Codex, Cursor, and Claude
@@ -81,8 +71,8 @@ directory. This is safer for stable use but requires explicit updates.
 - An **adapted skill** cites one or more **external sources**.
 - An **adapter** describes how curated skills map to one **install target**.
 - **OpenAI skill metadata** may refine Codex behavior for one **curated skill**.
-- The top-level README lists promoted skills; bucket READMEs list every skill
-  in that bucket.
+- The top-level README lists all installable skills; bucket READMEs list every
+  skill in that bucket.
 
 ## Open Placeholders
 

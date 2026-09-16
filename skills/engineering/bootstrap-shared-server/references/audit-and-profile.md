@@ -63,15 +63,16 @@ or GitHub access. Do not send tokens in diagnostic requests.
 Maintain a non-secret deployment record during the task:
 
 ```toml
+namespace = "dev"
 profile = "cluster_gpu_1"
 base_alias = "cluster_gpu_1"
-wjs_alias = "cluster_gpu_1_wjs"
+personal_alias = "cluster_gpu_1_dev"
 ssh_host = "203.0.113.10"
 ssh_port = 22
-ssh_user = "root"
+ssh_user = "shared-user"
 remote_hostname = "instance-abc"
-personal_root = "/shared/wjs"
-allowed_roots = ["/shared/wjs"]
+personal_root = "/shared/your-name"
+allowed_roots = ["/shared/your-name"]
 shared_storage_group = "cluster_gpu"
 
 [modules]
@@ -82,8 +83,9 @@ codex = true
 codex_app = true
 
 [network]
-openai_route = "direct"
-github_route = "direct"
+mode = "direct"
+openai_proxy = ""
+github_proxy = ""
 reverse_tunnel = false
 ```
 
@@ -98,3 +100,10 @@ The record must never contain:
 For shared storage, use a distinct `profile`, `remote_hostname`, Codex home,
 App wrapper, daemon socket, and optional reverse port per host.
 
+
+The examples use namespace `dev`. Choose a namespace for the actual operator;
+use `--namespace wjs` for deployments using the previous names. The renderer
+requires SSH user and Git name/email explicitly. Verify identity from the user
+or established repository configuration. For shared storage, choose a separate
+personal root per host/profile when using these generated files: the launcher
+and rc filenames are rooted there. Do not overwrite another host’s files.

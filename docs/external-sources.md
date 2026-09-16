@@ -202,15 +202,18 @@ https://github.com/forrestchang/andrej-karpathy-skills (MIT); its files were rem
 - Reference: <https://github.com/Nukesor/pueue>
 - Local source: `skills/tools/pueue/SKILL.md`
 - Local policy: not a vendored copy. The local skill summarizes Pueue's public
-  tool behavior and repository documentation for agent usage.
+  tool behavior and repository documentation for agent usage. Runtime syntax
+  comes from installed-version help; version changes come from official
+  [releases](https://github.com/Nukesor/pueue/releases), and shell pitfalls from
+  the [upstream guide](https://github.com/Nukesor/pueue/wiki/Common-Pitfalls-and-Debugging).
 
-### `skills/personal/obsidian-vault`
+### `skills/tools/obsidian-vault`
 
 - Reference: <https://github.com/kepano/obsidian-skills>
-- Local source: `skills/personal/obsidian-vault/SKILL.md`
+- Local source: `skills/tools/obsidian-vault/SKILL.md`
 - Local policy: not a vendored copy. The local skill uses Obsidian syntax and
-  workflow guidance as reference material while preserving vault-specific
-  behavior in the skill itself.
+  workflow guidance as reference material; naming and organization are learned
+  from the target vault rather than prescribed by this collection.
 
 ## Reference Collections
 
@@ -224,16 +227,16 @@ this repository.
 
 ## Repository-Native Skills
 
-### `skills/personal/bootstrap-shared-server`
+### `skills/engineering/bootstrap-shared-server`
 
-- Local source: `skills/personal/bootstrap-shared-server/SKILL.md`
+- Local source: `skills/engineering/bootstrap-shared-server/SKILL.md`
 - Adjacent references cover local-controller audit, personal shell, networking,
   private Git, Codex CLI/App routing, verification, and rollback.
 - Explicit-only policy: frontmatter `disable-model-invocation: true` and
   Codex `agents/openai.yaml` with `allow_implicit_invocation: false`
-- Local policy: explicit-only personal workflow for preparing an already
+- Local policy: explicit-only per-user workflow for preparing an already
   SSH-accessible shared cluster. Authored from deployment practice; no upstream
-  vendored copy. Installed only with `--include-personal`.
+  vendored copy. Included in the default install; invocation remains explicit-only.
 
 ## Local Installed Skills
 
@@ -241,7 +244,7 @@ Some initial skill baselines were copied from the local Codex installation
 under `/home/humanoid/.codex/skills/`.
 
 - `bcecmd` is maintained here as a local tool workflow skill.
-- `obsidian-vault` is maintained here as a personal local workflow skill, with
+- `obsidian-vault` is maintained here as an Obsidian workflow skill, with
   `kepano/obsidian-skills` as syntax/workflow reference material.
 
 ## `deslop` references

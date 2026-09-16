@@ -50,14 +50,13 @@ def frontmatter(path: Path) -> dict[str, str]:
 manifest_path = repo / "manifest.json"
 if not manifest_path.is_file():
     errors.append("missing manifest.json")
-    manifest = {"skills": [], "personal": []}
+    manifest = {"skills": []}
 else:
     manifest = json.loads(read(manifest_path))
 
 manifest_entries = [
     Path(entry)
-    for section in ("skills", "personal")
-    for entry in manifest.get(section, [])
+    for entry in manifest.get("skills", [])
 ]
 
 skill_dirs = sorted(path.parent for path in (repo / "skills").glob("*/*/SKILL.md"))
@@ -146,7 +145,7 @@ if top_readme.is_file():
     for entry in manifest.get("skills", []):
         expected = f"{entry.removeprefix('./')}/SKILL.md"
         if expected not in top_text:
-            errors.append(f"README.md: missing promoted skill link {expected}")
+            errors.append(f"README.md: missing skill link {expected}")
 else:
     errors.append("missing README.md")
 
@@ -155,10 +154,6 @@ if cursor_bridge.is_file():
     cursor_text = read(cursor_bridge)
     if "alwaysApply: false" not in cursor_text:
         errors.append(f"{rel(cursor_bridge)}: bridge must remain optional")
-    for entry in manifest.get("personal", []):
-        name = Path(entry).name
-        if name in cursor_text:
-            errors.append(f"{rel(cursor_bridge)}: should not include personal skill {name}")
 else:
     errors.append(f"missing {rel(cursor_bridge)}")
 

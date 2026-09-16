@@ -8,7 +8,6 @@ MANIFEST="$REPO_DIR/manifest.json"
 TOOL=""
 METHOD="copy"
 PROJECT_DIR="$PWD"
-INCLUDE_PERSONAL=false
 PRUNE=false
 SCOPE="user"
 CURSOR_SCOPE="project"
@@ -23,7 +22,7 @@ Options:
   --scope <user|repo|legacy> Codex install scope (default: user)
   --cursor-scope <project|user>  Cursor skills + bridge: project .cursor/ or user ~/.cursor/ (default: project)
   --project <path>           Project path for Codex repo scope or Cursor project scope (default: cwd)
-  --include-personal         Include skills under skills/personal
+  --include-personal         Deprecated no-op; all catalog skills are included
   --prune                    Remove deprecated skill dirs listed in manifest.json
   -h, --help                 Show help
 
@@ -34,7 +33,7 @@ Examples:
   bash scripts/install.sh --tool claude --method symlink
   bash scripts/install.sh --tool cursor --project /path/to/project
   bash scripts/install.sh --tool cursor --cursor-scope user
-  bash scripts/install.sh --tool all --include-personal
+  bash scripts/install.sh --tool all
   bash scripts/install.sh --tool codex --prune
 USAGE
 }
@@ -58,7 +57,7 @@ parse_args() {
         [[ $# -lt 2 ]] && { echo "error: --cursor-scope requires a value" >&2; exit 1; }
         CURSOR_SCOPE="$2"; shift 2 ;;
       --include-personal)
-        INCLUDE_PERSONAL=true; shift ;;
+        echo "warning: --include-personal is deprecated; all catalog skills are included." >&2; shift ;;
       --prune)
         PRUNE=true; shift ;;
       -h|--help)
@@ -80,19 +79,16 @@ parse_args() {
 manifest_skill_dirs() {
   [[ -f "$MANIFEST" ]] || { echo "error: missing manifest: $MANIFEST" >&2; exit 1; }
 
-  python3 - "$MANIFEST" "$INCLUDE_PERSONAL" <<'PY'
+  python3 - "$MANIFEST" <<'PY'
 import json
 import sys
 from pathlib import Path
 
 manifest = Path(sys.argv[1])
-include_personal = sys.argv[2] == "true"
 repo = manifest.parent
 data = json.loads(manifest.read_text())
 
 paths = list(data.get("skills", []))
-if include_personal:
-    paths.extend(data.get("personal", []))
 
 for rel in paths:
     path = (repo / rel).resolve()
@@ -103,10 +99,21 @@ PY
 }
 
 ensure_not_repo_parent_symlink() {
-  local dest="$1"
+  local dest="$1" src="$2"
   if [[ -L "$dest" ]]; then
     local resolved
-    resolved="$(readlink -f "$dest")"
+    resolved="$(python3 - "$dest" <<'PYRESOLVE'
+from pathlib import Path
+import sys
+print(Path(sys.argv[1]).resolve())
+PYRESOLVE
+)"
+    # Safe refreshes replace the link itself, including now-dangling old paths.
+    [[ "$resolved" == "$src" ]] && return 0
+    case "$(basename "$src"):$resolved" in
+      "bootstrap-shared-server:$REPO_DIR/skills/personal/bootstrap-shared-server"|\
+      "obsidian-vault:$REPO_DIR/skills/personal/obsidian-vault") return 0 ;;
+    esac
     case "$resolved" in
       "$REPO_DIR"|"$REPO_DIR"/*)
         echo "error: $dest is a symlink into this repo ($resolved)" >&2
@@ -119,7 +126,7 @@ ensure_not_repo_parent_symlink() {
 install_dir() {
   local src="$1" dest="$2"
   mkdir -p "$(dirname "$dest")"
-  ensure_not_repo_parent_symlink "$dest"
+  ensure_not_repo_parent_symlink "$dest" "$src"
 
   if [[ -e "$dest" && ! -L "$dest" && "$METHOD" == "symlink" ]]; then
     echo "error: refusing to replace non-symlink directory with symlink: $dest" >&2
@@ -144,15 +151,14 @@ from pathlib import Path
 data = json.loads(Path(sys.argv[1]).read_text())
 active = {
     Path(entry).name
-    for section in ("skills", "personal")
-    for entry in data.get(section, [])
+    for entry in data.get("skills", [])
 }
 for name in data.get("deprecated_skill_names", []):
     if not isinstance(name, str) or not name or "/" in name or name in (".", ".."):
         raise SystemExit(f"invalid deprecated_skill_names entry: {name!r}")
     if name in active:
         raise SystemExit(
-            f"deprecated_skill_names entry {name!r} is still listed under skills/personal"
+            f"deprecated_skill_names entry {name!r} is still listed under skills"
         )
     print(name)
 PY

@@ -21,16 +21,10 @@ Development symlink install:
 bash scripts/install.sh --tool claude --method symlink
 ```
 
-Include personal skills:
-
-```bash
-bash scripts/install.sh --tool claude --include-personal
-```
-
 ## Behavior
 
 - Default install mode is `copy`.
-- Personal skills are skipped unless `--include-personal` is passed.
+- All skills in `manifest.json` are installed by default.
 - Skill names are flattened at install time, e.g.
   `skills/engineering/tdd` installs to
   `~/.claude/skills/tdd`.

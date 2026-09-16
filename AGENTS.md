@@ -1,7 +1,7 @@
 # Repository Instructions
 
-This repository stores curated skills for agentic coding tools. Keep the
-canonical skill source under `skills/<bucket>/<skill>/SKILL.md`.
+This repository stores curated skills for engineering, writing, and tool
+workflows. Keep the canonical skill source under `skills/<bucket>/<skill>/SKILL.md`.
 
 ## Buckets
 
@@ -9,7 +9,6 @@ canonical skill source under `skills/<bucket>/<skill>/SKILL.md`.
 - `skills/productivity/` — general planning, writing, and collaboration workflows.
 - `skills/writing/` — writing tasks, shared editing preferences, and examples.
 - `skills/tools/` — concrete external tools, CLIs, services, and platforms.
-- `skills/personal/` — Wu Junsong-specific workflows, paths, and preferences.
 
 ## Maintenance Rules
 
@@ -19,10 +18,10 @@ canonical skill source under `skills/<bucket>/<skill>/SKILL.md`.
   workflow.
 - Every bucket must have a `README.md` listing each skill in that bucket with a
   one-line description and a link to `SKILL.md`.
-- Top-level `README.md` should list promoted skills. Personal skills may be
-  listed separately as environment-specific.
-- `manifest.json` is the installer source of truth for promoted and personal
-  skill sets.
+- Top-level `README.md` should list all installable skills.
+- `manifest.json` is the installer source of truth for the single skill set.
+- Discover environment-specific paths and identities at use time; do not
+  default to the curator’s machine or account.
 - Adapted third-party skills must preserve source attribution and license
   metadata when applicable.
 - When adding, removing, or renaming a skill, update the relevant bucket

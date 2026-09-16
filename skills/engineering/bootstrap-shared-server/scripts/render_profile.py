@@ -41,9 +41,9 @@ def render_start_codex(args: argparse.Namespace) -> str:
     proxy = ""
     if args.proxy_url:
         proxy = f"""
-WJS_PROXY_URL={q(args.proxy_url)}
-export http_proxy="$WJS_PROXY_URL" https_proxy="$WJS_PROXY_URL"
-export HTTP_PROXY="$WJS_PROXY_URL" HTTPS_PROXY="$WJS_PROXY_URL"
+{args.namespace_upper}_PROXY_URL={q(args.proxy_url)}
+export http_proxy="${args.namespace_upper}_PROXY_URL" https_proxy="${args.namespace_upper}_PROXY_URL"
+export HTTP_PROXY="${args.namespace_upper}_PROXY_URL" HTTPS_PROXY="${args.namespace_upper}_PROXY_URL"
 export NO_PROXY=localhost,127.0.0.1
 export no_proxy="$NO_PROXY"
 """
@@ -68,11 +68,11 @@ ALLOWED_WORKDIRS=(
 {bash_array(args.allowed_root)}
 )
 
-if [[ -n "${{WJS_CODEX_PROFILE:-}}" && "$WJS_CODEX_PROFILE" != "$PROFILE" ]]; then
-  echo "Profile mismatch: expected $PROFILE, got $WJS_CODEX_PROFILE" >&2
+if [[ -n "${{{args.namespace_upper}_CODEX_PROFILE:-}}" && "${args.namespace_upper}_CODEX_PROFILE" != "$PROFILE" ]]; then
+  echo "Profile mismatch: expected $PROFILE, got ${args.namespace_upper}_CODEX_PROFILE" >&2
   exit 1
 fi
-export WJS_CODEX_PROFILE="$PROFILE"
+export {args.namespace_upper}_CODEX_PROFILE="$PROFILE"
 {hostname_check}
 
 if [[ -L "$PERSONAL_CODEX_HOME" || ! -d "$PERSONAL_CODEX_HOME" ]]; then
@@ -129,7 +129,7 @@ for allowed_workdir in "${{ALLOWED_WORKDIRS[@]}}"; do
   fi
 done
 if [[ "$allowed" != true ]]; then
-  echo "Refusing to start codex-wjs outside allowed workspaces:" >&2
+  echo "Refusing to start codex-{args.namespace} outside allowed workspaces:" >&2
   printf "  %s\\n" "${{ALLOWED_WORKDIRS[@]}}" >&2
   echo "Requested: $requested_workdir" >&2
   exit 1
@@ -148,10 +148,10 @@ exec "$CODEX_BIN" "$@"
 """
 
 
-def render_codex_wjs(args: argparse.Namespace) -> str:
+def render_codex_launcher(args: argparse.Namespace) -> str:
     return f"""#!/usr/bin/env bash
 set -euo pipefail
-export WJS_CODEX_PROFILE={q(args.profile)}
+export {args.namespace_upper}_CODEX_PROFILE={q(args.profile)}
 exec {q(args.personal_root + '/start_codex.sh')} "$@"
 """
 
@@ -161,43 +161,43 @@ def render_bashrc_extras(args: argparse.Namespace) -> str:
     manual_proxy_url = args.proxy_url or args.git_proxy_url
     if manual_proxy_url:
         proxy_helpers = f"""
-_wjs_proxy_url={q(manual_proxy_url)}
+_{args.namespace}_proxy_url={q(manual_proxy_url)}
 
-wjs_proxy_on() {{
-  export http_proxy="$_wjs_proxy_url" https_proxy="$_wjs_proxy_url"
-  export HTTP_PROXY="$_wjs_proxy_url" HTTPS_PROXY="$_wjs_proxy_url"
+{args.namespace}_proxy_on() {{
+  export http_proxy="$_{args.namespace}_proxy_url" https_proxy="$_{args.namespace}_proxy_url"
+  export HTTP_PROXY="$_{args.namespace}_proxy_url" HTTPS_PROXY="$_{args.namespace}_proxy_url"
   export NO_PROXY=localhost,127.0.0.1
   export no_proxy="$NO_PROXY"
-  echo "WJS proxy enabled: $_wjs_proxy_url"
+  echo "{args.namespace_upper} proxy enabled: $_{args.namespace}_proxy_url"
 }}
 
-wjs_proxy_off() {{
+{args.namespace}_proxy_off() {{
   unset http_proxy https_proxy HTTP_PROXY HTTPS_PROXY
   unset all_proxy ALL_PROXY no_proxy NO_PROXY
-  echo "WJS proxy disabled"
+  echo "{args.namespace_upper} proxy disabled"
 }}
 """
 
     return f"""# Personal shell additions; never redefine bare codex.
-[[ -n "${{_WJS_EXTRAS_LOADED:-}}" ]] && return 0
-_WJS_EXTRAS_LOADED=1
+[[ -n "${{_{args.namespace_upper}_EXTRAS_LOADED:-}}" ]] && return 0
+_{args.namespace_upper}_EXTRAS_LOADED=1
 
-export WJS_CODEX_PROFILE="${{WJS_CODEX_PROFILE:-{args.profile}}}"
+export {args.namespace_upper}_CODEX_PROFILE="${{{args.namespace_upper}_CODEX_PROFILE:-{args.profile}}}"
 export PATH={q(args.personal_root + '/bin')}:"$PATH"
 {proxy_helpers}"""
 
 
-def render_bashrc_wjs(args: argparse.Namespace) -> str:
+def render_bashrc(args: argparse.Namespace) -> str:
     return f"""# Personal interactive shell. Shared defaults remain shared.
-if [[ -z "${{_WJS_GLOBAL_BASHRC_SOURCED:-}}" ]]; then
-  _WJS_GLOBAL_BASHRC_SOURCED=1
+if [[ -z "${{_{args.namespace_upper}_GLOBAL_BASHRC_SOURCED:-}}" ]]; then
+  _{args.namespace_upper}_GLOBAL_BASHRC_SOURCED=1
   if [[ -f "$HOME/.bashrc" ]]; then
     source "$HOME/.bashrc"
   fi
 fi
 
-if [[ -z "${{_WJS_EXTRAS_LOADED:-}}" ]]; then
-  source {q(args.personal_root + '/.bashrc-wjs-extras.sh')}
+if [[ -z "${{_{args.namespace_upper}_EXTRAS_LOADED:-}}" ]]; then
+  source {q(args.personal_root + f'/.bashrc-{args.namespace}-extras.sh')}
 fi
 """
 
@@ -205,12 +205,12 @@ fi
 def identity_lines(identity_file: str) -> str:
     if not identity_file:
         return ""
-    return f"    IdentityFile {identity_file}\n    IdentitiesOnly yes\n"
+    return f'    IdentityFile "{authorized_keys_escape(identity_file)}"\n    IdentitiesOnly yes\n'
 
 
 def render_ssh_block(args: argparse.Namespace) -> str:
     base_identity = identity_lines(args.identity_file)
-    wjs_identity = identity_lines(args.wjs_identity_file)
+    personal_identity = identity_lines(args.personal_identity_file)
     return f"""# Merge with existing SSH config; do not duplicate the base block.
 Host {args.host_alias}
     HostName {args.hostname}
@@ -218,11 +218,11 @@ Host {args.host_alias}
     User {args.user}
 {base_identity.rstrip()}
 
-Host {args.wjs_host_alias}
+Host {args.personal_host_alias}
     HostName {args.hostname}
     Port {args.port}
     User {args.user}
-{wjs_identity.rstrip()}
+{personal_identity.rstrip()}
     StrictHostKeyChecking accept-new
 """
 
@@ -243,15 +243,15 @@ PERSONAL_ROOT={q(args.personal_root)}
 expected_profile={q(args.profile)}
 profile="${{1:-}}"
 if [[ "$profile" != "$expected_profile" ]]; then
-  echo "Invalid WJS SSH profile: $profile" >&2
+  echo "Invalid {args.namespace_upper} SSH profile: $profile" >&2
   exit 1
 fi
-export WJS_CODEX_PROFILE="$profile"
+export {args.namespace_upper}_CODEX_PROFILE="$profile"
 {hostname_check}
 
 original="${{SSH_ORIGINAL_COMMAND:-}}"
 if [[ -z "$original" ]]; then
-  exec bash --rcfile "$PERSONAL_ROOT/.bashrc-wjs" -i
+  exec bash --rcfile "$PERSONAL_ROOT/.bashrc-{args.namespace}" -i
 fi
 
 if [[ "$original" == *CODEX_REMOTE_PAYLOAD* &&
@@ -260,7 +260,7 @@ if [[ "$original" == *CODEX_REMOTE_PAYLOAD* &&
   exec bash -lc "$original"
 fi
 
-export BASH_ENV="$PERSONAL_ROOT/.bashrc-wjs-extras.sh"
+export BASH_ENV="$PERSONAL_ROOT/.bashrc-{args.namespace}-extras.sh"
 exec bash -lc "$original"
 """
 
@@ -268,23 +268,23 @@ exec bash -lc "$original"
 def render_app_codex(args: argparse.Namespace) -> str:
     return f"""#!/usr/bin/env bash
 set -euo pipefail
-export WJS_CODEX_PROFILE={q(args.profile)}
-exec {q(args.personal_root + '/bin/codex-wjs')} "$@"
+export {args.namespace_upper}_CODEX_PROFILE={q(args.profile)}
+exec {q(args.personal_root + f'/bin/codex-{args.namespace}')} "$@"
 """
 
 
 def render_authorized_key_command(args: argparse.Namespace) -> str:
-    command = f"{args.personal_root}/ssh-codex-dispatch.sh {args.profile}"
+    command = f"{q(args.personal_root + '/ssh-codex-dispatch.sh')} {q(args.profile)}"
     return (
         f'restrict,pty,command="{authorized_keys_escape(command)}" '
-        f"ssh-ed25519 <PASTE_{args.profile.upper()}_WJS_PUBLIC_KEY> "
-        f"{args.profile}-wjs\n"
+        f"ssh-ed25519 <PASTE_{args.profile.upper()}_{args.namespace_upper}_PUBLIC_KEY> "
+        f"{args.profile}-{args.namespace}\n"
     )
 
 
 def render_proxy_service(args: argparse.Namespace) -> str:
     return f"""[Unit]
-Description=WJS reverse proxy for {args.profile}
+Description={args.namespace_upper} reverse proxy for {args.profile}
 After=network-online.target
 Wants=network-online.target
 
@@ -336,9 +336,10 @@ def render_profile_toml(args: argparse.Namespace) -> str:
     else:
         proxy_mode = "direct"
 
-    return f"""profile = {toml_string(args.profile)}
+    return f"""namespace = {toml_string(args.namespace)}
+profile = {toml_string(args.profile)}
 base_alias = {toml_string(args.host_alias)}
-wjs_alias = {toml_string(args.wjs_host_alias)}
+personal_alias = {toml_string(args.personal_host_alias)}
 ssh_host = {toml_string(args.hostname)}
 ssh_port = {args.port}
 ssh_user = {toml_string(args.user)}
@@ -380,7 +381,7 @@ def render_install_notes(args: argparse.Namespace) -> str:
     if args.enable_reverse_proxy:
         proxy_notes = f"""
 5. On the always-on laptop, review and install
-   `{args.profile}-wjs-proxy.service` as a user unit. Confirm `autossh`,
+   `{args.profile}-{args.namespace}-proxy.service` as a user unit. Confirm `autossh`,
    SSH reachability, local proxy port {args.laptop_proxy_port}, remote port
    {args.remote_proxy_port}, and linger policy before enabling it.
 """
@@ -391,20 +392,20 @@ These files are not installed. Review every path and command first.
 
 1. Create the personal directories and profile home:
 
-   install -d -m 700 {args.personal_root}/bin
-   install -d -m 700 {args.codex_home}
+   install -d -m 700 {q(args.personal_root + "/bin")}
+   install -d -m 700 {q(args.codex_home)}
 
 2. Install personal files without changing shared rc or global codex:
 
-   install -m 700 start_codex.sh {args.personal_root}/start_codex.sh
-   install -m 700 bin-codex-wjs {args.personal_root}/bin/codex-wjs
-   install -m 700 setup_git_local.sh {args.personal_root}/bin/setup_git_local.sh
-   install -m 644 .bashrc-wjs .bashrc-wjs-extras.sh {args.personal_root}/
+   install -m 700 start_codex.sh {q(args.personal_root + "/start_codex.sh")}
+   install -m 700 bin-codex-{args.namespace} {q(args.personal_root + "/bin/codex-" + args.namespace)}
+   install -m 700 setup_git_local.sh {q(args.personal_root + "/bin/setup_git_local.sh")}
+   install -m 644 .bashrc-{args.namespace} .bashrc-{args.namespace}-extras.sh {q(args.personal_root + "/")}
 
 3. Keep `profile.toml` as the non-secret deployment record. Merge only the
    reviewed SSH blocks into the local SSH config.
 {app_notes}{proxy_notes}
-Verify base `codex`, personal `codex-wjs`, allowlist rejection, login status,
+Verify base `codex`, personal `codex-{args.namespace}`, allowlist rejection, login status,
 managed app-server when enabled, and current Codex App logs.
 """
 
@@ -413,32 +414,37 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--output-dir", required=True)
     parser.add_argument("--profile", required=True)
+    parser.add_argument("--namespace", default="dev", help="File/helper prefix; use wjs for existing deployments")
     parser.add_argument("--personal-root", required=True)
     parser.add_argument("--codex-home", default="")
     parser.add_argument("--codex-bin", default="")
     parser.add_argument("--allowed-root", action="append", default=[])
     parser.add_argument("--proxy-url", default="")
     parser.add_argument("--git-proxy-url", default="")
-    parser.add_argument("--git-user-name", default="jason-wjs")
-    parser.add_argument("--git-user-email", default="jason-w@sjtu.edu.cn")
+    parser.add_argument("--git-user-name", required=True)
+    parser.add_argument("--git-user-email", required=True)
     parser.add_argument(
         "--git-credential-helper", default="cache --timeout=3600"
     )
     parser.add_argument("--shared-storage-group", default="")
     parser.add_argument("--host-alias", required=True)
-    parser.add_argument("--wjs-host-alias", default="")
+    parser.add_argument("--personal-host-alias", "--wjs-host-alias", default="")
     parser.add_argument("--hostname", required=True)
     parser.add_argument("--remote-hostname", default="")
     parser.add_argument("--port", type=int, default=22)
-    parser.add_argument("--user", default="root")
+    parser.add_argument("--user", required=True)
     parser.add_argument("--identity-file", default="~/.ssh/id_ed25519")
-    parser.add_argument("--wjs-identity-file", default="")
+    parser.add_argument("--personal-identity-file", "--wjs-identity-file", default="")
     parser.add_argument("--enable-codex-app", action="store_true")
     parser.add_argument("--enable-reverse-proxy", action="store_true")
     parser.add_argument("--tunnel-ssh-alias", default="")
     parser.add_argument("--laptop-proxy-port", type=int)
     parser.add_argument("--remote-proxy-port", type=int)
     args = parser.parse_args()
+
+    if not re.fullmatch(r"[a-z][a-z0-9_]*", args.namespace):
+        parser.error("--namespace must start with a lowercase letter and contain lowercase letters, digits, or underscores")
+    args.namespace_upper = args.namespace.upper()
 
     if not PROFILE_RE.fullmatch(args.profile):
         parser.error("--profile must contain only letters, digits, dot, underscore, or hyphen")
@@ -448,16 +454,16 @@ def parse_args() -> argparse.Namespace:
         args.codex_home = f"{args.personal_root}/codex-home/{args.profile}"
     if not args.codex_bin:
         args.codex_bin = f"{args.codex_home}/packages/standalone/current/codex"
-    if not args.wjs_host_alias:
-        args.wjs_host_alias = f"{args.host_alias}_wjs"
-    if not args.wjs_identity_file:
-        args.wjs_identity_file = f"~/.ssh/id_ed25519_{args.profile}_wjs"
+    if not args.personal_host_alias:
+        args.personal_host_alias = f"{args.host_alias}_{args.namespace}"
+    if not args.personal_identity_file:
+        args.personal_identity_file = f"~/.ssh/id_ed25519_{args.profile}_{args.namespace}"
     if not args.shared_storage_group:
         args.shared_storage_group = args.profile
 
     for name, value in {
         "--host-alias": args.host_alias,
-        "--wjs-host-alias": args.wjs_host_alias,
+        "--personal-host-alias": args.personal_host_alias,
         "--tunnel-ssh-alias": args.tunnel_ssh_alias,
     }.items():
         if value and not PROFILE_RE.fullmatch(value):
@@ -470,7 +476,7 @@ def parse_args() -> argparse.Namespace:
         "--remote-hostname": args.remote_hostname,
         "--user": args.user,
         "--identity-file": args.identity_file,
-        "--wjs-identity-file": args.wjs_identity_file,
+        "--personal-identity-file": args.personal_identity_file,
         "--proxy-url": args.proxy_url,
         "--git-proxy-url": args.git_proxy_url,
         "--git-user-name": args.git_user_name,
@@ -526,9 +532,9 @@ def main() -> int:
 
     files = {
         "start_codex.sh": render_start_codex(args),
-        "bin-codex-wjs": render_codex_wjs(args),
-        ".bashrc-wjs": render_bashrc_wjs(args),
-        ".bashrc-wjs-extras.sh": render_bashrc_extras(args),
+        f"bin-codex-{args.namespace}": render_codex_launcher(args),
+        f".bashrc-{args.namespace}": render_bashrc(args),
+        f".bashrc-{args.namespace}-extras.sh": render_bashrc_extras(args),
         "setup_git_local.sh": render_git_helper(args),
         "profile.toml": render_profile_toml(args),
         "ssh-config-block.txt": render_ssh_block(args),
@@ -543,11 +549,11 @@ def main() -> int:
             }
         )
     if args.enable_reverse_proxy:
-        files[f"{args.profile}-wjs-proxy.service"] = render_proxy_service(args)
+        files[f"{args.profile}-{args.namespace}-proxy.service"] = render_proxy_service(args)
 
     executable_names = {
         "start_codex.sh",
-        "bin-codex-wjs",
+        f"bin-codex-{args.namespace}",
         "ssh-codex-dispatch.sh",
         "app-codex",
         "setup_git_local.sh",

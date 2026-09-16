@@ -9,26 +9,26 @@ from urllib.parse import unquote
 repo = Path(__file__).resolve().parents[1]
 staging = Path(sys.argv[1])
 manifest = json.loads((repo / 'manifest.json').read_text())
-# Mirrors the install scenarios in test-install.sh: path, personal, symlink.
+# Mirrors the install scenarios in test-install.sh: path, symlink.
 cases = [
-    ('codex-user-home/.agents/skills', False, False),
-    ('codex-project/.agents/skills', True, False),
-    ('codex-legacy/skills', False, False),
-    ('home/.claude/skills', True, False),
-    ('project/.cursor/skills', False, False),
-    ('cursor-personal/.cursor/skills', True, False),
-    ('cursor-symlink/.cursor/skills', False, True),
-    ('cursor-user-home/.cursor/skills', False, False),
-    ('all-user-home/.agents/skills', False, False),
-    ('all-user-home/.claude/skills', False, False),
-    ('all-user-home/.cursor/skills', False, False),
-    ('codex-symlink-home/.agents/skills', False, True),
-    ('codex-prune-home/.agents/skills', True, False),
-    ('claude-symlink-home/.claude/skills', True, True),
+    ('codex-user-home/.agents/skills', False),
+    ('codex-project/.agents/skills', False),
+    ('codex-legacy/skills', False),
+    ('home/.claude/skills', False),
+    ('project/.cursor/skills', False),
+    ('cursor-compat/.cursor/skills', False),
+    ('cursor-symlink/.cursor/skills', True),
+    ('cursor-user-home/.cursor/skills', False),
+    ('all-user-home/.agents/skills', False),
+    ('all-user-home/.claude/skills', False),
+    ('all-user-home/.cursor/skills', False),
+    ('codex-symlink-home/.agents/skills', True),
+    ('codex-prune-home/.agents/skills', False),
+    ('claude-symlink-home/.claude/skills', True),
 ]
-for location, personal, symlink in cases:
+for location, symlink in cases:
     installed = staging / location
-    entries = manifest['skills'] + (manifest['personal'] if personal else [])
+    entries = manifest['skills']
     expected = {Path(entry).name for entry in entries}
     actual = {p.name for p in installed.iterdir()}
     assert actual == expected, (location, 'skill set mismatch', actual ^ expected)

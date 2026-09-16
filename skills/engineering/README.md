@@ -2,6 +2,7 @@
 
 Engineering workflows and focused reviews.
 
+- **[bootstrap-shared-server](./bootstrap-shared-server/SKILL.md)** — Use when explicitly preparing, auditing, or repairing a per-user development environment on an SSH-accessible shared Linux cluster.
 - **[code-review](./code-review/SKILL.md)** — Use when reviewing a PR, branch, commit range, or uncommitted changes for actionable defects and requirement gaps.
 - **[codebase-design](./codebase-design/SKILL.md)** — Use when choosing a module interface or examining coupling and testability.
 - **[deslop](./deslop/SKILL.md)** — Use when simplifying a diff with unnecessary defensive branches, fallback behavior, or abstraction.

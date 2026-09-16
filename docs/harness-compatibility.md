@@ -1,6 +1,6 @@
 # Harness Compatibility
 
-Validated on 2026-09-16 after the writing collection migration. Canonical skills are installed as complete directories;
+Validated on 2026-09-16 after category and tool-skill cleanup. Canonical skills are installed as complete directories;
 references use paths relative to the skill, so the bucketed source layout can
 be flattened without losing resources.
 
@@ -26,8 +26,13 @@ sync; a successful local install does not provision them.
 
 Run `bash scripts/test-install.sh`. It uses disposable temporary directories,
 without changing live harness installations, and checks:
+
 - Frontmatter, invocation-policy parity, catalog entries, and resource links.
-- Copy/symlink packages across 14 scenarios, with and without personal skills.
+- Copy/symlink packages across 14 scenarios, with the single default skill set.
+- Refresh of old personal source links, repeat symlink installs, and rejection
+  of links pointing at the repository root.
+- Bootstrap candidates: namespaces, quoting, Git identity, workspace/profile/host
+  boundaries, and shell syntax, using a fake executable without SSH connections.
 - Every installed file against canonical content, and installed relative links.
 - Deprecated-skill pruning, including karpathy-guidelines, research-paper-writing, and edit-article.
 - Writing skill sibling references and the shared editing contract; human

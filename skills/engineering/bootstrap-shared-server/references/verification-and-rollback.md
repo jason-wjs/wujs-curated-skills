@@ -9,13 +9,13 @@ unchanged.
 | --- | --- |
 | Base SSH alias | Connects as before |
 | Shared shell files | No unapproved diff |
-| WJS alias | Opens personal shell/profile |
+| DEV alias | Opens personal shell/profile |
 | Bare `codex` | Same shared/global resolution |
-| `codex-wjs` | Personal profile and managed binary |
+| `codex-dev` | Personal profile and managed binary |
 | Wrong host/profile | Fails closed |
 | Allowed workspace | Starts successfully |
 | Disallowed workspace | Refuses |
-| Git identity | Repository-local WJS values |
+| Git identity | Repository-local DEV values |
 | Git credentials | Interactive/cache only; no stored token |
 | GitHub route | Matches network classification |
 | OpenAI route | Matches network classification |
@@ -29,7 +29,7 @@ For shared storage, connect to every host simultaneously and confirm distinct
 
 ## Negative tests
 
-- Run `codex-wjs` from `/tmp`.
+- Request a workspace outside the allowlist with `codex-dev -C <outside-root> exec true`. Version/help/login commands deliberately use an allowed root.
 - Supply an unknown profile.
 - Attempt a known profile on the wrong stable hostname.
 - Stop the optional tunnel and verify a clear failure.
@@ -66,7 +66,7 @@ Rollback removes only artifacts created by this deployment:
 
 1. Disable the new proxy user unit, then remove that unit.
 2. Remove the exact dedicated public-key line, preserving all others.
-3. Remove the exact local WJS SSH block/key created for this profile.
+3. Remove the exact local dedicated SSH block/key created for this profile.
 4. Restore replaced personal files from timestamped backups.
 5. Restore previous repository-local Git values.
 6. Remove new profile directories only after confirming they contain no needed

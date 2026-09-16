@@ -22,7 +22,7 @@ bash "$REPO_DIR/scripts/install.sh" --help >/dev/null
 echo "[test] skill lint"
 bash "$REPO_DIR/scripts/lint-skills.sh" >/dev/null
 
-echo "[test] codex user copy skips personal by default"
+echo "[test] codex user copy includes all skills by default"
 HOME="$TMP_DIR/codex-user-home" bash "$REPO_DIR/scripts/install.sh" --tool codex >/dev/null
 assert_file "$TMP_DIR/codex-user-home/.agents/skills/diagnosing-bugs/SKILL.md"
 assert_no_path "$TMP_DIR/codex-user-home/.agents/skills/karpathy-guidelines"
@@ -42,14 +42,14 @@ assert_file "$TMP_DIR/codex-user-home/.agents/skills/teach/MISSION-FORMAT.md"
 assert_file "$TMP_DIR/codex-user-home/.agents/skills/write-a-skill/SKILL.md"
 assert_file "$TMP_DIR/codex-user-home/.agents/skills/bcecmd/SKILL.md"
 assert_file "$TMP_DIR/codex-user-home/.agents/skills/bcecmd/references/setup-and-troubleshooting.md"
-assert_no_path "$TMP_DIR/codex-user-home/.agents/skills/bootstrap-shared-server"
+assert_file "$TMP_DIR/codex-user-home/.agents/skills/bootstrap-shared-server/SKILL.md"
 assert_no_path "$TMP_DIR/codex-user-home/.agents/skills/shared-server-codex-isolation"
 assert_no_path "$TMP_DIR/codex-user-home/.agents/skills/shared-server-git-private"
-assert_no_path "$TMP_DIR/codex-user-home/.agents/skills/obsidian-vault"
+assert_file "$TMP_DIR/codex-user-home/.agents/skills/obsidian-vault/SKILL.md"
 assert_no_path "$TMP_DIR/codex-user-home/.agents/skills/research-paper-writing"
 
-echo "[test] codex repo copy includes personal when requested"
-bash "$REPO_DIR/scripts/install.sh" --tool codex --scope repo --project "$TMP_DIR/codex-project" --include-personal >/dev/null
+echo "[test] codex repo copy includes all skills"
+bash "$REPO_DIR/scripts/install.sh" --tool codex --scope repo --project "$TMP_DIR/codex-project" >/dev/null
 assert_file "$TMP_DIR/codex-project/.agents/skills/diagnosing-bugs/SKILL.md"
 assert_no_path "$TMP_DIR/codex-project/.agents/skills/karpathy-guidelines"
 assert_file "$TMP_DIR/codex-project/.agents/skills/improve-codebase-architecture/SKILL.md"
@@ -81,13 +81,13 @@ assert_file "$TMP_DIR/codex-legacy/skills/diagnosing-bugs/SKILL.md"
 assert_file "$TMP_DIR/codex-legacy/skills/handoff/SKILL.md"
 assert_file "$TMP_DIR/codex-legacy/skills/teach/SKILL.md"
 assert_file "$TMP_DIR/codex-legacy/skills/teach/MISSION-FORMAT.md"
-assert_no_path "$TMP_DIR/codex-legacy/skills/bootstrap-shared-server"
+assert_file "$TMP_DIR/codex-legacy/skills/bootstrap-shared-server/SKILL.md"
 assert_no_path "$TMP_DIR/codex-legacy/skills/shared-server-codex-isolation"
 assert_no_path "$TMP_DIR/codex-legacy/skills/shared-server-git-private"
-assert_no_path "$TMP_DIR/codex-legacy/skills/obsidian-vault"
+assert_file "$TMP_DIR/codex-legacy/skills/obsidian-vault/SKILL.md"
 
 echo "[test] claude copy uses temporary HOME"
-HOME="$TMP_DIR/home" bash "$REPO_DIR/scripts/install.sh" --tool claude --include-personal >/dev/null
+HOME="$TMP_DIR/home" bash "$REPO_DIR/scripts/install.sh" --tool claude >/dev/null
 assert_file "$TMP_DIR/home/.claude/skills/diagnosing-bugs/SKILL.md"
 assert_no_path "$TMP_DIR/home/.claude/skills/karpathy-guidelines"
 assert_file "$TMP_DIR/home/.claude/skills/improve-codebase-architecture/SKILL.md"
@@ -132,21 +132,22 @@ assert_file "$TMP_DIR/project/.cursor/skills/teach/MISSION-FORMAT.md"
 assert_file "$TMP_DIR/project/.cursor/skills/write-a-skill/SKILL.md"
 assert_file "$TMP_DIR/project/.cursor/skills/bcecmd/SKILL.md"
 assert_file "$TMP_DIR/project/.cursor/skills/bcecmd/references/setup-and-troubleshooting.md"
-assert_no_path "$TMP_DIR/project/.cursor/skills/bootstrap-shared-server"
+assert_file "$TMP_DIR/project/.cursor/skills/bootstrap-shared-server/SKILL.md"
 assert_no_path "$TMP_DIR/project/.cursor/skills/shared-server-codex-isolation"
 assert_no_path "$TMP_DIR/project/.cursor/skills/shared-server-git-private"
-assert_no_path "$TMP_DIR/project/.cursor/skills/obsidian-vault"
+assert_file "$TMP_DIR/project/.cursor/skills/obsidian-vault/SKILL.md"
 assert_no_path "$TMP_DIR/project/.cursor/skills/research-paper-writing"
 
-echo "[test] cursor install includes personal skills when requested"
-bash "$REPO_DIR/scripts/install.sh" --tool cursor --project "$TMP_DIR/cursor-personal" --include-personal >/dev/null
-assert_file "$TMP_DIR/cursor-personal/.cursor/skills/bootstrap-shared-server/SKILL.md"
-assert_file "$TMP_DIR/cursor-personal/.cursor/skills/bootstrap-shared-server/references/operating-contract.md"
-assert_file "$TMP_DIR/cursor-personal/.cursor/skills/bootstrap-shared-server/references/verification-and-rollback.md"
-assert_file "$TMP_DIR/cursor-personal/.cursor/skills/bootstrap-shared-server/scripts/render_profile.py"
-assert_no_path "$TMP_DIR/cursor-personal/.cursor/skills/edit-article"
-assert_file "$TMP_DIR/cursor-personal/.cursor/skills/obsidian-vault/SKILL.md"
-assert_file "$TMP_DIR/cursor-personal/.cursor/skills/paper-writing/SKILL.md"
+echo "[test] cursor install accepts deprecated include-personal option"
+bash "$REPO_DIR/scripts/install.sh" --tool cursor --project "$TMP_DIR/cursor-compat" --include-personal >/dev/null 2>"$TMP_DIR/compat-warning"
+rg -q "deprecated" "$TMP_DIR/compat-warning"
+assert_file "$TMP_DIR/cursor-compat/.cursor/skills/bootstrap-shared-server/SKILL.md"
+assert_file "$TMP_DIR/cursor-compat/.cursor/skills/bootstrap-shared-server/references/operating-contract.md"
+assert_file "$TMP_DIR/cursor-compat/.cursor/skills/bootstrap-shared-server/references/verification-and-rollback.md"
+assert_file "$TMP_DIR/cursor-compat/.cursor/skills/bootstrap-shared-server/scripts/render_profile.py"
+assert_no_path "$TMP_DIR/cursor-compat/.cursor/skills/edit-article"
+assert_file "$TMP_DIR/cursor-compat/.cursor/skills/obsidian-vault/SKILL.md"
+assert_file "$TMP_DIR/cursor-compat/.cursor/skills/paper-writing/SKILL.md"
 
 echo "[test] cursor symlink skill install"
 bash "$REPO_DIR/scripts/install.sh" --tool cursor --project "$TMP_DIR/cursor-symlink" --method symlink >/dev/null
@@ -169,7 +170,7 @@ assert_file "$TMP_DIR/cursor-user-home/.cursor/skills/teach/SKILL.md"
 assert_file "$TMP_DIR/cursor-user-home/.cursor/skills/teach/MISSION-FORMAT.md"
 assert_file "$TMP_DIR/cursor-user-home/.cursor/skills/bcecmd/references/setup-and-troubleshooting.md"
 assert_file "$TMP_DIR/cursor-user-home/.cursor/rules/wujs-curated-skills.mdc"
-assert_no_path "$TMP_DIR/cursor-user-home/.cursor/skills/bootstrap-shared-server"
+assert_file "$TMP_DIR/cursor-user-home/.cursor/skills/bootstrap-shared-server/SKILL.md"
 assert_no_path "$TMP_DIR/cursor-user-home/.cursor/skills/shared-server-codex-isolation"
 assert_no_path "$TMP_DIR/cursor-user-home/.cursor/skills/shared-server-git-private"
 assert_no_path "$fake_project/.cursor"
@@ -186,14 +187,14 @@ assert_file "$TMP_DIR/all-user-home/.agents/skills/diagnosing-bugs/SKILL.md"
 assert_file "$TMP_DIR/all-user-home/.agents/skills/handoff/SKILL.md"
 assert_file "$TMP_DIR/all-user-home/.agents/skills/teach/SKILL.md"
 assert_file "$TMP_DIR/all-user-home/.agents/skills/teach/MISSION-FORMAT.md"
-assert_no_path "$TMP_DIR/all-user-home/.agents/skills/bootstrap-shared-server"
+assert_file "$TMP_DIR/all-user-home/.agents/skills/bootstrap-shared-server/SKILL.md"
 assert_no_path "$TMP_DIR/all-user-home/.agents/skills/shared-server-codex-isolation"
 assert_no_path "$TMP_DIR/all-user-home/.agents/skills/shared-server-git-private"
 assert_file "$TMP_DIR/all-user-home/.claude/skills/diagnosing-bugs/SKILL.md"
 assert_file "$TMP_DIR/all-user-home/.claude/skills/handoff/SKILL.md"
 assert_file "$TMP_DIR/all-user-home/.claude/skills/teach/SKILL.md"
 assert_file "$TMP_DIR/all-user-home/.claude/skills/teach/MISSION-FORMAT.md"
-assert_no_path "$TMP_DIR/all-user-home/.claude/skills/bootstrap-shared-server"
+assert_file "$TMP_DIR/all-user-home/.claude/skills/bootstrap-shared-server/SKILL.md"
 assert_no_path "$TMP_DIR/all-user-home/.claude/skills/shared-server-codex-isolation"
 assert_no_path "$TMP_DIR/all-user-home/.claude/skills/shared-server-git-private"
 assert_file "$TMP_DIR/all-user-home/.cursor/skills/diagnosing-bugs/SKILL.md"
@@ -202,7 +203,7 @@ assert_file "$TMP_DIR/all-user-home/.cursor/skills/teach/SKILL.md"
 assert_file "$TMP_DIR/all-user-home/.cursor/skills/teach/MISSION-FORMAT.md"
 assert_file "$TMP_DIR/all-user-home/.cursor/skills/bcecmd/references/setup-and-troubleshooting.md"
 assert_file "$TMP_DIR/all-user-home/.cursor/rules/wujs-curated-skills.mdc"
-assert_no_path "$TMP_DIR/all-user-home/.cursor/skills/bootstrap-shared-server"
+assert_file "$TMP_DIR/all-user-home/.cursor/skills/bootstrap-shared-server/SKILL.md"
 assert_no_path "$TMP_DIR/all-user-home/.cursor/skills/shared-server-codex-isolation"
 assert_no_path "$TMP_DIR/all-user-home/.cursor/skills/shared-server-git-private"
 
@@ -229,7 +230,7 @@ assert_file "$TMP_DIR/codex-prune-home/.agents/skills/karpathy-guidelines/SKILL.
 assert_file "$TMP_DIR/codex-prune-home/.agents/skills/writing-great-skills/SKILL.md"
 assert_file "$TMP_DIR/codex-prune-home/.agents/skills/shared-server-codex-isolation/SKILL.md"
 assert_file "$TMP_DIR/codex-prune-home/.agents/skills/shared-server-git-private/SKILL.md"
-HOME="$TMP_DIR/codex-prune-home" bash "$REPO_DIR/scripts/install.sh" --tool codex --include-personal --prune >/dev/null
+HOME="$TMP_DIR/codex-prune-home" bash "$REPO_DIR/scripts/install.sh" --tool codex --prune >/dev/null
 assert_no_path "$TMP_DIR/codex-prune-home/.agents/skills/karpathy-guidelines"
 assert_no_path "$TMP_DIR/codex-prune-home/.agents/skills/writing-great-skills"
 assert_no_path "$TMP_DIR/codex-prune-home/.agents/skills/shared-server-codex-isolation"
@@ -249,11 +250,11 @@ for name in research-paper-writing edit-article; do
   mkdir -p "$TMP_DIR/codex-prune-home/.agents/skills/$name"
   echo "stale" > "$TMP_DIR/codex-prune-home/.agents/skills/$name/SKILL.md"
 done
-HOME="$TMP_DIR/codex-prune-home" bash "$REPO_DIR/scripts/install.sh" --tool codex --include-personal >/dev/null
+HOME="$TMP_DIR/codex-prune-home" bash "$REPO_DIR/scripts/install.sh" --tool codex >/dev/null
 for name in research-paper-writing edit-article; do
   assert_file "$TMP_DIR/codex-prune-home/.agents/skills/$name/SKILL.md"
 done
-HOME="$TMP_DIR/codex-prune-home" bash "$REPO_DIR/scripts/install.sh" --tool codex --include-personal --prune >/dev/null
+HOME="$TMP_DIR/codex-prune-home" bash "$REPO_DIR/scripts/install.sh" --tool codex --prune >/dev/null
 for name in research-paper-writing edit-article; do
   assert_no_path "$TMP_DIR/codex-prune-home/.agents/skills/$name"
 done
@@ -261,8 +262,36 @@ assert_file "$TMP_DIR/codex-prune-home/.agents/skills/paper-writing/SKILL.md"
 assert_file "$TMP_DIR/codex-prune-home/.agents/skills/general-writing/SKILL.md"
 assert_file "$TMP_DIR/codex-prune-home/.agents/skills/general-writing/references/editing-contract.md"
 
-echo "[test] claude symlink includes personal skills"
-HOME="$TMP_DIR/claude-symlink-home" bash "$REPO_DIR/scripts/install.sh" --tool claude --method symlink --include-personal >/dev/null
+echo "[test] claude symlink includes all skills"
+HOME="$TMP_DIR/claude-symlink-home" bash "$REPO_DIR/scripts/install.sh" --tool claude --method symlink >/dev/null
+
+echo "[test] repeat symlink installs and refresh former personal source links"
+HOME="$TMP_DIR/codex-symlink-home" bash "$REPO_DIR/scripts/install.sh" --tool codex --method symlink >/dev/null
+for method in copy symlink; do
+  migration_home="$TMP_DIR/migrate-$method"
+  mkdir -p "$migration_home/.agents/skills"
+  for name in bootstrap-shared-server obsidian-vault; do
+    ln -s "$REPO_DIR/skills/personal/$name" "$migration_home/.agents/skills/$name"
+  done
+  HOME="$migration_home" bash "$REPO_DIR/scripts/install.sh" --tool codex --method "$method" >/dev/null
+  assert_file "$migration_home/.agents/skills/bootstrap-shared-server/SKILL.md"
+  assert_file "$migration_home/.agents/skills/obsidian-vault/SKILL.md"
+  cmp "$REPO_DIR/skills/engineering/bootstrap-shared-server/SKILL.md" "$migration_home/.agents/skills/bootstrap-shared-server/SKILL.md"
+  cmp "$REPO_DIR/skills/tools/obsidian-vault/SKILL.md" "$migration_home/.agents/skills/obsidian-vault/SKILL.md"
+done
+
+echo "[test] misplaced source link is rejected without changing repository"
+mkdir -p "$TMP_DIR/bad-link-home/.agents/skills"
+ln -s "$REPO_DIR" "$TMP_DIR/bad-link-home/.agents/skills/bootstrap-shared-server"
+if HOME="$TMP_DIR/bad-link-home" bash "$REPO_DIR/scripts/install.sh" --tool codex >"$TMP_DIR/bad-link-output" 2>&1; then
+  echo "expected refusal for link to repository root" >&2
+  exit 1
+fi
+rg -q 'symlink into this repo' "$TMP_DIR/bad-link-output"
+assert_file "$REPO_DIR/manifest.json"
+
+echo "[test] bootstrap candidate behavior"
+python3 "$REPO_DIR/scripts/test-bootstrap-profile.py"
 
 echo "[test] complete packages across supported install locations"
 python3 "$REPO_DIR/scripts/check-installed-skills.py" "$TMP_DIR"

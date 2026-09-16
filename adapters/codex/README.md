@@ -30,12 +30,6 @@ Development symlink install:
 bash scripts/install.sh --tool codex --method symlink
 ```
 
-Include personal skills:
-
-```bash
-bash scripts/install.sh --tool codex --include-personal
-```
-
 Legacy install:
 
 ```bash
@@ -46,7 +40,7 @@ bash scripts/install.sh --tool codex --scope legacy
 
 - Default install mode is `copy`.
 - Default Codex scope is `user`.
-- Personal skills are skipped unless `--include-personal` is passed.
+- All skills in `manifest.json` are installed by default.
 - Skill names are flattened at install time, e.g.
   `skills/tools/bcecmd` installs to `$HOME/.agents/skills/bcecmd`.
 - Codex-specific behavior belongs in each skill's `agents/openai.yaml`, not in

@@ -69,14 +69,15 @@ These principles follow
 - Put writing tasks and their reference examples in `skills/writing/`.
 - Put human-readable writing companions in `for-humans/writing/`.
 - Put concrete external tools and service workflows in `skills/tools/`.
-- Put local paths, note systems, and personal preferences in `skills/personal/`.
+- Categorize by capability. Discover local paths, identities, and vault
+  conventions at use time instead of baking in the curator’s environment.
 
 ## Documentation Updates
 
 When adding, removing, renaming, or materially changing a skill:
 
 - Update the relevant bucket `README.md`.
-- Update the top-level `README.md` if the skill is promoted or user-visible.
+- Update the top-level `README.md` when the skill catalog changes.
 - Update `manifest.json` if the skill should be installed.
 - Update `docs/external-sources.md` if the skill is adapted from an upstream
   source.

@@ -1,7 +1,7 @@
 # Codex App over a Shared SSH Account
 
 Codex App probes for a command named `codex` and starts its managed
-`app-server`. A terminal-only `codex-wjs` wrapper is therefore insufficient.
+`app-server`. A terminal-only `codex-dev` wrapper is therefore insufficient.
 Do not solve this by replacing global `codex`.
 
 ## Design
@@ -9,7 +9,7 @@ Do not solve this by replacing global `codex`.
 Use:
 
 1. unchanged base SSH alias and ordinary key;
-2. `<base>_wjs` alias with a dedicated key;
+2. `<base>_dev` alias with a dedicated key;
 3. one appended forced-command entry for that key;
 4. a dispatcher that recognizes App bootstrap commands;
 5. a profile-private directory containing an App-only wrapper named `codex`;
@@ -36,11 +36,11 @@ options. Loosen only the specific restriction required by the environment.
 Pseudocode:
 
 ```bash
-export WJS_CODEX_PROFILE=<validated-profile>
+export DEV_CODEX_PROFILE=<validated-profile>
 original="${SSH_ORIGINAL_COMMAND:-}"
 
 if [[ -z "$original" ]]; then
-  exec bash --rcfile "<personal-root>/.bashrc-wjs" -i
+  exec bash --rcfile "<personal-root>/.bashrc-dev" -i
 fi
 
 if [[ "$original" == *CODEX_REMOTE_PAYLOAD* &&
@@ -49,7 +49,7 @@ if [[ "$original" == *CODEX_REMOTE_PAYLOAD* &&
   exec bash -lc "$original"
 fi
 
-export BASH_ENV="<personal-root>/.bashrc-wjs-extras.sh"
+export BASH_ENV="<personal-root>/.bashrc-dev-extras.sh"
 exec bash -lc "$original"
 ```
 
@@ -70,8 +70,8 @@ with:
 ```bash
 #!/usr/bin/env bash
 set -euo pipefail
-export WJS_CODEX_PROFILE=<profile>
-exec <personal-root>/bin/codex-wjs "$@"
+export DEV_CODEX_PROFILE=<profile>
+exec <personal-root>/bin/codex-dev "$@"
 ```
 
 The App bootstrap prepends `CODEX_INSTALL_DIR` to PATH, so only that command
@@ -84,11 +84,11 @@ Install Codex through the official managed installer with the profile's
 it. Verify:
 
 ```bash
-codex-wjs --version
-codex-wjs login status
-codex-wjs app-server daemon bootstrap
-codex-wjs app-server daemon start
-codex-wjs app-server daemon version
+codex-dev --version
+codex-dev login status
+codex-dev app-server daemon bootstrap
+codex-dev app-server daemon start
+codex-dev app-server daemon version
 ```
 
 The managed executable should resolve through:
@@ -116,15 +116,15 @@ needs the dispatcher to distinguish:
 Terminal invariants:
 
 ```bash
-ssh <base>_wjs 'command -v codex || true; command -v codex-wjs'
-ssh <base>_wjs 'codex --version 2>/dev/null || true'
-ssh <base>_wjs 'cd <allowed-root> && codex-wjs --version'
+ssh <base>_dev 'command -v codex || true; command -v codex-dev'
+ssh <base>_dev 'codex --version 2>/dev/null || true'
+ssh <base>_dev 'cd <allowed-root> && codex-dev --version'
 ```
 
 Simulate the App path exposure:
 
 ```bash
-ssh <base>_wjs \
+ssh <base>_dev \
   'echo CODEX_REMOTE_PAYLOAD >/dev/null; echo "Codex remote SSH requires SHELL" >/dev/null; PATH="${CODEX_INSTALL_DIR}:$PATH"; command -v codex; codex --version'
 ```
 

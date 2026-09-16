@@ -1,31 +1,34 @@
 # wujs-curated-skills
 
-Personal curated skills for agentic coding tools.
+A curated collection for engineering, writing, and everyday work with Codex,
+Claude Code, and Cursor, maintained by Wu Junsong.
 
-This repository collects skills that Wu Junsong wants to install, adapt, and
-maintain across tools such as Codex, Cursor, and Claude Code. It may contain
-original skills, locally adapted third-party skills, and thin wrappers around
-external tools.
+The collection preserves useful domain knowledge, editing preferences, and
+operational constraints. Skills supply context that changes an agent’s
+choices, while leaving routine execution to the model. Writing covers research
+papers, grants, reviewer responses, presentations, and general prose; human
+writing guides live separately under [for-humans/](for-humans/writing/README.md).
 
-It is not a bulk mirror of upstream skill collections. When a third-party skill
-is adapted here, the local copy should preserve attribution and license
-metadata and be maintained intentionally.
+Original skills and adapted upstream skills share one installable catalog.
+Attribution and licenses remain with adapted material. Environment-specific
+paths, identities, and service settings are discovered or supplied at use time.
 
-## Why This Exists
+## Curation Principles
 
-- Turn recurring agent workflows into installable skills instead of repeating
-  long prompts across projects.
-- Keep personal tool knowledge, such as BOS transfer workflows and Obsidian
-  note conventions, close to the agents that need it.
-- Adapt useful upstream skills deliberately while preserving local ownership
-  boundaries.
-- Keep Codex, Claude Code, and Cursor behavior aligned from one canonical skill
-  source.
+- Keep narrow triggers and guidance grounded in recurring needs or observed
+  failures; avoid repeating general model capabilities.
+- Load detailed references only when the task needs them.
+- Preserve user intent, editing scope, and existing authorization.
+- Maintain one canonical source for all three supported harnesses.
+
+This approach follows OpenAI’s
+[Rethinking skills and prompts](https://developers.openai.com/blog/rethinking-skills-and-prompts-for-gpt-6-astra).
 
 ## Current Skills
 
 ### Engineering
 
+- **[bootstrap-shared-server](./skills/engineering/bootstrap-shared-server/SKILL.md)** — Use when explicitly preparing, auditing, or repairing a per-user development environment on an SSH-accessible shared Linux cluster.
 - **[code-review](./skills/engineering/code-review/SKILL.md)** — Use when reviewing a PR, branch, commit range, or uncommitted changes for actionable defects and requirement gaps.
 - **[codebase-design](./skills/engineering/codebase-design/SKILL.md)** — Use when choosing a module interface or examining coupling and testability.
 - **[deslop](./skills/engineering/deslop/SKILL.md)** — Use when simplifying a diff with unnecessary defensive branches, fallback behavior, or abstraction.
@@ -50,7 +53,8 @@ metadata and be maintained intentionally.
 ### Tools
 
 - **[bcecmd](./skills/tools/bcecmd/SKILL.md)** — Use when transferring data with bcecmd or configuring and troubleshooting Baidu BOS access.
-- **[pueue](./skills/tools/pueue/SKILL.md)** — Use when managing or troubleshooting local shell-command queues with Pueue/pueued.
+- **[obsidian-vault](./skills/tools/obsidian-vault/SKILL.md)** — Use when finding, creating, or editing notes in an Obsidian vault while preserving its existing conventions and links.
+- **[pueue](./skills/tools/pueue/SKILL.md)** — Use when the user requests Pueue/pueued or an existing Pueue queue needs inspection, task submission, or troubleshooting.
 
 ### Writing
 
@@ -72,13 +76,6 @@ metadata and be maintained intentionally.
 - **[writing](./skills/writing/writing/SKILL.md)** — Use when a writing request spans genres or needs routing and no focused writing skill has already been selected.
 - **[writing-cadence](./skills/writing/writing-cadence/SKILL.md)** — Use when revising choppy rhythm, monotonous sentence shapes, repeated openings, or mechanical contrast patterns.
 
-### Personal
-
-Environment-specific; install with `--include-personal`.
-
-- **[bootstrap-shared-server](./skills/personal/bootstrap-shared-server/SKILL.md)** — Use when explicitly preparing, auditing, or repairing Wu Junsong’s personal environment on an SSH-accessible shared Linux cluster.
-- **[obsidian-vault](./skills/personal/obsidian-vault/SKILL.md)** — Use when finding or editing notes in the user’s Obsidian vault with its existing naming and linking conventions.
-
 ## Repository Layout
 
 ```text
@@ -87,14 +84,13 @@ skills/
   productivity/  Planning, writing, and collaboration workflows
   tools/         External tools, CLIs, services, and platforms
   writing/       Writing tasks, editing preferences, and reference examples
-  personal/      Local setup, paths, notes, and preferences
 adapters/        Tool-specific notes for Codex, Cursor, and Claude Code
 for-humans/      Human-readable guides and reusable document projects
 docs/            Install, authoring, and external-source documentation
 scripts/         Installer and maintenance scripts
 ```
 
-Promoted and personal install sets are declared in
+The complete install set is declared in
 [manifest.json](./manifest.json).
 
 `skills/` is the canonical source layout. Installers and adapters map those
@@ -116,8 +112,9 @@ bash scripts/install.sh --tool cursor --project /path/to/project
 bash scripts/install.sh --tool cursor --cursor-scope user
 ```
 
-Use `--method symlink` while developing skills, and `--include-personal` when
-you explicitly want environment-specific personal skills installed.
+All catalog skills are included by default. Use `--method symlink` while
+developing skills. The former `personal` category has been removed; old
+`--include-personal` commands still work and emit a deprecation notice.
 
 See [docs/install.md](./docs/install.md) for details.
 

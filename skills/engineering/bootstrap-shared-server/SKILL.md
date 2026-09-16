@@ -1,6 +1,6 @@
 ---
 name: bootstrap-shared-server
-description: "Use when explicitly preparing, auditing, or repairing Wu Junsong’s personal environment on an SSH-accessible shared Linux cluster."
+description: "Use when explicitly preparing, auditing, or repairing a per-user development environment on an SSH-accessible shared Linux cluster."
 disable-model-invocation: true
 ---
 
@@ -40,6 +40,10 @@ Git, Codex CLI, then optional Codex App order where needed.
 
 Render candidates outside live paths with [scripts/render_profile.py](scripts/render_profile.py).
 Resolve its path from this skill directory; use `--help` for its current options.
+Supply the SSH user and Git name/email from the agreed identity, not the
+curator’s account. `--namespace` defaults to `dev`; use `--namespace wjs` to
+retain existing deployment filenames and environment variables. Discover and
+preserve live naming before rendering; migration does not rename server files.
 Review the actual files and mappings, backup/rollback plan, and required user
 login steps before requesting any missing authorization. Existing explicit
 approval of those changes remains valid; ask again only for changed scope or

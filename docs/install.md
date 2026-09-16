@@ -3,9 +3,8 @@
 Use `scripts/install.sh` to install curated skills for Codex, Claude Code, or
 Cursor.
 
-The installer reads [manifest.json](../manifest.json). Skills under `skills`
-are installed by default; skills under `personal` are installed only with
-`--include-personal`.
+The installer reads [manifest.json](../manifest.json). All entries under `skills`
+are installed by default.
 
 Canonical sources live under `skills/<bucket>/<skill>/`; installation maps each
 complete directory to the target paths below. `adapters/` contains tool-specific
@@ -50,10 +49,9 @@ bash scripts/install.sh --tool <codex|claude|cursor|all> [options]
 - `--project <path>` — project path for Codex repo scope and for Cursor when
   `--cursor-scope project` (skills and bridge under that project's `.cursor/`).
   Defaults to the current directory.
-- `--include-personal` — include skills under `skills/personal/`.
 - `--prune` — after installing, remove skill directories whose basenames are
   listed in `manifest.json` → `deprecated_skill_names` (and are not still
-  active under `skills` / `personal`). Safe for renamed upstream leftovers such
+  active under `skills`). Safe for renamed upstream leftovers such
   as `writing-great-skills` or `diagnose`.
 
 ## Install Paths
@@ -78,16 +76,16 @@ same scope's `.cursor/rules/`.
 Use Codex legacy scope only for older local setups that still read
 `~/.codex/skills`.
 
-## Personal Skills
+## Former Personal Category
 
-Skills under `skills/personal/` are skipped by default because they contain
-local paths or preferences. Install them explicitly:
+`bootstrap-shared-server` now lives in engineering and `obsidian-vault` in tools.
+Both are included by default; installed directory names stay the same. Rerun
+an install command for each scope you use to refresh old copies or links.
+The installer retargets links to the former source paths in this checkout;
+it does not modify remote server deployments or vault contents.
 
-```bash
-bash scripts/install.sh --tool codex --include-personal
-bash scripts/install.sh --tool cursor --include-personal
-bash scripts/install.sh --tool cursor --cursor-scope user --include-personal
-```
+`--include-personal` is accepted as a deprecated no-op for existing scripts.
+There is no separate personal install set.
 
 ## Writing Skills Migration
 
@@ -118,5 +116,6 @@ bash scripts/test-install.sh
 - `symlink` is best while editing this repository because changes are reflected
   immediately in the target tool.
 
-The installer refuses known symlink-loop cases where a target skill path already
-points back into this repository.
+The installer permits links to the exact skill source and the two former
+personal source paths, but rejects links to other locations in this repository
+to avoid replacing a source directory through a misplaced link.

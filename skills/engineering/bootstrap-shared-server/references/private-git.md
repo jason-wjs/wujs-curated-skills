@@ -3,21 +3,19 @@
 Configure private Git per repository. Never change shared/global Git identity,
 proxy, or credential settings.
 
-## Fixed personal identity
+## Identity
 
-```text
-user.name  = jason-wjs
-user.email = jason-w@sjtu.edu.cn
-HTTPS user = jason-wjs
-```
+Use the Git name/email agreed with the user or established for the intended
+repository. Never substitute the skill curator’s account. The GitHub login
+may differ from commit attribution; discover it separately when needed.
 
 ## Repository setup
 
 Inside each personal repository:
 
 ```bash
-git config --local user.name "jason-wjs"
-git config --local user.email "jason-w@sjtu.edu.cn"
+git config --local user.name "<git-name>"
+git config --local user.email "<git-email>"
 git config --local credential.helper "cache --timeout=3600"
 ```
 
@@ -51,10 +49,11 @@ Do not ask the user to paste the PAT into chat. Have the user enter it in an
 interactive terminal without including it in the command text:
 
 ```bash
+read -rp "GitHub username: " GITHUB_USER
 read -rsp "GitHub PAT: " GITHUB_PAT
 printf "\n"
-printf 'protocol=https\nhost=github.com\nusername=jason-wjs\npassword=%s\n\n' \
-  "$GITHUB_PAT" | git credential approve
+printf 'protocol=https\nhost=github.com\nusername=%s\npassword=%s\n\n' \
+  "$GITHUB_USER" "$GITHUB_PAT" | git credential approve
 unset GITHUB_PAT
 ```
 

@@ -1,6 +1,7 @@
 {
   "name": "wujs-curated-skills",
   "skills": [
+    "./skills/engineering/bootstrap-shared-server",
     "./skills/engineering/code-review",
     "./skills/engineering/codebase-design",
     "./skills/engineering/deslop",
@@ -19,6 +20,7 @@
     "./skills/productivity/teach",
     "./skills/productivity/write-a-skill",
     "./skills/tools/bcecmd",
+    "./skills/tools/obsidian-vault",
     "./skills/tools/pueue",
     "./skills/writing/abstract-writing",
     "./skills/writing/academic-voice",
@@ -37,10 +39,6 @@
     "./skills/writing/rebuttal-writing",
     "./skills/writing/writing",
     "./skills/writing/writing-cadence"
-  ],
-  "personal": [
-    "./skills/personal/bootstrap-shared-server",
-    "./skills/personal/obsidian-vault"
   ],
   "deprecated_skill_names": [
     "ask-matt",

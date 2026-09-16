@@ -13,8 +13,8 @@ $HOME/.cursor/rules/wujs-curated-skills.mdc       # --cursor-scope user
 The bridge points to installed skill directories. Each SKILL.md owns its trigger
 and invocation policy; the bridge does not duplicate or broaden those rules.
 
-Promoted skills from `manifest.json` are installed into `.cursor/skills/` by
-default. Personal skills are omitted unless you pass `--include-personal`.
+All skills from `manifest.json` are installed into `.cursor/skills/` by
+default.
 
 ## Install
 
@@ -51,7 +51,7 @@ bash scripts/install.sh --tool cursor
   `<project>/.cursor/skills/`, bridge under `<project>/.cursor/rules/`.
 - With `--cursor-scope user`, the same layout is written under `$HOME/.cursor/`.
 - The canonical skill sources remain under `skills/<bucket>/<skill>/SKILL.md`.
-- Run `bash scripts/lint-skills.sh` after changing promoted skills to check
+- Run `bash scripts/lint-skills.sh` after changing skills to check
   catalog entries, invocation metadata, and linked resources.
 
 ## Invocation and Verification

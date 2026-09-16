@@ -22,10 +22,10 @@ Distinguish:
 
 ## Scope
 
-- `codex-wjs` applies its selected OpenAI proxy to the Codex process.
+- `codex-dev` applies its selected OpenAI proxy to the Codex process.
 - Git repositories receive `http.proxy`/`https.proxy` only when GitHub needs
   that route.
-- `.bashrc-wjs-extras.sh` may define manual `wjs_proxy_on/off` for ad hoc shell
+- `.bashrc-dev-extras.sh` may define manual `dev_proxy_on/off` for ad hoc shell
   operations.
 
 Do not export a proxy automatically for every shell. A stale endpoint can make
@@ -34,7 +34,7 @@ SSH-launched tools hang.
 ## Manual helper
 
 ```bash
-wjs_proxy_on() {
+dev_proxy_on() {
   local url=http://127.0.0.1:<remote-port>
   export http_proxy="$url" https_proxy="$url"
   export HTTP_PROXY="$url" HTTPS_PROXY="$url"
@@ -42,7 +42,7 @@ wjs_proxy_on() {
   export no_proxy="$NO_PROXY"
 }
 
-wjs_proxy_off() {
+dev_proxy_off() {
   unset http_proxy https_proxy HTTP_PROXY HTTPS_PROXY
   unset all_proxy ALL_PROXY no_proxy NO_PROXY
 }
@@ -71,7 +71,7 @@ Prefer a user systemd unit on the proxy machine:
 
 ```ini
 [Unit]
-Description=WJS reverse proxy for <profile>
+Description=DEV reverse proxy for <profile>
 After=network-online.target
 Wants=network-online.target
 
