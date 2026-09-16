@@ -77,7 +77,6 @@ metadata and be maintained intentionally.
 Environment-specific; install with `--include-personal`.
 
 - **[bootstrap-shared-server](./skills/personal/bootstrap-shared-server/SKILL.md)** — Use when explicitly preparing, auditing, or repairing Wu Junsong’s personal environment on an SSH-accessible shared Linux cluster.
-- **[edit-article](./skills/personal/edit-article/SKILL.md)** — Use when the user requests the personal edit-article workflow for article prose or structure.
 - **[obsidian-vault](./skills/personal/obsidian-vault/SKILL.md)** — Use when finding or editing notes in the user’s Obsidian vault with its existing naming and linking conventions.
 
 ## Repository Layout

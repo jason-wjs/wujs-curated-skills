@@ -97,8 +97,9 @@ install the collection together instead of manually copying a single folder.
 The human guides under `for-humans/writing/` stay in the checkout and are not
 installed into harness skill directories.
 
-`paper-writing` replaces the former personal `research-paper-writing` entry.
-Use `--prune` with the usual install command to remove the deprecated name in
+`paper-writing` replaces the former personal `research-paper-writing` entry;
+`general-writing` replaces `edit-article` for general article editing.
+Use `--prune` with the usual install command to remove these deprecated names in
 that target scope. Without `--prune`, existing deprecated installations remain.
 Repeat for any other scopes you use. The source academic-writing-skills checkout
 is not deleted or modified by this migration or the installer.

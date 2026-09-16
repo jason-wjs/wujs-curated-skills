@@ -68,7 +68,7 @@ assert_file "$TMP_DIR/codex-project/.agents/skills/bootstrap-shared-server/refer
 assert_file "$TMP_DIR/codex-project/.agents/skills/bootstrap-shared-server/references/codex-app-ssh.md"
 assert_file "$TMP_DIR/codex-project/.agents/skills/bootstrap-shared-server/scripts/render_profile.py"
 assert_file "$TMP_DIR/codex-project/.agents/skills/bootstrap-shared-server/agents/openai.yaml"
-assert_file "$TMP_DIR/codex-project/.agents/skills/edit-article/SKILL.md"
+assert_no_path "$TMP_DIR/codex-project/.agents/skills/edit-article"
 assert_file "$TMP_DIR/codex-project/.agents/skills/obsidian-vault/SKILL.md"
 assert_file "$TMP_DIR/codex-project/.agents/skills/paper-writing/SKILL.md"
 assert_file "$TMP_DIR/codex-project/.agents/skills/paper-writing/agents/openai.yaml"
@@ -105,7 +105,7 @@ assert_file "$TMP_DIR/home/.claude/skills/bootstrap-shared-server/references/net
 assert_file "$TMP_DIR/home/.claude/skills/bootstrap-shared-server/references/private-git.md"
 assert_file "$TMP_DIR/home/.claude/skills/bootstrap-shared-server/references/codex-isolation.md"
 assert_file "$TMP_DIR/home/.claude/skills/bootstrap-shared-server/scripts/render_profile.py"
-assert_file "$TMP_DIR/home/.claude/skills/edit-article/SKILL.md"
+assert_no_path "$TMP_DIR/home/.claude/skills/edit-article"
 assert_file "$TMP_DIR/home/.claude/skills/obsidian-vault/SKILL.md"
 assert_file "$TMP_DIR/home/.claude/skills/paper-writing/SKILL.md"
 assert_no_path "$TMP_DIR/home/.claude/skills/shared-server-codex-isolation"
@@ -144,7 +144,7 @@ assert_file "$TMP_DIR/cursor-personal/.cursor/skills/bootstrap-shared-server/SKI
 assert_file "$TMP_DIR/cursor-personal/.cursor/skills/bootstrap-shared-server/references/operating-contract.md"
 assert_file "$TMP_DIR/cursor-personal/.cursor/skills/bootstrap-shared-server/references/verification-and-rollback.md"
 assert_file "$TMP_DIR/cursor-personal/.cursor/skills/bootstrap-shared-server/scripts/render_profile.py"
-assert_file "$TMP_DIR/cursor-personal/.cursor/skills/edit-article/SKILL.md"
+assert_no_path "$TMP_DIR/cursor-personal/.cursor/skills/edit-article"
 assert_file "$TMP_DIR/cursor-personal/.cursor/skills/obsidian-vault/SKILL.md"
 assert_file "$TMP_DIR/cursor-personal/.cursor/skills/paper-writing/SKILL.md"
 
@@ -244,14 +244,21 @@ assert_file "$TMP_DIR/codex-prune-home/.agents/skills/codebase-design/SKILL.md"
 assert_file "$TMP_DIR/codex-prune-home/.agents/skills/domain-modeling/CONTEXT-FORMAT.md"
 assert_file "$TMP_DIR/codex-prune-home/.agents/skills/diagnosing-bugs/scripts/hitl-loop.template.sh"
 
-echo "[test] obsolete paper skill is preserved without prune and removed with prune"
-mkdir -p "$TMP_DIR/codex-prune-home/.agents/skills/research-paper-writing"
-echo "stale" > "$TMP_DIR/codex-prune-home/.agents/skills/research-paper-writing/SKILL.md"
+echo "[test] obsolete writing skills are preserved without prune and removed with prune"
+for name in research-paper-writing edit-article; do
+  mkdir -p "$TMP_DIR/codex-prune-home/.agents/skills/$name"
+  echo "stale" > "$TMP_DIR/codex-prune-home/.agents/skills/$name/SKILL.md"
+done
 HOME="$TMP_DIR/codex-prune-home" bash "$REPO_DIR/scripts/install.sh" --tool codex --include-personal >/dev/null
-assert_file "$TMP_DIR/codex-prune-home/.agents/skills/research-paper-writing/SKILL.md"
+for name in research-paper-writing edit-article; do
+  assert_file "$TMP_DIR/codex-prune-home/.agents/skills/$name/SKILL.md"
+done
 HOME="$TMP_DIR/codex-prune-home" bash "$REPO_DIR/scripts/install.sh" --tool codex --include-personal --prune >/dev/null
-assert_no_path "$TMP_DIR/codex-prune-home/.agents/skills/research-paper-writing"
+for name in research-paper-writing edit-article; do
+  assert_no_path "$TMP_DIR/codex-prune-home/.agents/skills/$name"
+done
 assert_file "$TMP_DIR/codex-prune-home/.agents/skills/paper-writing/SKILL.md"
+assert_file "$TMP_DIR/codex-prune-home/.agents/skills/general-writing/SKILL.md"
 assert_file "$TMP_DIR/codex-prune-home/.agents/skills/general-writing/references/editing-contract.md"
 
 echo "[test] claude symlink includes personal skills"

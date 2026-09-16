@@ -40,7 +40,6 @@
   ],
   "personal": [
     "./skills/personal/bootstrap-shared-server",
-    "./skills/personal/edit-article",
     "./skills/personal/obsidian-vault"
   ],
   "deprecated_skill_names": [
@@ -52,6 +51,7 @@
     "writing-great-skills",
     "karpathy-guidelines",
     "zoom-out",
-    "research-paper-writing"
+    "research-paper-writing",
+    "edit-article"
   ]
 }

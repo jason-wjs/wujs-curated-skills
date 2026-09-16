@@ -29,7 +29,7 @@ without changing live harness installations, and checks:
 - Frontmatter, invocation-policy parity, catalog entries, and resource links.
 - Copy/symlink packages across 14 scenarios, with and without personal skills.
 - Every installed file against canonical content, and installed relative links.
-- Deprecated-skill pruning, including karpathy-guidelines and research-paper-writing.
+- Deprecated-skill pruning, including karpathy-guidelines, research-paper-writing, and edit-article.
 - Writing skill sibling references and the shared editing contract; human
   companion documents stay outside installed packages.
 
@@ -39,9 +39,9 @@ repository's simple frontmatter conventions, not arbitrary YAML documents.
 ## Native discovery checks performed
 
 - Codex app-server `initialize` then `skills/list` against a temporary repository
-  install: all 39 skills returned, with no errors for these packages.
+  install: all 38 skills returned, with no errors for these packages.
 - Claude Code streaming control `initialize` with an isolated CLAUDE_CONFIG_DIR:
-  all 39 skills appeared in the command catalog.
+  all 38 skills appeared in the command catalog.
 - Neither check started a model turn. The Codex listing does not expose implicit
   invocation policy; policy parity is checked statically, not inferred from
   `enabled` in that response.

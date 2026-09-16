@@ -1,5 +1,8 @@
 # Writing
 
+General prose, academic papers, proposals, presentations, and prompt editing
+share this writing collection. Its name reflects that broader scope.
+
 Seventeen retained entrypoints from academic-writing-skills, simplified around
 user preferences and task-specific evidence. Install with this repository's
 installer; it includes the complete writing collection, so relative sibling
@@ -49,8 +52,9 @@ the current agent instructions do not prescribe all advice in those guides.
 No patent-specific skill or patent example corpus is bundled.
 
 `paper-writing` replaces the removed personal `research-paper-writing` skill.
+`general-writing` replaces the redundant personal `edit-article` entrypoint.
 All seventeen names from academic-writing-skills remain available. Install with
-`--prune` to remove obsolete research-paper-writing installations in the chosen
+`--prune` to remove obsolete research-paper-writing and edit-article installations in the chosen
 scope. The original academic-writing-skills checkout is retained for comparison.
 
 ## Maintenance
