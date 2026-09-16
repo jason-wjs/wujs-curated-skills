@@ -1,0 +1,4 @@
+interface:
+  display_name: "Humanizer"
+  short_description: "Remove AI writing patterns from prose"
+  default_prompt: "Use $humanizer for the requested writing task, preserving meaning and the specified editing scope."

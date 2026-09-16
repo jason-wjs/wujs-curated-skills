@@ -1,0 +1,4 @@
+interface:
+  display_name: "Whole-Draft Openings and Transitions"
+  short_description: "Rework titles, paragraph heads, and transitions"
+  default_prompt: "Use $non-autoregressive-writing-pass for the requested writing task, preserving meaning and the specified editing scope."

@@ -1,0 +1,81 @@
+\documentclass[a4paper,11pt]{article}
+\pdfoutput=1
+\usepackage{etoolbox,verbatim}
+\usepackage{scalefnt}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{booktabs}
+
+%% For arXiv formatting. Toggle false for a conference submission.
+\newtoggle{arxiv}
+\toggletrue{arxiv}
+\newtoggle{toreturn}
+\togglefalse{toreturn}
+\newtoggle{icml}
+\togglefalse{icml}
+%% Adds custom formatting to theorem-like environments.
+\newtoggle{customthms}
+\toggletrue{customthms}
+\newtoggle{colt}
+\togglefalse{colt}
+
+\input{preamble/_preamble_includes}
+\input{preamble/commands}
+
+\graphicspath{{figures/}}
+\fancyhead[C]{\small Human Writing and Agent Defaults}
+
+\title{Human Writing and Agent Defaults}
+\thispagestyle{empty}
+\author{\small Max Simchowitz}
+\paperdate{\today}
+\date{\vspace{-.5em}}
+
+\begin{document}
+
+\begin{tcolorbox}[
+  colback=blue!60!gray!5,
+  colframe=gray!50,
+  boxrule=0pt,
+  arc=2mm
+]
+\maketitle
+\vspace{-.7cm}
+\tcbline
+\input{body/overview}
+\vskip 0.5cm
+\makeatletter
+\tcbline
+\vspace{-.7cm}
+\ifdefempty{\metadatalist}{}{\metadatalist\par}
+\makeatother
+\end{tcolorbox}
+
+\begin{abstract}
+\input{body/abstract}
+\end{abstract}
+
+\clearpage
+\begingroup
+\setcounter{tocdepth}{1}
+\setlength{\cftbeforesecskip}{0.5em}
+\tableofcontents
+\endgroup
+\clearpage
+
+\input{body/scope}
+\input{body/principles}
+\input{body/directness}
+\input{body/syntax}
+\input{body/structure}
+\input{body/voice}
+\input{body/hypotheses}
+\input{body/revision}
+
+\appendix
+\newpage
+\input{appendix/pattern-map}
+\input{appendix/analytic-dimensions}
+\input{appendix/sources}
+
+\end{document}

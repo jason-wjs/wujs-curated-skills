@@ -89,6 +89,20 @@ bash scripts/install.sh --tool cursor --include-personal
 bash scripts/install.sh --tool cursor --cursor-scope user --include-personal
 ```
 
+## Writing Skills Migration
+
+The default install includes all 17 writing entrypoints. They use relative
+sibling references, including the shared editing contract in `general-writing`;
+install the collection together instead of manually copying a single folder.
+The human guides under `for-humans/writing/` stay in the checkout and are not
+installed into harness skill directories.
+
+`paper-writing` replaces the former personal `research-paper-writing` entry.
+Use `--prune` with the usual install command to remove the deprecated name in
+that target scope. Without `--prune`, existing deprecated installations remain.
+Repeat for any other scopes you use. The source academic-writing-skills checkout
+is not deleted or modified by this migration or the installer.
+
 ## Test Installer
 
 Run the installer smoke tests without touching real user tool directories:

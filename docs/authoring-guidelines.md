@@ -66,6 +66,8 @@ These principles follow
 ## Categorization
 
 - Put general code-work behavior in `skills/engineering/`.
+- Put writing tasks and their reference examples in `skills/writing/`.
+- Put human-readable writing companions in `for-humans/writing/`.
 - Put concrete external tools and service workflows in `skills/tools/`.
 - Put local paths, note systems, and personal preferences in `skills/personal/`.
 

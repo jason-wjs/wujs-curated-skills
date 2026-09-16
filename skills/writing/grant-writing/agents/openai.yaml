@@ -1,0 +1,4 @@
+interface:
+  display_name: "Grant Writing"
+  short_description: "Write motivated grants for corporate or nonprofit funders"
+  default_prompt: "Use $grant-writing for the requested writing task, preserving meaning and the specified editing scope."

@@ -52,14 +52,33 @@ metadata and be maintained intentionally.
 - **[bcecmd](./skills/tools/bcecmd/SKILL.md)** — Use when transferring data with bcecmd or configuring and troubleshooting Baidu BOS access.
 - **[pueue](./skills/tools/pueue/SKILL.md)** — Use when managing or troubleshooting local shell-command queues with Pueue/pueued.
 
+### Writing
+
+- **[abstract-writing](./skills/writing/abstract-writing/SKILL.md)** — Use when drafting, revising, or diagnosing a research abstract as a standalone argument.
+- **[academic-voice](./skills/writing/academic-voice/SKILL.md)** — Use when specifically adjusting scholarly tone or removing corporate and social-media register from research exposition.
+- **[anti-defensive-writing](./skills/writing/anti-defensive-writing/SKILL.md)** — Use when a passage contains redundant defensive caveats or the user asks to reduce apologetic phrasing; use rebuttal-writing for reviewer responses.
+- **[better-usage](./skills/writing/better-usage/SKILL.md)** — Use when a sentence is grammatical but its subject, verb, or object expresses the wrong semantic relation.
+- **[general-writing](./skills/writing/general-writing/SKILL.md)** — Use when polishing general prose or diagnosing clarity, voice, or formulaic phrasing outside a more specific writing task.
+- **[grant-planning](./skills/writing/grant-planning/SKILL.md)** — Use when choosing or comparing grant research stories, aims, team roles, feasibility, or scope before application drafting.
+- **[grant-writing](./skills/writing/grant-writing/SKILL.md)** — Use when drafting or revising grant and fellowship application answers from a research plan and sponsor requirements.
+- **[humanizer](./skills/writing/humanizer/SKILL.md)** — Use when the user asks to diagnose or revise formulaic, generic, or AI-sounding prose.
+- **[improve-human-writing-guide](./skills/writing/improve-human-writing-guide/SKILL.md)** — Use when creating, revising, or compiling a human-readable writing guide or its LaTeX/PDF companion.
+- **[literature-review](./skills/writing/literature-review/SKILL.md)** — Use when researching and writing a source-grounded literature review, survey, or related-work synthesis.
+- **[non-autoregressive-writing-pass](./skills/writing/non-autoregressive-writing-pass/SKILL.md)** — Use when reviewing a completed draft’s titles, paragraph openings, endings, and transitions against the whole argument.
+- **[paper-writing](./skills/writing/paper-writing/SKILL.md)** — Use when planning, drafting, or revising a research paper or its sections; use abstract-writing for an abstract-only task.
+- **[presentation-making](./skills/writing/presentation-making/SKILL.md)** — Use when planning, drafting, revising, or reviewing presentation slides and speaker notes.
+- **[prompt-improving](./skills/writing/prompt-improving/SKILL.md)** — Use when the user asks to improve or clarify a prompt while preserving its intent and natural style.
+- **[rebuttal-writing](./skills/writing/rebuttal-writing/SKILL.md)** — Use when drafting reviewer responses, author-response letters, or point-by-point revision memos.
+- **[writing](./skills/writing/writing/SKILL.md)** — Use when a writing request spans genres or needs routing and no focused writing skill has already been selected.
+- **[writing-cadence](./skills/writing/writing-cadence/SKILL.md)** — Use when revising choppy rhythm, monotonous sentence shapes, repeated openings, or mechanical contrast patterns.
+
 ### Personal
 
 Environment-specific; install with `--include-personal`.
 
 - **[bootstrap-shared-server](./skills/personal/bootstrap-shared-server/SKILL.md)** — Use when explicitly preparing, auditing, or repairing Wu Junsong’s personal environment on an SSH-accessible shared Linux cluster.
-- **[edit-article](./skills/personal/edit-article/SKILL.md)** — Use when revising an article’s structure, paragraph flow, or prose.
+- **[edit-article](./skills/personal/edit-article/SKILL.md)** — Use when the user requests the personal edit-article workflow for article prose or structure.
 - **[obsidian-vault](./skills/personal/obsidian-vault/SKILL.md)** — Use when finding or editing notes in the user’s Obsidian vault with its existing naming and linking conventions.
-- **[research-paper-writing](./skills/personal/research-paper-writing/SKILL.md)** — Use when drafting or revising ML/CV/NLP paper sections, presentation, or claim-evidence alignment.
 
 ## Repository Layout
 
@@ -68,9 +87,11 @@ skills/
   engineering/   General engineering behavior and code-work skills
   productivity/  Planning, writing, and collaboration workflows
   tools/         External tools, CLIs, services, and platforms
+  writing/       Writing tasks, editing preferences, and reference examples
   personal/      Local setup, paths, notes, and preferences
 adapters/        Tool-specific notes for Codex, Cursor, and Claude Code
-docs/            Install, authoring, external-source, and ADR documentation
+for-humans/      Human-readable guides and reusable document projects
+docs/            Install, authoring, and external-source documentation
 scripts/         Installer and maintenance scripts
 ```
 
@@ -100,6 +121,11 @@ Use `--method symlink` while developing skills, and `--include-personal` when
 you explicitly want environment-specific personal skills installed.
 
 See [docs/install.md](./docs/install.md) for details.
+
+## Human Writing Materials
+
+[Writing guides and templates](for-humans/writing/README.md) retain the human
+companion materials separately from installed agent skills.
 
 ## Maintainer Docs
 

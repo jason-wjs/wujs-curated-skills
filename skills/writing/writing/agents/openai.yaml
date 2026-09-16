@@ -1,0 +1,4 @@
+interface:
+  display_name: "Writing Router"
+  short_description: "Route writing tasks to the right focused skill"
+  default_prompt: "Use $writing for the requested writing task, preserving meaning and the specified editing scope."

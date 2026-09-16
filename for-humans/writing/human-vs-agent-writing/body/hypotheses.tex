@@ -1,0 +1,55 @@
+\section{Why defaults recur}
+\label{sec:hypotheses}
+
+Surface patterns alone do not reveal their causes. The explanations below are
+hypotheses about pressures that may favor portable language and local
+regularity. They are useful because they generate different predictions, not
+because the prose alone proves any one of them.
+
+\subsection{Local prediction rewards local plausibility}
+
+During pretraining, a language model learns to predict each next token from the
+preceding context. Later training changes its behavior, but familiar phrases
+and locally smooth continuations may remain attractive even when the paragraph
+requires a less common structure. A stock transition can therefore fit its
+immediate sentence while weakening the larger argument.
+
+This account helps explain two apparently opposite defaults. Repeated formulas
+preserve familiar shapes, while synonym cycling avoids lexical repetition by
+changing the name of a stable object. In both cases, a locally plausible choice
+forces the reader to recover the paragraph-level relation.
+
+\subsection{Missing reader context leaves priorities unclear}
+
+A prompt can name a task without identifying the person who will use the
+answer. In that setting, the model has little basis for deciding which
+background to omit or which consequence matters. It may not know whether an
+objection deserves space. Generic helpfulness then fills the gap with broad
+explanation and visible signposting; the answer tends toward balanced coverage
+and portable management language.
+
+The reader hypothesis predicts that specificity should improve the selection
+of detail, not merely the tone. A response written for a reviewer with a
+pending decision ought to emphasize different evidence from one written for a
+student encountering the mechanism for the first time.
+
+\subsection{Training may reward visible completeness}
+
+Instruction tuning and preference optimization may favor features that
+evaluators readily recognize as helpful. Headings, long lists, summaries,
+caveats, and offers to continue make a chat response look thorough. Transferred
+into a finished article, the same habits can interrupt continuity or append
+material after the argument has ended.
+
+Mixed training data may also favor a middle register acceptable across many
+genres. Code documentation and issue trackers contribute terse inventory
+prose, while business writing supplies a managerial register. Essays and
+reference works add other conventions. Without a strong cue about voice and
+genre, their most portable features can combine into prose that is competent
+but weakly situated.
+
+The three pressures can reinforce one another. Local prediction supplies the
+familiar phrase, post-training rewards its recognizable helpfulness, and
+missing reader context gives the model no reason to remove it. The resulting
+passage can satisfy the conventions of a helpful answer without resolving the
+problem that brought the reader to it.

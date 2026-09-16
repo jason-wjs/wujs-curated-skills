@@ -7,6 +7,7 @@ canonical skill source under `skills/<bucket>/<skill>/SKILL.md`.
 
 - `skills/engineering/` — general engineering behavior and code-work skills.
 - `skills/productivity/` — general planning, writing, and collaboration workflows.
+- `skills/writing/` — writing tasks, shared editing preferences, and examples.
 - `skills/tools/` — concrete external tools, CLIs, services, and platforms.
 - `skills/personal/` — Wu Junsong-specific workflows, paths, and preferences.
 
@@ -57,6 +58,10 @@ canonical skill source under `skills/<bucket>/<skill>/SKILL.md`.
 ## Documentation Rules
 
 - Use `CONTEXT.md` for repository terminology and project model.
+- Keep human writing guides and their editable sources under `for-humans/writing/`,
+  separate from installed skills. Private corpora remain outside the repository.
+- Writing skills share `skills/writing/general-writing/references/editing-contract.md`;
+  link to it instead of prescribing duplicate editing pipelines.
 - Keep current policies and their rationale in the relevant maintained document;
   use Git history for past changes rather than separate decision records.
 - Use `.out-of-scope/` only if repeated requests need an explicit rejection

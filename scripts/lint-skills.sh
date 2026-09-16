@@ -126,6 +126,21 @@ for directory in skill_dirs:
                 errors.append(f"{rel(doc)}: missing linked resource {target}")
 
 top_readme = repo / "README.md"
+
+# Human companions remain outside installable skills, but their navigation must
+# survive moves just like installed resource links.
+human_root = repo / "for-humans"
+for skill in human_root.rglob("SKILL.md"):
+    errors.append(f"{rel(skill)}: human materials must not be installable skills")
+for doc in human_root.rglob("*.md"):
+    body = re.sub(r"```.*?```", "", read(doc), flags=re.S)
+    for target in re.findall(r"\]\(([^\s)]+)\)", body):
+        target = unquote(target.split("#", 1)[0])
+        if not target or "://" in target or target.startswith(("/", "mailto:")):
+            continue
+        if not (doc.parent / target).exists():
+            errors.append(f"{rel(doc)}: missing linked resource {target}")
+
 if top_readme.is_file():
     top_text = read(top_readme)
     for entry in manifest.get("skills", []):

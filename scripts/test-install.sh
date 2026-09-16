@@ -70,8 +70,8 @@ assert_file "$TMP_DIR/codex-project/.agents/skills/bootstrap-shared-server/scrip
 assert_file "$TMP_DIR/codex-project/.agents/skills/bootstrap-shared-server/agents/openai.yaml"
 assert_file "$TMP_DIR/codex-project/.agents/skills/edit-article/SKILL.md"
 assert_file "$TMP_DIR/codex-project/.agents/skills/obsidian-vault/SKILL.md"
-assert_file "$TMP_DIR/codex-project/.agents/skills/research-paper-writing/SKILL.md"
-assert_file "$TMP_DIR/codex-project/.agents/skills/research-paper-writing/agents/openai.yaml"
+assert_file "$TMP_DIR/codex-project/.agents/skills/paper-writing/SKILL.md"
+assert_file "$TMP_DIR/codex-project/.agents/skills/paper-writing/agents/openai.yaml"
 assert_no_path "$TMP_DIR/codex-project/.agents/skills/shared-server-codex-isolation"
 assert_no_path "$TMP_DIR/codex-project/.agents/skills/shared-server-git-private"
 
@@ -107,7 +107,7 @@ assert_file "$TMP_DIR/home/.claude/skills/bootstrap-shared-server/references/cod
 assert_file "$TMP_DIR/home/.claude/skills/bootstrap-shared-server/scripts/render_profile.py"
 assert_file "$TMP_DIR/home/.claude/skills/edit-article/SKILL.md"
 assert_file "$TMP_DIR/home/.claude/skills/obsidian-vault/SKILL.md"
-assert_file "$TMP_DIR/home/.claude/skills/research-paper-writing/SKILL.md"
+assert_file "$TMP_DIR/home/.claude/skills/paper-writing/SKILL.md"
 assert_no_path "$TMP_DIR/home/.claude/skills/shared-server-codex-isolation"
 assert_no_path "$TMP_DIR/home/.claude/skills/shared-server-git-private"
 
@@ -146,7 +146,7 @@ assert_file "$TMP_DIR/cursor-personal/.cursor/skills/bootstrap-shared-server/ref
 assert_file "$TMP_DIR/cursor-personal/.cursor/skills/bootstrap-shared-server/scripts/render_profile.py"
 assert_file "$TMP_DIR/cursor-personal/.cursor/skills/edit-article/SKILL.md"
 assert_file "$TMP_DIR/cursor-personal/.cursor/skills/obsidian-vault/SKILL.md"
-assert_file "$TMP_DIR/cursor-personal/.cursor/skills/research-paper-writing/SKILL.md"
+assert_file "$TMP_DIR/cursor-personal/.cursor/skills/paper-writing/SKILL.md"
 
 echo "[test] cursor symlink skill install"
 bash "$REPO_DIR/scripts/install.sh" --tool cursor --project "$TMP_DIR/cursor-symlink" --method symlink >/dev/null
@@ -243,6 +243,16 @@ assert_file "$TMP_DIR/codex-prune-home/.agents/skills/research/SKILL.md"
 assert_file "$TMP_DIR/codex-prune-home/.agents/skills/codebase-design/SKILL.md"
 assert_file "$TMP_DIR/codex-prune-home/.agents/skills/domain-modeling/CONTEXT-FORMAT.md"
 assert_file "$TMP_DIR/codex-prune-home/.agents/skills/diagnosing-bugs/scripts/hitl-loop.template.sh"
+
+echo "[test] obsolete paper skill is preserved without prune and removed with prune"
+mkdir -p "$TMP_DIR/codex-prune-home/.agents/skills/research-paper-writing"
+echo "stale" > "$TMP_DIR/codex-prune-home/.agents/skills/research-paper-writing/SKILL.md"
+HOME="$TMP_DIR/codex-prune-home" bash "$REPO_DIR/scripts/install.sh" --tool codex --include-personal >/dev/null
+assert_file "$TMP_DIR/codex-prune-home/.agents/skills/research-paper-writing/SKILL.md"
+HOME="$TMP_DIR/codex-prune-home" bash "$REPO_DIR/scripts/install.sh" --tool codex --include-personal --prune >/dev/null
+assert_no_path "$TMP_DIR/codex-prune-home/.agents/skills/research-paper-writing"
+assert_file "$TMP_DIR/codex-prune-home/.agents/skills/paper-writing/SKILL.md"
+assert_file "$TMP_DIR/codex-prune-home/.agents/skills/general-writing/references/editing-contract.md"
 
 echo "[test] claude symlink includes personal skills"
 HOME="$TMP_DIR/claude-symlink-home" bash "$REPO_DIR/scripts/install.sh" --tool claude --method symlink --include-personal >/dev/null

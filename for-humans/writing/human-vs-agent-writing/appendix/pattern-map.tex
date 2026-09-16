@@ -1,0 +1,101 @@
+\section{A comparison map}
+\label{app:patterns}
+
+The table condenses the comparison developed in the article. Its right column
+describes common agent defaults, not necessary properties of generated text.
+The same patterns occur in human drafts, which is why the comparison belongs
+at the level of passages rather than authors.
+
+\begingroup
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.16\textwidth}
+  >{\raggedright\arraybackslash}p{0.39\textwidth}
+  >{\raggedright\arraybackslash}p{0.39\textwidth}@{}}
+\toprule
+\textbf{Dimension} & \textbf{Strong human prose} &
+\textbf{Common agent default} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Dimension} & \textbf{Strong human prose} &
+\textbf{Common agent default} \\
+\midrule
+\endhead
+
+Reader model &
+Chooses background and examples for what a particular reader knows and needs. &
+Falls back on portable explanation and generic helpfulness when the reader is
+unspecified. \\
+\addlinespace
+
+Priority &
+Gives more space to the central claim and deciding evidence than to routine
+background. &
+Distributes equal visual and rhythmic weight across background, evidence,
+caveats, and implications. \\
+\addlinespace
+
+Semantic fit &
+Matches subjects with actions they can perform and names missing links such as
+extent, applicability, or consequence. &
+Produces grammatical but loose combinations such as claims that ``stop'' or
+sections that ``know.'' \\
+\addlinespace
+
+Evidence &
+Names sources and distinguishes direct results from interpretation or open
+questions. &
+Relies on vague attribution, inflated significance, or evidential verbs
+stronger than the available support. \\
+\addlinespace
+
+Continuity &
+Connects sentences through cause, condition, contrast, and consequence. &
+Places related ideas in separate, similarly shaped sentences or list items and
+leaves the reader to recover the dependency. \\
+\addlinespace
+
+Cadence &
+Varies sentence length and structure because ideas have different roles and
+weights. &
+Stacks clipped sentences for drama or repeats medium-length constructions with
+the same opening and closure. \\
+\addlinespace
+
+Contrast &
+Chooses syntax according to the comparator, negative result, mechanism, or
+claim boundary at issue. &
+Repeats frames such as ``not X but Y'' or ``treats X as Y, not Z'' after the
+underlying relation changes. \\
+\addlinespace
+
+Voice &
+Reveals judgment through selected details, calibrated uncertainty, and
+deliberate irregularity. &
+Defaults to a portable middle register assembled from corporate, social-media,
+documentation, and chat conventions. \\
+\addlinespace
+
+Structure &
+Uses headings and lists when readers need to navigate a real change of question
+or scan a complete set. &
+Uses visible organization to make a document look complete before the
+dependencies among its ideas are clear. \\
+\addlinespace
+
+Abstract &
+Explains the problem, central answer, decisive evidence, and claim boundary. &
+Tours the sections, inventories contributions, or gives every component equal
+space. \\
+\addlinespace
+
+Ending &
+Ends on the supported consequence, limitation, unresolved tension, or
+concrete fact at which the reasoning arrives. &
+Appends a summary, slogan, broad implication, or optimistic future because the
+form appears to require closure. \\
+
+\bottomrule
+\end{longtable}
+\endgroup

@@ -1,6 +1,6 @@
 # Harness Compatibility
 
-Validated on 2026-09-15. Canonical skills are installed as complete directories;
+Validated on 2026-09-16 after the writing collection migration. Canonical skills are installed as complete directories;
 references use paths relative to the skill, so the bucketed source layout can
 be flattened without losing resources.
 
@@ -29,7 +29,9 @@ without changing live harness installations, and checks:
 - Frontmatter, invocation-policy parity, catalog entries, and resource links.
 - Copy/symlink packages across 14 scenarios, with and without personal skills.
 - Every installed file against canonical content, and installed relative links.
-- Deprecated-skill pruning, including karpathy-guidelines.
+- Deprecated-skill pruning, including karpathy-guidelines and research-paper-writing.
+- Writing skill sibling references and the shared editing contract; human
+  companion documents stay outside installed packages.
 
 `bash scripts/lint-skills.sh` is the faster source-only check. It validates this
 repository's simple frontmatter conventions, not arbitrary YAML documents.
@@ -37,9 +39,9 @@ repository's simple frontmatter conventions, not arbitrary YAML documents.
 ## Native discovery checks performed
 
 - Codex app-server `initialize` then `skills/list` against a temporary repository
-  install: all 23 skills returned, with no errors for these packages.
+  install: all 39 skills returned, with no errors for these packages.
 - Claude Code streaming control `initialize` with an isolated CLAUDE_CONFIG_DIR:
-  all 23 skills appeared in the command catalog.
+  all 39 skills appeared in the command catalog.
 - Neither check started a model turn. The Codex listing does not expose implicit
   invocation policy; policy parity is checked statically, not inferred from
   `enabled` in that response.

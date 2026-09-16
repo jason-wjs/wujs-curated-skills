@@ -19,13 +19,29 @@
     "./skills/productivity/teach",
     "./skills/productivity/write-a-skill",
     "./skills/tools/bcecmd",
-    "./skills/tools/pueue"
+    "./skills/tools/pueue",
+    "./skills/writing/abstract-writing",
+    "./skills/writing/academic-voice",
+    "./skills/writing/anti-defensive-writing",
+    "./skills/writing/better-usage",
+    "./skills/writing/general-writing",
+    "./skills/writing/grant-planning",
+    "./skills/writing/grant-writing",
+    "./skills/writing/humanizer",
+    "./skills/writing/improve-human-writing-guide",
+    "./skills/writing/literature-review",
+    "./skills/writing/non-autoregressive-writing-pass",
+    "./skills/writing/paper-writing",
+    "./skills/writing/presentation-making",
+    "./skills/writing/prompt-improving",
+    "./skills/writing/rebuttal-writing",
+    "./skills/writing/writing",
+    "./skills/writing/writing-cadence"
   ],
   "personal": [
     "./skills/personal/bootstrap-shared-server",
     "./skills/personal/edit-article",
-    "./skills/personal/obsidian-vault",
-    "./skills/personal/research-paper-writing"
+    "./skills/personal/obsidian-vault"
   ],
   "deprecated_skill_names": [
     "ask-matt",
@@ -35,6 +51,7 @@
     "setup-matt-pocock-skills",
     "writing-great-skills",
     "karpathy-guidelines",
-    "zoom-out"
+    "zoom-out",
+    "research-paper-writing"
   ]
 }

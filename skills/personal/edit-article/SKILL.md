@@ -1,19 +1,13 @@
 ---
 name: edit-article
-description: "Use when revising an article’s structure, paragraph flow, or prose."
+description: "Use when the user requests the personal edit-article workflow for article prose or structure."
 ---
 
 # Edit Article
 
-Preserve the author's argument, facts, citations, and voice. For structural
-edits, map the ideas and arrange prerequisites before dependent claims. For a
-local wording request, work on that passage without requiring a full outline.
-
-Prefer concrete language and one main point per paragraph. Aim for paragraphs
-of 240 characters or fewer, allowing longer ones when splitting would damage
-the argument or technical precision. Keep necessary repetition for emphasis.
-
-Complete the requested revision without per-section approval. Ask when a change
-would alter the argument or resolve a genuinely ambiguous meaning; use staged
-review when the user asks for it. Mark proposed new claims rather than silently
-adding them. Return the revised text and consequential editorial choices.
+Use the `general-writing` skill's `references/editing-contract.md` (installed alongside this skill)
+for sentence and paragraph scope. This personal entrypoint is retained for
+existing callers; general prose work normally uses general-writing and research
+papers use paper-writing. For structural editing, arrange prerequisites before
+dependent claims, keeping the author's facts and voice. Do not impose paragraph
+length quotas or expand a local edit into a whole-article review.

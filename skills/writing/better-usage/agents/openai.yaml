@@ -1,0 +1,4 @@
+interface:
+  display_name: "Better Usage"
+  short_description: "Match words to the relations they express"
+  default_prompt: "Use $better-usage for the requested writing task, preserving meaning and the specified editing scope."

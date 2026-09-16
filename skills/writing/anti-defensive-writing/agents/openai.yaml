@@ -1,0 +1,4 @@
+interface:
+  display_name: "Anti-Defensive Writing"
+  short_description: "Remove redundant defenses; preserve claim scope"
+  default_prompt: "Use $anti-defensive-writing for the requested writing task, preserving meaning and the specified editing scope."

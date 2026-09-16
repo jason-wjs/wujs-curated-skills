@@ -1,0 +1,4 @@
+interface:
+  display_name: "Presentation Making"
+  short_description: "Plan, build, and review clear presentation decks"
+  default_prompt: "Use $presentation-making for the requested writing task, preserving meaning and the specified editing scope."

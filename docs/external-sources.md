@@ -172,17 +172,28 @@ https://github.com/forrestchang/andrej-karpathy-skills (MIT); its files were rem
 - Local policy: keeps the `write-a-skill` name; rewrites the creation guidance and glossary
   around useful task-specific constraints and portable packaging.
 
-### `skills/personal/research-paper-writing`
+## Writing Collection
 
-- Upstream: <https://github.com/Master-cai/Research-Paper-Writing-Skills>
-- Upstream commit: `9ee5eddc10068cc52590b3a68a827d3a387f5af9`
-- Local source: `skills/personal/research-paper-writing/SKILL.md`
-- License: MIT, preserved by repository license, skill attribution, and this
-  source record.
-- Upstream attribution: most methodology comes from Prof. Peng Sida's public
-  study notes and <https://github.com/pengsida/learning_research>.
-- Local policy: maintained as an adapted personal skill. It is installed only
-  when `--include-personal` is used.
+- Source: <https://github.com/jason-wjs/academic-writing-skills>
+- Imported revision: `9ff8f95b790a0e47809a172963c4c4417443f9b8`.
+- Local source: all 17 entrypoints under `skills/writing/` and human companions
+  under `for-humans/writing/`.
+- License: MIT, copyright 2026 Max Simchowitz; preserved in each skill and the
+  human companion directory. Skills with an existing component LICENSE also
+  carry `LICENSE.academic-writing-skills`.
+- Additional origins: Humanizer by Siqi Chen (<https://github.com/blader/humanizer>),
+  no-ai-slop by Peter Yang (<https://github.com/petergyang/no-ai-slop>), and
+  anti-defensive-writing by Kiterlin (<https://github.com/Kiterlin/anti-defensive-writing>).
+  Their original MIT notices remain with their adapted skills.
+- Local policy: retain command names and useful examples, shorten entrypoints,
+  load references by task, and replace mandatory editing chains with shared
+  sentence/paragraph scope preferences. Keep original private corpora outside
+  the repository. Human source/PDF artifacts are preserved independently of
+  the current agent guidance.
+- Replaces `research-paper-writing`, previously adapted from
+  <https://github.com/Master-cai/Research-Paper-Writing-Skills> at
+  `9ee5eddc10068cc52590b3a68a827d3a387f5af9`. Its former content remains in Git
+  history; the deprecated name is pruned only when requested at installation.
 
 ## Reference Sources
 
